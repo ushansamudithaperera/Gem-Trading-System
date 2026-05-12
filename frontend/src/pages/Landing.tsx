@@ -32,13 +32,13 @@ export const Landing: React.FC = () => {
   return (
     <div className="landing-page-light">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/95 border-b border-emerald-200 shadow-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-slate-900/95 border-b border-emerald-600 shadow-lg">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-white font-bold text-xl">💎</span>
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="font-bold text-xl bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
               GemTrade
             </span>
           </div>
@@ -47,7 +47,7 @@ export const Landing: React.FC = () => {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                className="border-emerald-500 text-emerald-300 hover:bg-emerald-950 hover:text-emerald-200"
               >
                 Sign In
               </Button>
@@ -55,7 +55,7 @@ export const Landing: React.FC = () => {
             <Link to="/register">
               <Button 
                 size="sm" 
-                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white"
+                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white shadow-lg"
               >
                 Get Started Free
               </Button>
