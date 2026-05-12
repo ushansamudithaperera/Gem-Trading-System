@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: gem_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: gemDB
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - gem_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: gem_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - gem_network
+
+  backend:
+    build: ./backend
+    container_name: gem_backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/gemDB?authSource=admin
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev_secret_key_change_me
+      JWT_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost:5173
+      BACKEND_URL: http://localhost:5000
+      AUTO_RELEASE_DAYS: 3
+      COURIER_MOCK_DELAY_MS: 3000
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./backend/logs:/app/logs
+    networks:
+      - gem_network
+
+  frontend:
+    build: ./frontend
+    container_name: gem_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    environment:
+      VITE_API_URL: http://localhost:5000/api/v1
+      VITE_SOCKET_URL: http://localhost:5000
+    depends_on:
+      - backend
+    networks:
+      - gem_network
+
+  ai-service:
+    build: ./ai-service
+    container_name: gem_ai_service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: /app/models
+      LOG_LEVEL: INFO
+    networks:
+      - gem_network
+    profiles:
+      - with-ai  # optional, run with `docker-compose --profile with-ai up`
+
+networks:
+  gem_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:

@@ -1,0 +1,54 @@
+import api from './api';
+
+interface RegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  roles: string[];
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface AuthResponse {
+  success: boolean;
+  data: {
+    user: {
+      _id: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      roles: string[];
+      avatar?: string;
+    };
+    token: string;
+  };
+  message: string;
+}
+
+export const register = async (data: RegisterData): Promise<AuthResponse['data']> => {
+  const response = await api.post<AuthResponse>('/auth/register', data);
+  const { token, user } = response.data.data;
+  localStorage.setItem('token', token);
+  return { token, user };
+};
+
+export const login = async (data: LoginData): Promise<AuthResponse['data']> => {
+  const response = await api.post<AuthResponse>('/auth/login', data);
+  const { token, user } = response.data.data;
+  localStorage.setItem('token', token);
+  return { token, user };
+};
+
+export const logout = (): void => {
+  localStorage.removeItem('token');
+};
+
+export const getCurrentUser = async () => {
+  const response = await api.get('/auth/me');
+  return response.data.data;
+};

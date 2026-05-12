@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: Gem Trading Platform API
+  description: Enterprise B2B Gemstone Trading & Management Platform with Escrow, Disputes, and Service Hub
+  version: 1.0.0
+  contact:
+    name: Support
+    email: support@gemtrader.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Development server
+  - url: https://your-backend.onrender.com/api/v1
+    description: Production server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - firstName
+                - lastName
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 6
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phone:
+                  type: string
+                roles:
+                  type: array
+                  items:
+                    type: string
+                    enum: [BUYER, SELLER, CUTTER]
+      responses:
+        201:
+          description: User registered
+        400:
+          description: Validation error
+        409:
+          description: Email already exists
+
+  /auth/login:
+    post:
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                      token:
+                        type: string
+
+  /gems/marketplace:
+    get:
+      summary: Get marketplace listings
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [ROUGH, POLISHED]
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        200:
+          description: Marketplace data
+
+  /orders:
+    post:
+      summary: Create new order (buyer)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - gemId
+                - amount
+              properties:
+                gemId:
+                  type: string
+                amount:
+                  type: number
+      responses:
+        201:
+          description: Order created
+        400:
+          description: Invalid gem or already sold
+        401:
+          description: Unauthorized
+
+  /orders/{orderId}/cancel:
+    put:
+      summary: Cancel order (only PENDING_DISPATCH)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Order cancelled
+        400:
+          description: Cannot cancel at current status
+        403:
+          description: Not authorized
+
+  /disputes:
+    post:
+      summary: Open a dispute
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderId
+                - reason
+                - description
+              properties:
+                orderId:
+                  type: string
+                reason:
+                  type: string
+                  enum: [NOT_RECEIVED, ITEM_MISMATCH, DAMAGED, CUTTING_QUALITY, OTHER]
+                description:
+                  type: string
+                evidenceImages:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        201:
+          description: Dispute opened, escrow frozen
+
+  /health/live:
+    get:
+      summary: Liveness probe (K8s/Render)
+      responses:
+        200:
+          description: Server alive
+
+  /health/ready:
+    get:
+      summary: Readiness probe (DB + Redis)
+      responses:
+        200:
+          description: Ready
+        503:
+          description: Not ready
