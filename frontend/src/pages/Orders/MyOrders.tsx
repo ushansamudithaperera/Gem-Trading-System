@@ -68,7 +68,7 @@ export const MyOrders: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">My Orders</h1>
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">My Orders</h1>
 
       {/* Filter tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -78,8 +78,8 @@ export const MyOrders: React.FC = () => {
             onClick={() => setStatusFilter(status)}
             className={`px-3 py-1 text-sm rounded-full transition ${
               statusFilter === status
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             {status === 'all' ? 'All' : (statusConfig[status]?.label || status)}
@@ -89,7 +89,7 @@ export const MyOrders: React.FC = () => {
 
       {filteredOrders.length === 0 ? (
         <Card>
-          <CardContent className="py-12 text-center text-gray-500">
+          <CardContent className="py-12 text-center text-slate-500">
             No orders found.
             <Link to="/marketplace">
               <Button className="mt-4">Start Shopping</Button>
@@ -99,10 +99,10 @@ export const MyOrders: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {filteredOrders.map(order => (
-            <Card key={order._id} className="hover:shadow-md transition">
+            <Card key={order._id} className="hover:shadow-md transition border-emerald-200">
               <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                  <div className="w-16 h-16 bg-slate-100 rounded-md overflow-hidden flex-shrink-0 border border-slate-200">
                     <img
                       src={order.gemId.images?.[0] || '/gem-placeholder.png'}
                       alt=""

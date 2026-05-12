@@ -42,11 +42,11 @@ export const GemFilters: React.FC<GemFiltersProps> = ({
     <div className="space-y-4">
       {/* Gem Type */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Gem Type</label>
+        <label className="block text-sm font-medium text-slate-900 mb-1">Gem Type</label>
         <select
           value={localFilters.type}
           onChange={(e) => handleChange('type', e.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2 text-sm"
+          className="w-full rounded-md border border-emerald-200 p-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white text-slate-900"
         >
           <option value="">All Types</option>
           <option value="ROUGH">Rough</option>

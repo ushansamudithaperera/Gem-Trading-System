@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
@@ -134,7 +134,7 @@ export const OrderDetails: React.FC = () => {
               <div className="flex justify-between items-start">
                 <div>
                   <CardTitle>Order #{order.orderNumber}</CardTitle>
-                  <p className="text-sm text-gray-500">Placed on {new Date(order.createdAt).toLocaleString()}</p>
+                  <p className="text-sm text-slate-500">Placed on {new Date(order.createdAt).toLocaleString()}</p>
                 </div>
                 <Badge variant={order.status === 'COMPLETED' ? 'success' : 'default'}>
                   {order.status.replace(/_/g, ' ')}
@@ -143,13 +143,13 @@ export const OrderDetails: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="flex gap-4">
-                <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-24 h-24 object-cover rounded-md" />
+                <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-24 h-24 object-cover rounded-md border border-slate-200" />
                 <div>
-                  <Link to={`/gems/${order.gemId._id}`} className="font-semibold hover:text-blue-600">
+                  <Link to={`/gems/${order.gemId._id}`} className="font-semibold hover:text-emerald-600 transition-colors">
                     {order.gemId.title}
                   </Link>
-                  <p className="text-sm text-gray-600">{order.gemId.weightCarats} ct • {order.gemId.type}</p>
-                  <p className="text-sm">Seller: {order.sellerId.businessName || `${order.sellerId.firstName} ${order.sellerId.lastName}`}</p>
+                  <p className="text-sm text-slate-600">{order.gemId.weightCarats} ct • {order.gemId.type}</p>
+                  <p className="text-sm text-slate-700">Seller: {order.sellerId.businessName || `${order.sellerId.firstName} ${order.sellerId.lastName}`}</p>
                 </div>
               </div>
             </CardContent>
@@ -216,15 +216,15 @@ export const OrderDetails: React.FC = () => {
           />
 
           {order.deliveryInfo.trackingNumber && (
-            <Card>
+            <Card className="border-emerald-200">
               <CardHeader>
-                <CardTitle>Shipping Info</CardTitle>
+                <CardTitle className="text-slate-900">Shipping Info</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <p className="text-sm"><span className="font-medium">Courier:</span> {order.deliveryInfo.courierCompany}</p>
-                <p className="text-sm"><span className="font-medium">Tracking:</span> {order.deliveryInfo.trackingNumber}</p>
+                <p className="text-sm text-slate-900"><span className="font-medium">Courier:</span> {order.deliveryInfo.courierCompany}</p>
+                <p className="text-sm text-slate-900"><span className="font-medium">Tracking:</span> {order.deliveryInfo.trackingNumber}</p>
                 {order.deliveryInfo.shippedAt && (
-                  <p className="text-sm">Shipped on {new Date(order.deliveryInfo.shippedAt).toLocaleDateString()}</p>
+                  <p className="text-sm text-slate-700">Shipped on {new Date(order.deliveryInfo.shippedAt).toLocaleDateString()}</p>
                 )}
               </CardContent>
             </Card>

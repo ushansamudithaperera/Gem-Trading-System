@@ -1,0 +1,158 @@
+/* Premium Landing Page - Light Theme with Gem Colors */
+
+.landing-page-light {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
+  color: #1e293b;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar - Light theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f9ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #10b981, #0ea5e9);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #059669, #0284c7);
+}
+
+/* Hero section with background image */
+section:first-of-type {
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  section:first-of-type {
+    background-attachment: scroll;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Role tabs underline animation */
+button {
+  position: relative;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #10b981, #0ea5e9);
+  transition: width 0.3s ease;
+}
+
+button:hover::after {
+  width: 100%;
+}
+
+/* Image hover scale animation */
+div[style*="backgroundImage"] {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+div[style*="backgroundImage"]:hover {
+  transform: scale(1.05);
+}
+
+/* Checkmark animation */
+.group:hover .bg-gradient-to-br {
+  animation: checkBounce 0.5s ease-out;
+}
+
+@keyframes checkBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* Text hover glow */
+.group:hover p {
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+/* Feature cards hover */
+.group:hover {
+  background-color: #f0fdf4;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .landing-page-light section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    font-size: 1.875rem !important;
+  }
+}
+
+/* Link hover effects */
+a {
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Gradient animations */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+.bg-clip-text {
+  background-size: 200% auto;
+  animation: gradientShift 3s ease infinite;
+}

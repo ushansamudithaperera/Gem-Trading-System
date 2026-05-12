@@ -64,9 +64,9 @@ export const CutterList: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h1 className="text-2xl font-bold">Find a Cutter</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Find a Cutter</h1>
         <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
           <Input
             placeholder="Search cutters..."
             value={searchTerm}
@@ -77,8 +77,8 @@ export const CutterList: React.FC = () => {
       </div>
 
       {filteredCutters.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No cutters available at the moment.</p>
+        <div className="text-center py-12 bg-slate-50 rounded-lg border border-emerald-200">
+          <p className="text-slate-500">No cutters available at the moment.</p>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -95,7 +95,7 @@ export const CutterList: React.FC = () => {
       {/* Hire Cutter Modal */}
       {showHireForm && selectedCutter && orderIdForHire && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full">
+          <div className="bg-white rounded-lg max-w-md w-full border border-emerald-200 shadow-lg">
             <HireCutterForm
               orderId={orderIdForHire}
               roughGemId="mock_gem_id" // In real, fetch from order

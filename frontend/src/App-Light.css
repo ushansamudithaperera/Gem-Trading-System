@@ -1,0 +1,214 @@
+/* Global Light Theme Styles for Gem Trading System */
+
+* {
+  /* Override dark theme defaults */
+}
+
+body {
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+/* Form elements */
+input, textarea, select {
+  background-color: #ffffff;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Primary colors - Emerald */
+.bg-primary, .bg-emerald-600 {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+.hover\:bg-primary:hover, .hover\:bg-emerald-600:hover {
+  background-color: #047857;
+}
+
+/* Links */
+a {
+  color: #059669;
+}
+
+a:hover {
+  color: #047857;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #1e293b;
+}
+
+/* Cards and containers */
+.card, [class*="Card"] {
+  background-color: #ffffff;
+  border-color: #a7f3d0;
+  color: #1e293b;
+}
+
+.bg-card {
+  background-color: #ffffff;
+}
+
+/* Text colors */
+.text-gray-900, .text-foreground {
+  color: #1e293b;
+}
+
+.text-gray-700, .text-secondary-foreground {
+  color: #475569;
+}
+
+.text-gray-600 {
+  color: #64748b;
+}
+
+.text-gray-500 {
+  color: #64748b;
+}
+
+.text-muted-foreground {
+  color: #64748b;
+}
+
+/* Background colors */
+.bg-gray-50, .bg-slate-50, .bg-accent {
+  background-color: #f8fafc;
+}
+
+.bg-gray-100, .bg-slate-100 {
+  background-color: #f1f5f9;
+}
+
+/* Borders */
+.border-gray-200, .border-slate-200, .border-input {
+  border-color: #e2e8f0;
+}
+
+.border-emerald-200 {
+  border-color: #a7f3d0;
+}
+
+.border-blue-200 {
+  border-color: #bfdbfe;
+}
+
+/* Hover states */
+.hover\:bg-gray-100:hover, .hover\:bg-slate-100:hover {
+  background-color: #f1f5f9;
+}
+
+/* Badge variants */
+.badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge-danger, .badge-destructive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-info {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+/* Status colors */
+.status-active {
+  color: #10b981;
+}
+
+.status-pending {
+  color: #f59e0b;
+}
+
+.status-inactive, .status-cancelled {
+  color: #ef4444;
+}
+
+/* Market gem elements */
+.gem-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.gem-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+button, .button {
+  transition: all 0.3s ease;
+}
+
+button:hover, .button:hover {
+  transform: translateY(-1px);
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+td, th {
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* Modal/Overlay */
+.modal-overlay {
+  background-color: rgba(15, 23, 42, 0.5);
+}
+
+.modal-content {
+  background-color: #ffffff;
+  color: #1e293b;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #10b981, #0ea5e9);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #059669, #0284c7);
+}
+
+/* Ensure light backgrounds win */
+.dark .bg-white,
+.dark [class*="bg-white"],
+.dark body {
+  background-color: #ffffff;
+  color: #1e293b;
+}

@@ -59,25 +59,25 @@ export const BuyerDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.firstName}!</h1>
-        <p className="text-gray-600">Track your purchases and orders</p>
+        <h1 className="text-2xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
+        <p className="text-slate-600">Track your purchases and orders</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="border-emerald-200 bg-white">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Spent</p>
-              <p className="text-2xl font-bold">${stats.totalSpent.toLocaleString()}</p>
+              <p className="text-sm text-slate-500">Total Spent</p>
+              <p className="text-2xl font-bold text-slate-900">${stats.totalSpent.toLocaleString()}</p>
             </div>
-            <DollarSign className="h-8 w-8 text-green-500" />
+            <DollarSign className="h-8 w-8 text-emerald-600" />
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-emerald-200 bg-white">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Orders</p>
+              <p className="text-sm text-slate-500">Active Orders</p>
               <p className="text-2xl font-bold">{stats.activeOrders}</p>
             </div>
             <Clock className="h-8 w-8 text-blue-500" />

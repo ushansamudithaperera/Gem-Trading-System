@@ -49,7 +49,7 @@ export const Sidebar: React.FC = () => {
   });
 
   return (
-    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 mt-16 bg-gray-50 border-r">
+    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 mt-16 bg-slate-50 border-r border-emerald-200">
       <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
         <nav className="mt-5 flex-1 px-2 space-y-1">
           {filteredNavItems.map((item) => (
@@ -59,8 +59,8 @@ export const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 `group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
                   isActive
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-gradient-to-r from-emerald-100 to-blue-100 text-emerald-700'
+                    : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900'
                 }`
               }
             >
@@ -71,7 +71,7 @@ export const Sidebar: React.FC = () => {
 
           {filteredRoleItems.length > 0 && (
             <>
-              <div className="pt-4 mt-4 border-t border-gray-200">
+              <div className="pt-4 mt-4 border-t border-emerald-200">
                 {filteredRoleItems.map((item) => (
                   <NavLink
                     key={item.name}
@@ -79,8 +79,8 @@ export const Sidebar: React.FC = () => {
                     className={({ isActive }) =>
                       `group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
                         isActive
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                          ? 'bg-gradient-to-r from-emerald-100 to-blue-100 text-emerald-700'
+                          : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900'
                       }`
                     }
                   >

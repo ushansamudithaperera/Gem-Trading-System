@@ -70,7 +70,7 @@ export const DisputeCenter: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Dispute Center</h1>
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">Dispute Center</h1>
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Disputes list */}
@@ -80,27 +80,27 @@ export const DisputeCenter: React.FC = () => {
           </CardHeader>
           <CardContent>
             {disputes.length === 0 ? (
-              <p className="text-gray-500">No disputes found.</p>
+              <p className="text-slate-500">No disputes found.</p>
             ) : (
               <div className="space-y-3">
                 {disputes.map(dispute => (
                   <div
                     key={dispute._id}
                     className={`p-3 border rounded-lg cursor-pointer transition ${
-                      selectedDispute?._id === dispute._id ? 'border-blue-500 bg-blue-50' : 'hover:bg-gray-50'
+                      selectedDispute?._id === dispute._id ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:bg-slate-50'
                     }`}
                     onClick={() => setSelectedDispute(dispute)}
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="font-medium">Order #{dispute.orderId.orderNumber.slice(-8)}</p>
-                        <p className="text-sm text-gray-600">{dispute.reason}</p>
+                        <p className="font-medium text-slate-900">Order #{dispute.orderId.orderNumber.slice(-8)}</p>
+                        <p className="text-sm text-slate-600">{dispute.reason}</p>
                       </div>
                       <Badge variant={dispute.status === 'OPEN' ? 'destructive' : 'secondary'}>
                         {dispute.status}
                       </Badge>
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-slate-500 mt-1">
                       by {dispute.raisedBy.firstName} {dispute.raisedBy.lastName} • {new Date(dispute.createdAt).toLocaleDateString()}
                     </p>
                   </div>

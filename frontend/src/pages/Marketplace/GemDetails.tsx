@@ -60,7 +60,7 @@ export const GemDetails: React.FC = () => {
       <Button
         variant="ghost"
         onClick={() => navigate('/marketplace')}
-        className="mb-4"
+        className="mb-4 text-slate-700 hover:text-emerald-600"
       >
         ← Back to Marketplace
       </Button>
@@ -68,7 +68,7 @@ export const GemDetails: React.FC = () => {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Image Gallery */}
         <div>
-          <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+          <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
             <img
               src={gem.images[selectedImage] || '/placeholder-gem.jpg'}
               alt={gem.title}
@@ -82,7 +82,7 @@ export const GemDetails: React.FC = () => {
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
                   className={`w-16 h-16 rounded-md overflow-hidden border-2 ${
-                    selectedImage === idx ? 'border-blue-500' : 'border-transparent'
+                    selectedImage === idx ? 'border-emerald-500' : 'border-transparent'
                   }`}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
@@ -96,68 +96,68 @@ export const GemDetails: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{gem.title}</h1>
+              <h1 className="text-2xl font-bold text-slate-900">{gem.title}</h1>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant={gem.type === 'ROUGH' ? 'warning' : 'success'}>
                   {gem.type}
                 </Badge>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-slate-500">
                   Listed {new Date(gem.createdAt).toLocaleDateString()}
                 </span>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-bold text-blue-600">
+              <p className="text-3xl font-bold text-emerald-600">
                 ${gem.price.toLocaleString()}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center gap-2 text-gray-600">
+            <div className="flex items-center gap-2 text-slate-600">
               <Weight className="h-4 w-4" />
               <span>{gem.weightCarats} carats</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
+            <div className="flex items-center gap-2 text-slate-600">
               <MapPin className="h-4 w-4" />
               <span>{gem.location}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
+            <div className="flex items-center gap-2 text-slate-600">
               <User className="h-4 w-4" />
               <span>Seller: {gem.sellerId?.firstName} {gem.sellerId?.lastName}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
+            <div className="flex items-center gap-2 text-slate-600">
               <Shield className="h-4 w-4" />
               <span>Escrow protected</span>
             </div>
           </div>
 
-          <div className="border-t pt-4">
-            <h3 className="font-semibold mb-2">Description</h3>
-            <p className="text-gray-700 whitespace-pre-wrap">{gem.description}</p>
+          <div className="border-t border-slate-200 pt-4">
+            <h3 className="font-semibold text-slate-900 mb-2">Description</h3>
+            <p className="text-slate-700 whitespace-pre-wrap">{gem.description}</p>
           </div>
 
           {gem.certificate && (
-            <div className="border-t pt-4">
-              <h3 className="font-semibold mb-2">Certificate</h3>
-              <a href={gem.certificate} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+            <div className="border-t border-slate-200 pt-4">
+              <h3 className="font-semibold text-slate-900 mb-2">Certificate</h3>
+              <a href={gem.certificate} target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors">
                 View Certificate
               </a>
             </div>
           )}
 
-          <div className="border-t pt-4 flex flex-col sm:flex-row gap-3">
+          <div className="border-t border-slate-200 pt-4 flex flex-col sm:flex-row gap-3">
             {isAuthenticated ? (
-              <Button size="lg" className="flex-1" onClick={() => setShowBidModal(true)}>
+              <Button size="lg" className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800" onClick={() => setShowBidModal(true)}>
                 Place Bid / Buy Now
               </Button>
             ) : (
-              <Button size="lg" className="flex-1" onClick={() => navigate('/login')}>
+              <Button size="lg" className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800" onClick={() => navigate('/login')}>
                 Login to Purchase
               </Button>
             )}
             {gem.type === 'ROUGH' && (
-              <Button variant="outline" size="lg" className="flex-1">
+              <Button variant="outline" size="lg" className="flex-1 border-emerald-200 text-emerald-700 hover:bg-emerald-50">
                 <ChefHat className="h-4 w-4 mr-2" />
                 Hire a Cutter
               </Button>

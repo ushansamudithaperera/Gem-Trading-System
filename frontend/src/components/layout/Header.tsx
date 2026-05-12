@@ -23,26 +23,26 @@ export const Header: React.FC = () => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <Gem className="h-6 w-6 text-blue-600" />
-          <span className="text-xl font-bold text-gray-900">GemTrader</span>
+          <Gem className="h-6 w-6 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg p-0.5" />
+          <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">GemTrader</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/marketplace" className="text-sm font-medium text-gray-700 hover:text-blue-600">
+          <Link to="/marketplace" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
             Marketplace
           </Link>
           {isAuthenticated && user?.roles.includes('CUTTER') && (
-            <Link to="/service-hub" className="text-sm font-medium text-gray-700 hover:text-blue-600">
+            <Link to="/service-hub" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
               Service Hub
             </Link>
           )}
           {isAuthenticated && (
-            <Link to="/dashboard" className="text-sm font-medium text-gray-700 hover:text-blue-600">
+            <Link to="/dashboard" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
               Dashboard
             </Link>
           )}
-          <Link to="/about" className="text-sm font-medium text-gray-700 hover:text-blue-600">
+          <Link to="/about" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
             About
           </Link>
         </nav>

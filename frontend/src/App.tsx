@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
 import { setLoading, setUser } from './store/slices/authSlice';
 import { getCurrentUser } from './services/auth.service';
+import './App-Light.css';  // Global light theme styles
 
 // Layout Components
 import { Header } from './components/layout/Header';
@@ -12,6 +13,7 @@ import { Sidebar } from './components/layout/Sidebar';
 // Pages
 import { Login } from './pages/Auth/Login';
 import { Register } from './pages/Auth/Register';
+import { Landing } from './pages/Landing';
 import { NotFound } from './pages/NotFound';
 import { MarketplaceList } from './pages/Marketplace/MarketplaceList';
 import { GemDetails } from './pages/Marketplace/GemDetails';
@@ -60,6 +62,20 @@ function AppContent() {
 
   if (loading) {
     return <LoadingSpinner fullScreen />;
+  }
+
+  // Show landing page for unauthenticated users on root path
+  if (!isAuthenticated) {
+    return (
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/marketplace" element={<MarketplaceList />} />
+        <Route path="/gems/:id" element={<GemDetails />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    );
   }
 
   return (

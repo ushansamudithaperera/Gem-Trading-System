@@ -69,13 +69,13 @@ export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative w-full max-w-xs bg-white shadow-xl flex flex-col">
+            <Dialog.Panel className="relative w-full max-w-xs bg-white shadow-xl flex flex-col border-r border-emerald-200">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b">
-                <h2 className="text-lg font-semibold">Menu</h2>
+              <div className="flex items-center justify-between p-4 border-b border-emerald-200">
+                <h2 className="text-lg font-semibold text-slate-900">Menu</h2>
                 <button
                   onClick={onClose}
-                  className="rounded-md p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                  className="rounded-md p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -89,10 +89,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
                     to={item.href}
                     onClick={onClose}
                     className={({ isActive }) =>
-                      `block px-3 py-2 rounded-md text-base font-medium ${
+                      `block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                         isActive
-                          ? 'bg-blue-50 text-blue-700'
-                          : 'text-gray-700 hover:bg-gray-100'
+                          ? 'bg-emerald-50 text-emerald-700'
+                          : 'text-slate-700 hover:bg-slate-100'
                       }`
                     }
                   >

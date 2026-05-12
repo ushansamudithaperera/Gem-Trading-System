@@ -102,10 +102,10 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
 
   if (isDisputed) {
     return (
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center mb-4">
-        <AlertCircle className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-        <h3 className="font-semibold text-yellow-800">Dispute Active</h3>
-        <p className="text-sm text-yellow-600">Escrow frozen. Awaiting resolution.</p>
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center mb-4">
+        <AlertCircle className="h-8 w-8 text-amber-500 mx-auto mb-2" />
+        <h3 className="font-semibold text-amber-800">Dispute Active</h3>
+        <p className="text-sm text-amber-600">Escrow frozen. Awaiting resolution.</p>
       </div>
     );
   }
@@ -114,7 +114,7 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
     <div className="px-4 py-6">
       <div className="relative">
         {/* Timeline line */}
-        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" style={{ left: '1.25rem' }} />
+        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-200" style={{ left: '1.25rem' }} />
         
         {steps.map((step, idx) => {
           const stepStatus = getStepStatus(step);
@@ -125,9 +125,9 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
               <div
                 className={`
                   relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full
-                  ${stepStatus === 'completed' ? 'bg-green-500' : ''}
-                  ${stepStatus === 'current' ? 'bg-blue-500 ring-4 ring-blue-100' : ''}
-                  ${stepStatus === 'pending' ? 'bg-gray-300' : ''}
+                  ${stepStatus === 'completed' ? 'bg-emerald-600' : ''}
+                  ${stepStatus === 'current' ? 'bg-emerald-600 ring-4 ring-emerald-100' : ''}
+                  ${stepStatus === 'pending' ? 'bg-slate-300' : ''}
                 `}
                 style={{ left: '-0.125rem' }}
               >
@@ -136,14 +136,14 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
               
               {/* Content */}
               <div className="flex-1">
-                <h4 className={`font-medium ${stepStatus === 'pending' ? 'text-gray-400' : 'text-gray-900'}`}>
+                <h4 className={`font-medium ${stepStatus === 'pending' ? 'text-slate-400' : 'text-slate-900'}`}>
                   {step.label}
                 </h4>
-                <p className={`text-sm ${stepStatus === 'pending' ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-sm ${stepStatus === 'pending' ? 'text-slate-400' : 'text-slate-600'}`}>
                   {step.description}
                 </p>
                 {step.label === 'Delivered' && deliveredAt && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-slate-500 mt-1">
                     Delivered on {new Date(deliveredAt).toLocaleDateString()}
                   </p>
                 )}

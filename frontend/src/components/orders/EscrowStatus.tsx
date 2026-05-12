@@ -48,9 +48,9 @@ export const EscrowStatus: React.FC<EscrowStatusProps> = ({
   const getStateIcon = () => {
     switch (state) {
       case 'HELD':
-        return <Lock className="h-6 w-6 text-yellow-600" />;
+        return <Lock className="h-6 w-6 text-amber-600" />;
       case 'RELEASED':
-        return <Unlock className="h-6 w-6 text-green-600" />;
+        return <Unlock className="h-6 w-6 text-emerald-600" />;
       case 'REFUNDED':
         return <AlertTriangle className="h-6 w-6 text-red-600" />;
     }
@@ -58,8 +58,8 @@ export const EscrowStatus: React.FC<EscrowStatusProps> = ({
 
   const getStateColor = () => {
     switch (state) {
-      case 'HELD': return 'bg-yellow-50 border-yellow-200';
-      case 'RELEASED': return 'bg-green-50 border-green-200';
+      case 'HELD': return 'bg-amber-50 border-amber-200';
+      case 'RELEASED': return 'bg-emerald-50 border-emerald-200';
       case 'REFUNDED': return 'bg-red-50 border-red-200';
     }
   };
@@ -92,7 +92,7 @@ export const EscrowStatus: React.FC<EscrowStatusProps> = ({
         <Progress value={progressValue} className="h-2" />
 
         {state === 'HELD' && !isDisputed && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-slate-600">
             {releaseDate ? (
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
@@ -102,7 +102,7 @@ export const EscrowStatus: React.FC<EscrowStatusProps> = ({
               <p>Funds secured. Will release after delivery confirmation.</p>
             )}
             {canRelease && (
-              <Button onClick={onRelease} className="mt-3 w-full" size="sm">
+              <Button onClick={onRelease} className="mt-3 w-full bg-emerald-600 hover:bg-emerald-700" size="sm">
                 Confirm Receipt & Release Funds
               </Button>
             )}
@@ -117,7 +117,7 @@ export const EscrowStatus: React.FC<EscrowStatusProps> = ({
         )}
 
         {state === 'RELEASED' && (
-          <p className="text-sm text-green-700">Funds have been transferred to the seller.</p>
+          <p className="text-sm text-emerald-700">Funds have been transferred to the seller.</p>
         )}
 
         {state === 'REFUNDED' && (

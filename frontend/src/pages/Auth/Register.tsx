@@ -69,34 +69,39 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-white via-slate-50 to-white">
+      <Card className="w-full max-w-md border-emerald-200 shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Create Account</CardTitle>
-          <p className="text-sm text-gray-500 mt-1">Join the gem trading community</p>
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white text-xl">💎</span>
+            </div>
+          </div>
+          <CardTitle className="text-2xl text-slate-900">Create Account</CardTitle>
+          <p className="text-sm text-slate-600 mt-1">Join the gem trading community</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium mb-1">First Name</label>
+                <label className="block text-sm font-medium text-slate-900 mb-1">First Name</label>
                 <Input name="firstName" value={formData.firstName} onChange={handleChange} required />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Last Name</label>
+                <label className="block text-sm font-medium text-slate-900 mb-1">Last Name</label>
                 <Input name="lastName" value={formData.lastName} onChange={handleChange} required />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
+              <label className="block text-sm font-medium text-slate-900 mb-1">Email</label>
               <Input name="email" type="email" value={formData.email} onChange={handleChange} required />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Phone (Optional)</label>
+              <label className="block text-sm font-medium text-slate-900 mb-1">Phone (Optional)</label>
               <Input name="phone" value={formData.phone} onChange={handleChange} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
+              <label className="block text-sm font-medium text-slate-900 mb-1">Password</label>
               <div className="relative">
                 <Input
                   name="password"
@@ -108,14 +113,14 @@ export const Register: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 transition"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-slate-900 mb-1">Confirm Password</label>
               <Input
                 name="confirmPassword"
                 type={showPassword ? 'text' : 'password'}
@@ -125,7 +130,7 @@ export const Register: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">I want to:</label>
+              <label className="block text-sm font-medium text-slate-900 mb-2">I want to:</label>
               <div className="flex flex-wrap gap-3">
                 {(['BUYER', 'SELLER', 'CUTTER'] as const).map(role => (
                   <button
@@ -134,8 +139,8 @@ export const Register: React.FC = () => {
                     onClick={() => handleRoleToggle(role)}
                     className={`px-3 py-1.5 text-sm rounded-full border transition ${
                       formData.roles.includes(role)
-                        ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                        ? 'bg-emerald-600 text-white border-emerald-600'
+                        : 'bg-white text-slate-700 border-slate-300 hover:border-emerald-400'
                     }`}
                   >
                     {role === 'BUYER' && 'Buy Gems'}
@@ -144,7 +149,7 @@ export const Register: React.FC = () => {
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 mt-1">You can select multiple roles</p>
+              <p className="text-xs text-slate-500 mt-1">You can select multiple roles</p>
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Creating account...' : 'Sign Up'}
@@ -153,7 +158,7 @@ export const Register: React.FC = () => {
           </form>
           <div className="mt-6 text-center text-sm">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:underline">
+            <Link to="/login" className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium">
               Sign in
             </Link>
           </div>

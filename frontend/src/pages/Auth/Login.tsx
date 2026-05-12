@@ -39,16 +39,21 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-white via-slate-50 to-white">
+      <Card className="w-full max-w-md border-emerald-200 shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <p className="text-sm text-gray-500 mt-1">Sign in to your account</p>
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white text-xl">💎</span>
+            </div>
+          </div>
+          <CardTitle className="text-2xl text-slate-900">Welcome Back</CardTitle>
+          <p className="text-sm text-slate-600 mt-1">Sign in to your GemTrade account</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-1">
                 Email Address
               </label>
               <Input
@@ -62,7 +67,7 @@ export const Login: React.FC = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-900 mb-1">
                 Password
               </label>
               <div className="relative">
@@ -78,25 +83,25 @@ export const Login: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
             <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+              <Link to="/forgot-password" className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
                 Forgot password?
               </Link>
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign In'}
               {!loading && <LogIn className="ml-2 h-4 w-4" />}
             </Button>
           </form>
-          <div className="mt-6 text-center text-sm">
+          <div className="mt-6 text-center text-sm text-slate-600">
             Don't have an account?{' '}
-            <Link to="/register" className="text-blue-600 hover:underline">
+            <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-medium">
               Create an account
             </Link>
           </div>

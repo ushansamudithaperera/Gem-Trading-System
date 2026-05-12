@@ -32,7 +32,7 @@ export const Tabs: React.FC<TabsProps> = ({ defaultValue = '', value, onValueCha
 
 export const TabsList: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, children, ...props }) => (
   <div
-    className={`inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground ${className || ''}`}
+    className={`inline-flex h-10 items-center justify-center rounded-md bg-slate-100 p-1 text-slate-700 border border-emerald-200 ${className || ''}`}
     {...props}
   >
     {children}
@@ -49,8 +49,8 @@ export const TabsTrigger: React.FC<TabsTriggerProps> = ({ value, className, chil
 
   return (
     <button
-      className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
-        isActive ? 'bg-background text-foreground shadow-sm' : ''
+      className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
+        isActive ? 'bg-white text-emerald-700 shadow-sm border-b-2 border-emerald-600' : 'text-slate-600 hover:text-slate-900'
       } ${className || ''}`}
       onClick={() => setActiveTab(value)}
       {...props}

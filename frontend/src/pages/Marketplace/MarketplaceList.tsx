@@ -73,7 +73,7 @@ export const MarketplaceList: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">Gem Marketplace</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Gem Marketplace</h1>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
@@ -119,8 +119,8 @@ export const MarketplaceList: React.FC = () => {
               <LoadingSpinner size="lg" />
             </div>
           ) : gems.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <p className="text-gray-500">No gem listings found.</p>
+            <div className="text-center py-12 bg-slate-50 rounded-lg border border-emerald-200">
+              <p className="text-slate-500">No gem listings found.</p>
               <Button onClick={handleResetFilters} variant="link" className="mt-2">
                 Clear filters
               </Button>
