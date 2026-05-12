@@ -55,44 +55,44 @@ export const CutterDashboard: React.FC = () => {
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total Earned</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalEarned.toLocaleString()}</p>
+              <p className="text-sm text-slate-700 font-medium">Total Earned</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalEarned.toLocaleString()}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <DollarSign className="h-6 w-6 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Pending Jobs</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.pending}</p>
-            </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Clock className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <DollarSign className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">In Progress</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.inProgress}</p>
+              <p className="text-sm text-slate-700 font-medium">Pending Jobs</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.pending}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Scissors className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Clock className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Completed</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.completed}</p>
+              <p className="text-sm text-slate-700 font-medium">In Progress</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.inProgress}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <CheckCircle className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Scissors className="h-6 w-6 text-teal-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-700 font-medium">Completed</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completed}</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <CheckCircle className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>

@@ -49,62 +49,62 @@ export const AdminDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
-        <p className="text-slate-600">Platform overview and dispute management</p>
+        <p className="text-slate-700">Platform overview and dispute management</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total Users</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalUsers}</p>
+              <p className="text-sm text-slate-700 font-medium">Total Users</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.totalUsers}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Users className="h-6 w-6 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Active Gems</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalGems}</p>
-            </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <ShoppingBag className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Users className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Platform Revenue</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalRevenue.toLocaleString()}</p>
+              <p className="text-sm text-slate-700 font-medium">Active Gems</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.totalGems}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <DollarSign className="h-6 w-6 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.activeOrders}</p>
-            </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Shield className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <ShoppingBag className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Pending Disputes</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.pendingDisputes}</p>
+              <p className="text-sm text-slate-700 font-medium">Platform Revenue</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalRevenue.toLocaleString()}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <AlertTriangle className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <DollarSign className="h-6 w-6 text-teal-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-700 font-medium">Active Orders</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeOrders}</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Shield className="h-6 w-6 text-teal-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-700 font-medium">Pending Disputes</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.pendingDisputes}</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <AlertTriangle className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>

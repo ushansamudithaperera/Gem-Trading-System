@@ -47,8 +47,8 @@ export const SellerDashboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Seller Dashboard</h1>
-          <p className="text-slate-500 mt-1">Manage your gem listings and sales</p>
+          <h1 className="text-3xl font-bold text-slate-900">Seller Dashboard</h1>
+          <p className="text-slate-700 mt-1">Manage your gem listings and sales</p>
         </div>
         <Link to="/my-gems/new">
           <Button>
@@ -62,44 +62,44 @@ export const SellerDashboard: React.FC = () => {
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total Revenue</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalRevenue.toLocaleString()}</p>
+              <p className="text-sm text-slate-700 font-medium">Total Revenue</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalRevenue.toLocaleString()}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <DollarSign className="h-6 w-6 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Active Listings</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.activeListings}</p>
-            </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Package className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <DollarSign className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total Sold</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalSold}</p>
+              <p className="text-sm text-slate-700 font-medium">Active Listings</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeListings}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <ShoppingCart className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Package className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Pending Orders</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.pendingOrders}</p>
+              <p className="text-sm text-slate-700 font-medium">Total Sold</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.totalSold}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <TrendingUp className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <ShoppingCart className="h-6 w-6 text-teal-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-700 font-medium">Pending Orders</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.pendingOrders}</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <TrendingUp className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>

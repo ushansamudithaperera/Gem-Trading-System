@@ -79,11 +79,11 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
       <Header />
       {isAuthenticated && <Sidebar />}
       <main className={`transition-all duration-300 ${isAuthenticated ? 'md:pl-64' : ''}`}>
-        <div className="container mx-auto p-4 md:p-6 text-slate-800">
+        <div className="container mx-auto p-4 md:p-6 text-slate-900">
           <Routes>
             {/* Public Routes */}
             <Route path="/login" element={<Login />} />

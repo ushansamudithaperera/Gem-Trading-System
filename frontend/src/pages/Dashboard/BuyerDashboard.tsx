@@ -59,8 +59,8 @@ export const BuyerDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-800">Welcome back, {user?.firstName}!</h1>
-        <p className="text-slate-500 mt-1">Track your purchases and orders</p>
+        <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
+        <p className="text-slate-700 mt-1">Track your purchases and orders</p>
       </div>
 
       {/* Stats Grid */}
@@ -68,44 +68,44 @@ export const BuyerDashboard: React.FC = () => {
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total Spent</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalSpent.toLocaleString()}</p>
+              <p className="text-sm text-slate-700 font-medium">Total Spent</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalSpent.toLocaleString()}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <DollarSign className="h-6 w-6 text-blue-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.activeOrders}</p>
-            </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Clock className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <DollarSign className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Completed</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.completedOrders}</p>
+              <p className="text-sm text-slate-700 font-medium">Active Orders</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeOrders}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <Package className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Clock className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 font-medium">Disputes</p>
-              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.disputes}</p>
+              <p className="text-sm text-slate-700 font-medium">Completed</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completedOrders}</p>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
-              <AlertTriangle className="h-6 w-6 text-blue-600" />
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <Package className="h-6 w-6 text-teal-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-700 font-medium">Disputes</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.disputes}</p>
+            </div>
+            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
+              <AlertTriangle className="h-6 w-6 text-teal-600" />
             </div>
           </CardContent>
         </Card>
