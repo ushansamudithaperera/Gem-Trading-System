@@ -72,34 +72,34 @@ export const Landing: React.FC = () => {
           backgroundAttachment: 'fixed'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/15 to-white/40"></div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-emerald-100 to-blue-100 border border-emerald-300 rounded-full backdrop-blur-sm">
-              <p className="text-sm font-semibold bg-gradient-to-r from-emerald-700 to-blue-700 bg-clip-text text-transparent">
+          <div className="max-w-5xl mx-auto text-center pt-8 p-8 md:p-16 rounded-3xl bg-transparent backdrop-blur-2xl border border-white/30 shadow-2xl">
+            <div className="inline-block mb-6 px-5 py-2.5 bg-transparent backdrop-blur-lg rounded-full shadow-sm border border-white/40">
+              <p className="text-sm md:text-base font-bold text-slate-900 drop-shadow-md">
                 ✨ The Future of Gem Trading Starts Here
               </p>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+              <span className="animated-gem-text">
                 Trade Precious Gems
               </span>
               <br />
-              <span className="text-slate-800">With Total Confidence</span>
+              <span className="text-slate-900 drop-shadow-lg" style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}>With Total Confidence</span>
             </h1>
 
-            <p className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-slate-900 font-bold mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg" style={{ textShadow: '0 2px 8px rgba(255,255,255,0.8)' }}>
               Connect with verified gem traders worldwide. Real-time market prices, secure escrow protection, 
-              and instant certification verification. Your trusted marketplace for authentic precious stones.
+              and instant certification verification.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link to="/register">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white text-lg font-semibold group"
+                  className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white text-lg font-semibold group shadow-lg hover:shadow-xl transition-all"
                 >
                   Start Trading Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -109,7 +109,7 @@ export const Landing: React.FC = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-emerald-400 text-emerald-700 hover:bg-emerald-50 text-lg font-semibold"
+                  className="bg-white/40 backdrop-blur-sm border-2 border-emerald-600 text-emerald-900 hover:bg-emerald-100/60 text-lg font-bold shadow-lg hover:shadow-xl transition-all"
                 >
                   Browse Marketplace
                 </Button>
@@ -117,24 +117,24 @@ export const Landing: React.FC = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-8 border-t border-emerald-200">
+            <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8 border-t border-white/40">
               <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-extrabold text-emerald-700 mb-1 drop-shadow-md" style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}>
                   50K+
                 </div>
-                <p className="text-sm text-slate-600">Premium Gems Listed</p>
+                <p className="text-base font-bold text-slate-900 drop-shadow-sm">Premium Gems</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-extrabold text-blue-700 mb-1 drop-shadow-md" style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}>
                   25K+
                 </div>
-                <p className="text-sm text-slate-600">Verified Traders</p>
+                <p className="text-base font-bold text-slate-900 drop-shadow-sm">Verified Traders</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-extrabold text-purple-700 mb-1 drop-shadow-md" style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}>
                   $2.5B+
                 </div>
-                <p className="text-sm text-slate-600">Annual Volume</p>
+                <p className="text-base font-bold text-slate-900 drop-shadow-sm">Annual Volume</p>
               </div>
             </div>
           </div>
