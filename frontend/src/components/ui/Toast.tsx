@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { Bell, AlertCircle, CheckCircle, AlertTriangle, X } from 'lucide-react';
 
 export type ToastVariant = 'default' | 'destructive' | 'success' | 'warning';
 
@@ -60,37 +61,92 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
 // Individual Toast Component
 const ToastItem: React.FC<{ toast: Toast; onClose: () => void }> = ({ toast, onClose }) => {
-  const variantClasses = {
-    default: 'bg-white border-gray-200 text-gray-900',
-    destructive: 'bg-red-50 border-red-200 text-red-800',
-    success: 'bg-green-50 border-green-200 text-green-800',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+  const variantConfig = {
+    default: {
+      bg: 'bg-white',
+      border: 'border-slate-200',
+      iconBg: 'bg-slate-100',
+      iconColor: 'text-slate-600',
+      title: 'text-slate-900',
+      desc: 'text-slate-600',
+      progressBg: 'bg-slate-300',
+    },
+    destructive: {
+      bg: 'bg-white',
+      border: 'border-red-200',
+      iconBg: 'bg-red-100',
+      iconColor: 'text-red-600',
+      title: 'text-red-900',
+      desc: 'text-red-700',
+      progressBg: 'bg-red-400',
+    },
+    success: {
+      bg: 'bg-white',
+      border: 'border-emerald-200',
+      iconBg: 'bg-emerald-100',
+      iconColor: 'text-emerald-600',
+      title: 'text-emerald-900',
+      desc: 'text-emerald-700',
+      progressBg: 'bg-emerald-400',
+    },
+    warning: {
+      bg: 'bg-white',
+      border: 'border-amber-200',
+      iconBg: 'bg-amber-100',
+      iconColor: 'text-amber-600',
+      title: 'text-amber-900',
+      desc: 'text-amber-700',
+      progressBg: 'bg-amber-400',
+    },
   };
 
-  const iconMap = {
-    default: '🔔',
-    destructive: '⚠️',
-    success: '✅',
-    warning: '⚠️',
+  const iconMap: Record<ToastVariant, React.ElementType> = {
+    default: Bell,
+    destructive: AlertCircle,
+    success: CheckCircle,
+    warning: AlertTriangle,
   };
+
+  const config = variantConfig[toast.variant || 'default'];
+  const IconComponent = iconMap[toast.variant || 'default'];
 
   return (
     <div
-      className={`flex items-start gap-3 rounded-lg border p-4 shadow-lg transition-all ${variantClasses[toast.variant || 'default']}`}
+      className={`${config.bg} ${config.border} border rounded-xl p-4 shadow-xl transition-all duration-300 animate-slideIn overflow-hidden`}
       role="alert"
     >
-      <span className="text-lg">{iconMap[toast.variant || 'default']}</span>
-      <div className="flex-1">
-        {toast.title && <h4 className="font-semibold">{toast.title}</h4>}
-        {toast.description && <p className="text-sm mt-1">{toast.description}</p>}
+      <div className="flex items-start gap-4">
+        {/* Icon */}
+        <div className={`${config.iconBg} ${config.iconColor} rounded-lg p-2.5 flex-shrink-0 flex items-center justify-center`}>
+          <IconComponent className="h-5 w-5" strokeWidth={2.5} />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          {toast.title && (
+            <h4 className={`${config.title} font-bold text-sm leading-tight`}>
+              {toast.title}
+            </h4>
+          )}
+          {toast.description && (
+            <p className={`${config.desc} text-xs mt-1.5 leading-relaxed`}>
+              {toast.description}
+            </p>
+          )}
+        </div>
+
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className={`${config.iconColor} hover:opacity-70 transition-opacity flex-shrink-0 ml-2 p-1`}
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" strokeWidth={2.5} />
+        </button>
       </div>
-      <button
-        onClick={onClose}
-        className="text-gray-400 hover:text-gray-600 transition-colors"
-        aria-label="Close"
-      >
-        ✕
-      </button>
+
+      {/* Progress Bar */}
+      <div className={`${config.progressBg} h-0.5 mt-3 rounded-full animate-toastProgress`}></div>
     </div>
   );
 };
@@ -102,7 +158,7 @@ const ToastContainer: React.FC = () => {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)]">
+    <div className="fixed top-4 right-4 z-50 flex flex-col gap-3 w-96 max-w-[calc(100vw-2rem)]">
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} onClose={() => removeToast(toast.id)} />
       ))}
