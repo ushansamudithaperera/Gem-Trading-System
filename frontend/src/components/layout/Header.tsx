@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full bg-white/60 backdrop-blur-lg border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
@@ -29,20 +29,20 @@ export const Header: React.FC = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/marketplace" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
+          <Link to="/marketplace" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
             Marketplace
           </Link>
           {isAuthenticated && user?.roles.includes('CUTTER') && (
-            <Link to="/service-hub" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
+            <Link to="/service-hub" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
               Service Hub
             </Link>
           )}
           {isAuthenticated && (
-            <Link to="/dashboard" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
+            <Link to="/dashboard" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
               Dashboard
             </Link>
           )}
-          <Link to="/about" className="text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors">
+          <Link to="/about" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
             About
           </Link>
         </nav>
@@ -52,14 +52,14 @@ export const Header: React.FC = () => {
           {isAuthenticated ? (
             <>
               {/* Notifications bell */}
-              <button className="relative rounded-full p-2 text-gray-600 hover:bg-gray-100">
+              <button className="relative rounded-full p-2 text-slate-600 hover:bg-white/30 transition-colors">
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500"></span>
               </button>
 
               {/* User menu (desktop) */}
               <div className="hidden md:flex items-center space-x-3">
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-slate-700">
                   {user?.firstName} {user?.lastName?.[0]}.
                 </span>
                 <Button variant="ghost" size="sm" onClick={handleLogout}>
@@ -70,7 +70,7 @@ export const Header: React.FC = () => {
 
               {/* Mobile menu button */}
               <button
-                className="md:hidden rounded-md p-2 text-gray-600 hover:bg-gray-100"
+                className="md:hidden rounded-md p-2 text-slate-600 hover:bg-white/30 transition-colors"
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <Menu className="h-5 w-5" />

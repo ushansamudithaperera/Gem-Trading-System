@@ -53,39 +53,47 @@ export const CutterDashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Earned</p>
-              <p className="text-2xl font-bold">${stats.totalEarned.toLocaleString()}</p>
+              <p className="text-sm text-slate-500 font-medium">Total Earned</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalEarned.toLocaleString()}</p>
             </div>
-            <DollarSign className="h-8 w-8 text-green-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <DollarSign className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Pending Jobs</p>
-              <p className="text-2xl font-bold">{stats.pending}</p>
+              <p className="text-sm text-slate-500 font-medium">Pending Jobs</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.pending}</p>
             </div>
-            <Clock className="h-8 w-8 text-yellow-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Clock className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">In Progress</p>
-              <p className="text-2xl font-bold">{stats.inProgress}</p>
+              <p className="text-sm text-slate-500 font-medium">In Progress</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.inProgress}</p>
             </div>
-            <Scissors className="h-8 w-8 text-blue-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Scissors className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Completed</p>
-              <p className="text-2xl font-bold">{stats.completed}</p>
+              <p className="text-sm text-slate-500 font-medium">Completed</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.completed}</p>
             </div>
-            <CheckCircle className="h-8 w-8 text-purple-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <CheckCircle className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
       </div>

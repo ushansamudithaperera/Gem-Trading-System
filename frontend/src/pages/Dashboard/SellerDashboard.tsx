@@ -47,8 +47,8 @@ export const SellerDashboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Seller Dashboard</h1>
-          <p className="text-gray-600">Manage your gem listings and sales</p>
+          <h1 className="text-3xl font-bold text-slate-800">Seller Dashboard</h1>
+          <p className="text-slate-500 mt-1">Manage your gem listings and sales</p>
         </div>
         <Link to="/my-gems/new">
           <Button>
@@ -60,39 +60,47 @@ export const SellerDashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Revenue</p>
-              <p className="text-2xl font-bold">${stats.totalRevenue.toLocaleString()}</p>
+              <p className="text-sm text-slate-500 font-medium">Total Revenue</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalRevenue.toLocaleString()}</p>
             </div>
-            <DollarSign className="h-8 w-8 text-green-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <DollarSign className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Listings</p>
-              <p className="text-2xl font-bold">{stats.activeListings}</p>
+              <p className="text-sm text-slate-500 font-medium">Active Listings</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.activeListings}</p>
             </div>
-            <Package className="h-8 w-8 text-blue-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Package className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Sold</p>
-              <p className="text-2xl font-bold">{stats.totalSold}</p>
+              <p className="text-sm text-slate-500 font-medium">Total Sold</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalSold}</p>
             </div>
-            <ShoppingCart className="h-8 w-8 text-purple-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <ShoppingCart className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Pending Orders</p>
-              <p className="text-2xl font-bold text-orange-600">{stats.pendingOrders}</p>
+              <p className="text-sm text-slate-500 font-medium">Pending Orders</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.pendingOrders}</p>
             </div>
-            <TrendingUp className="h-8 w-8 text-orange-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <TrendingUp className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
       </div>

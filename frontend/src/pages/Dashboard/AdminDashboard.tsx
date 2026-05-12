@@ -54,48 +54,58 @@ export const AdminDashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Users</p>
-              <p className="text-2xl font-bold">{stats.totalUsers}</p>
+              <p className="text-sm text-slate-500 font-medium">Total Users</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalUsers}</p>
             </div>
-            <Users className="h-8 w-8 text-blue-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Gems</p>
-              <p className="text-2xl font-bold">{stats.totalGems}</p>
+              <p className="text-sm text-slate-500 font-medium">Active Gems</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalGems}</p>
             </div>
-            <ShoppingBag className="h-8 w-8 text-green-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <ShoppingBag className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Platform Revenue</p>
-              <p className="text-2xl font-bold">${stats.totalRevenue.toLocaleString()}</p>
+              <p className="text-sm text-slate-500 font-medium">Platform Revenue</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalRevenue.toLocaleString()}</p>
             </div>
-            <DollarSign className="h-8 w-8 text-purple-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <DollarSign className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Orders</p>
-              <p className="text-2xl font-bold">{stats.activeOrders}</p>
+              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.activeOrders}</p>
             </div>
-            <Shield className="h-8 w-8 text-orange-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Shield className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Pending Disputes</p>
-              <p className="text-2xl font-bold text-red-600">{stats.pendingDisputes}</p>
+              <p className="text-sm text-slate-500 font-medium">Pending Disputes</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.pendingDisputes}</p>
             </div>
-            <AlertTriangle className="h-8 w-8 text-red-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <AlertTriangle className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
       </div>

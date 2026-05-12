@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Package, Clock, DollarSign, TrendingUp } from 'lucide-react';
+import { Package, Clock, DollarSign, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getUserOrders } from '../../services/order.service';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -59,46 +59,54 @@ export const BuyerDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
-        <p className="text-slate-600">Track your purchases and orders</p>
+        <h1 className="text-3xl font-bold text-slate-800">Welcome back, {user?.firstName}!</h1>
+        <p className="text-slate-500 mt-1">Track your purchases and orders</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-emerald-200 bg-white">
-          <CardContent className="p-4 flex items-center justify-between">
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500">Total Spent</p>
-              <p className="text-2xl font-bold text-slate-900">${stats.totalSpent.toLocaleString()}</p>
+              <p className="text-sm text-slate-500 font-medium">Total Spent</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">${stats.totalSpent.toLocaleString()}</p>
             </div>
-            <DollarSign className="h-8 w-8 text-emerald-600" />
-          </CardContent>
-        </Card>
-        <Card className="border-emerald-200 bg-white">
-          <CardContent className="p-4 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500">Active Orders</p>
-              <p className="text-2xl font-bold">{stats.activeOrders}</p>
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <DollarSign className="h-6 w-6 text-blue-600" />
             </div>
-            <Clock className="h-8 w-8 text-blue-500" />
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Completed</p>
-              <p className="text-2xl font-bold">{stats.completedOrders}</p>
+              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.activeOrders}</p>
             </div>
-            <Package className="h-8 w-8 text-purple-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Clock className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center justify-between">
+          <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Disputes</p>
-              <p className="text-2xl font-bold text-red-600">{stats.disputes}</p>
+              <p className="text-sm text-slate-500 font-medium">Completed</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.completedOrders}</p>
             </div>
-            <TrendingUp className="h-8 w-8 text-orange-500" />
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <Package className="h-6 w-6 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Disputes</p>
+              <p className="text-3xl font-bold text-slate-800 mt-2">{stats.disputes}</p>
+            </div>
+            <div className="bg-white/50 backdrop-blur-sm p-3 rounded-full flex items-center justify-center border border-white shadow-lg">
+              <AlertTriangle className="h-6 w-6 text-blue-600" />
+            </div>
           </CardContent>
         </Card>
       </div>
