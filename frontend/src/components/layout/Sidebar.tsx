@@ -49,18 +49,18 @@ export const Sidebar: React.FC = () => {
   });
 
   return (
-    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 mt-16 bg-white/40 backdrop-blur-xl border-r border-white/60 text-slate-900 shadow-lg">
-      <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
-        <nav className="mt-5 flex-1 px-2 space-y-1">
+    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-16 md:left-0 bg-white/60 backdrop-blur-xl border-r border-slate-200/60 text-slate-900 shadow-lg">
+      <div className="flex flex-col flex-1 pt-6 pb-6 overflow-y-auto">
+        <nav className="flex-1 px-4 space-y-1">
           {filteredNavItems.map((item) => (
             <NavLink
               key={item.name}
               to={item.href}
               className={({ isActive }) =>
-                `group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                `group flex items-center px-4 py-2.5 my-1 text-sm font-medium rounded-xl transition-all ${
                   isActive
-                    ? 'bg-teal-600/20 text-teal-700 font-semibold'
-                    : 'text-slate-700 hover:bg-white/40 hover:text-slate-900'
+                    ? 'bg-teal-600/20 text-teal-700 font-semibold shadow-md'
+                    : 'text-slate-700 hover:bg-white/80 hover:text-slate-900'
                 }`
               }
             >
@@ -71,16 +71,16 @@ export const Sidebar: React.FC = () => {
 
           {filteredRoleItems.length > 0 && (
             <>
-              <div className="pt-4 mt-4 border-t border-white/30">
+              <div className="pt-6 mt-6 border-t border-slate-200/60">
                 {filteredRoleItems.map((item) => (
                   <NavLink
                     key={item.name}
                     to={item.href}
                     className={({ isActive }) =>
-                      `group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                      `group flex items-center px-4 py-2.5 my-1 text-sm font-medium rounded-xl transition-all ${
                         isActive
-                          ? 'bg-teal-600/20 text-teal-700 font-semibold'
-                          : 'text-slate-700 hover:bg-white/40 hover:text-slate-900'
+                          ? 'bg-teal-600/20 text-teal-700 font-semibold shadow-md'
+                          : 'text-slate-700 hover:bg-white/80 hover:text-slate-900'
                       }`
                     }
                   >

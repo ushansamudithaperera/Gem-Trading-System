@@ -48,7 +48,7 @@ export const SellerDashboard: React.FC = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Seller Dashboard</h1>
-          <p className="text-slate-700 mt-1">Manage your gem listings and sales</p>
+          <p className="text-slate-700 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Seller</span>. Manage your gem listings and sales</p>
         </div>
         <Link to="/my-gems/new">
           <Button>

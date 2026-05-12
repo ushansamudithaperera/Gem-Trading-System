@@ -49,7 +49,7 @@ export const AdminDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
-        <p className="text-slate-700">Platform overview and dispute management</p>
+        <p className="text-slate-700">You are currently logged in as a <span className="font-semibold text-blue-700">Admin</span>. Platform overview and dispute management</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">

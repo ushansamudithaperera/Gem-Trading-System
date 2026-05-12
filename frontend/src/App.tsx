@@ -9,6 +9,7 @@ import './App-Light.css';  // Global light theme styles
 // Layout Components
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
+import { Footer } from './components/layout/Footer';
 
 // Pages
 import { Login } from './pages/Auth/Login';
@@ -79,43 +80,46 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
       <Header />
-      {isAuthenticated && <Sidebar />}
-      <main className={`transition-all duration-300 ${isAuthenticated ? 'md:pl-64' : ''}`}>
-        <div className="container mx-auto p-4 md:p-6 text-slate-900">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/marketplace" element={<MarketplaceList />} />
-            <Route path="/gems/:id" element={<GemDetails />} />
+      <div className="flex flex-1">
+        {isAuthenticated && <Sidebar />}
+        <main className={`flex-1 flex flex-col ${isAuthenticated ? 'md:ml-64' : ''}`}>
+          <div className="flex-1 overflow-y-auto p-6 md:p-8">
+            <div className="max-w-7xl mx-auto">
+              <Routes>
+                {/* Public Routes */}
 
-            {/* Protected Routes */}
-            <Route element={<PrivateRoute />}>
-              <Route path="/" element={<MarketplaceList />} />
-              <Route path="/dashboard" element={
-                user?.roles.includes('ADMIN') ? <AdminDashboard /> :
-                user?.roles.includes('SELLER') ? <SellerDashboard /> :
-                user?.roles.includes('CUTTER') ? <CutterDashboard /> :
-                <BuyerDashboard />
-              } />
-              <Route path="/orders" element={<MyOrders />} />
-              <Route path="/orders/:id" element={<OrderDetails />} />
-              <Route path="/disputes" element={<DisputeCenter />} />
-            </Route>
+                <Route path="/gems/:id" element={<GemDetails />} />
 
-            {/* Buyer + Seller + Cutter mixed routes */}
-            <Route element={<PrivateRoute allowedRoles={['BUYER', 'CUTTER']} />}>
-              <Route path="/service-hub" element={<CutterList />} />
-              <Route path="/service-hub/jobs" element={<CuttingJobs />} />
-            </Route>
+                {/* Protected Routes */}
+                <Route element={<PrivateRoute />}>
+                  <Route path="/" element={<MarketplaceList />} />
+                  <Route path="/dashboard" element={
+                    user?.roles.includes('ADMIN') ? <AdminDashboard /> :
+                    user?.roles.includes('SELLER') ? <SellerDashboard /> :
+                    user?.roles.includes('CUTTER') ? <CutterDashboard /> :
+                    <BuyerDashboard />
+                  } />
+                  <Route path="/orders" element={<MyOrders />} />
+                  <Route path="/orders/:id" element={<OrderDetails />} />
+                  <Route path="/disputes" element={<DisputeCenter />} />
+                </Route>
 
-            {/* 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </main>
+                {/* Buyer + Seller + Cutter mixed routes */}
+                <Route element={<PrivateRoute allowedRoles={['BUYER', 'CUTTER']} />}>
+                  <Route path="/service-hub" element={<CutterList />} />
+                  <Route path="/service-hub/jobs" element={<CuttingJobs />} />
+                </Route>
+
+                {/* 404 */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </div>
+          <Footer />
+        </main>
+      </div>
     </div>
   );
 }

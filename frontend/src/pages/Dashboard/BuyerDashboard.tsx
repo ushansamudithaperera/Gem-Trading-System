@@ -60,7 +60,7 @@ export const BuyerDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
-        <p className="text-slate-700 mt-1">Track your purchases and orders</p>
+        <p className="text-slate-700 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Buyer</span>. Track your purchases and orders</p>
       </div>
 
       {/* Stats Grid */}
