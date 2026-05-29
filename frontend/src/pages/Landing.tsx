@@ -266,18 +266,21 @@ export const Landing: React.FC = () => {
           <div className="max-w-6xl mx-auto">
             {activeTab === 'buyers' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center animate-fadeIn">
-                <div 
-                  className="relative h-96 md:h-full min-h-96 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-500 hover:scale-105 border-4 border-emerald-200"
-                  style={{
-                    backgroundImage: 'url(/images/2.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6 z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">For Gem Buyers</h3>
-                    <p className="text-emerald-100 text-sm font-semibold">Access the finest gems worldwide</p>
+                <div className="role-card-wrapper relative h-96 md:h-full min-h-96 cursor-pointer">
+                  <div className="role-card-inner relative h-full w-full rounded-2xl overflow-hidden shadow-xl border-4 border-emerald-200">
+                    <div 
+                      className="role-card-bg absolute inset-0 w-full h-full"
+                      style={{
+                        backgroundImage: 'url(/images/2.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                    <div className="absolute bottom-6 left-6 right-6 z-20">
+                      <h3 className="text-3xl font-bold text-white mb-2">For Gem Buyers</h3>
+                      <p className="text-emerald-100 text-sm font-semibold">Access the finest gems worldwide</p>
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-6">
@@ -321,18 +324,21 @@ export const Landing: React.FC = () => {
                     ))}
                   </div>
                 </div>
-                <div 
-                  className="relative h-96 md:h-full min-h-96 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-500 hover:scale-105 border-4 border-blue-200 md:order-1"
-                  style={{
-                    backgroundImage: 'url(/images/3.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6 z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">For Gem Sellers</h3>
-                    <p className="text-blue-100 text-sm font-semibold">Maximize your gem sales globally</p>
+                <div className="role-card-wrapper relative h-96 md:h-full min-h-96 md:order-1 cursor-pointer">
+                  <div className="role-card-inner relative h-full w-full rounded-2xl overflow-hidden shadow-xl border-4 border-blue-200">
+                    <div 
+                      className="role-card-bg absolute inset-0 w-full h-full"
+                      style={{
+                        backgroundImage: 'url(/images/3.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                    <div className="absolute bottom-6 left-6 right-6 z-20">
+                      <h3 className="text-3xl font-bold text-white mb-2">For Gem Sellers</h3>
+                      <p className="text-blue-100 text-sm font-semibold">Maximize your gem sales globally</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -340,18 +346,21 @@ export const Landing: React.FC = () => {
 
             {activeTab === 'cutters' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center animate-fadeIn">
-                <div 
-                  className="relative h-96 md:h-full min-h-96 rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-500 hover:scale-105 border-4 border-purple-200"
-                  style={{
-                    backgroundImage: 'url(/images/4.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6 z-10">
-                    <h3 className="text-3xl font-bold text-white mb-2">For Gem Cutters</h3>
-                    <p className="text-purple-100 text-sm font-semibold">Showcase your cutting expertise</p>
+                <div className="role-card-wrapper relative h-96 md:h-full min-h-96 cursor-pointer">
+                  <div className="role-card-inner relative h-full w-full rounded-2xl overflow-hidden shadow-xl border-4 border-purple-200">
+                    <div 
+                      className="role-card-bg absolute inset-0 w-full h-full"
+                      style={{
+                        backgroundImage: 'url(/images/4.jpg)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                    <div className="absolute bottom-6 left-6 right-6 z-20">
+                      <h3 className="text-3xl font-bold text-white mb-2">For Gem Cutters</h3>
+                      <p className="text-purple-100 text-sm font-semibold">Showcase your cutting expertise</p>
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-6">
