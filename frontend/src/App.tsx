@@ -18,8 +18,7 @@ import { Landing } from './pages/Landing';
 import { NotFound } from './pages/NotFound';
 import { MarketplaceList } from './pages/Marketplace/MarketplaceList';
 import { GemDetails } from './pages/Marketplace/GemDetails';
-import { CutterList } from './pages/ServiceHub/CutterList';
-import { CuttingJobs } from './pages/ServiceHub/CuttingJobs';
+import { ServiceHub } from './pages/ServiceHub/ServiceHub';
 import { MyOrders } from './pages/Orders/MyOrders';
 import { OrderDetails } from './pages/Orders/OrderDetails';
 import { DisputeCenter } from './pages/Disputes/DisputeCenter';
@@ -146,8 +145,8 @@ function AppContent() {
 
                 {/* Buyer + Cutter routes */}
                 <Route element={<PrivateRoute allowedRoles={['BUYER', 'CUTTER']} />}>
-                  <Route path="/service-hub" element={<CutterList />} />
-                  <Route path="/service-hub/jobs" element={<CuttingJobs />} />
+                  <Route path="/service-hub" element={<ServiceHub />} />
+                  <Route path="/service-hub/jobs" element={<ServiceHub />} />
                 </Route>
 
                 {/* 404 */}
