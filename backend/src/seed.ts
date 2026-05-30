@@ -62,7 +62,7 @@ const seedDatabase = async () => {
       },
     ];
 
-    const createdUsers = await User.insertMany(testUsers);
+    const createdUsers = await User.create(testUsers);
     logger.info(`✅ Seeded ${createdUsers.length} test users`);
 
     // Display created users

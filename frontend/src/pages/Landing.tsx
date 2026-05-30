@@ -434,9 +434,9 @@ export const Landing: React.FC = () => {
             <div>
               <h4 className="font-bold text-white mb-4">Platform</h4>
               <ul className="space-y-2 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-emerald-400 transition">Browse Gems</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition">List Your Gems</a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition">Cutting Services</a></li>
+                <li><Link to="/marketplace" className="hover:text-emerald-400 transition">Browse Gems</Link></li>
+                <li><Link to="/register" className="hover:text-emerald-400 transition">List Your Gems</Link></li>
+                <li><Link to="/register" className="hover:text-emerald-400 transition">Cutting Services</Link></li>
               </ul>
             </div>
             <div>

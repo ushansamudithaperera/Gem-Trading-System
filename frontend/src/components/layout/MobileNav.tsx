@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { X } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { logout } from '../../store/slices/authSlice';
@@ -18,21 +18,28 @@ interface NavItem {
   roles?: string[];
 }
 
-const navItems: NavItem[] = [
-  { name: 'Home', href: '/' },
+// Nav items for authenticated users
+const authNavItems: NavItem[] = [
   { name: 'Marketplace', href: '/marketplace' },
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Orders', href: '/orders' },
   { name: 'Disputes', href: '/disputes' },
   { name: 'Service Hub', href: '/service-hub', roles: ['CUTTER', 'BUYER'] },
-  { name: 'My Gems', href: '/my-gems', roles: ['SELLER'] },
-  { name: 'Settings', href: '/settings' },
+];
+
+// Nav items for unauthenticated users
+const publicNavItems: NavItem[] = [
+  { name: 'Home', href: '/' },
+  { name: 'Marketplace', href: '/marketplace' },
 ];
 
 export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userRoles = user?.roles || [];
+
+  const navItems = isAuthenticated ? authNavItems : publicNavItems;
 
   const filteredItems = navItems.filter(item => {
     if (!item.roles) return true;
@@ -42,6 +49,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
   const handleLogout = () => {
     dispatch(logout());
     onClose();
+    navigate('/');
   };
 
   return (
