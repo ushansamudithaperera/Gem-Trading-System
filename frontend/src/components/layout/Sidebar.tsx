@@ -158,6 +158,7 @@ export const Sidebar: React.FC = () => {
     if (userRoles.length > 0 && !userRoles.includes(activeRole)) {
       setActiveRole(userRoles[0]);
       localStorage.setItem('activeSidebarRole', userRoles[0]);
+      window.dispatchEvent(new Event('activeRoleChanged'));
     }
   }, [userRoles, activeRole]);
 
@@ -395,6 +396,7 @@ export const Sidebar: React.FC = () => {
                           setActiveRole(role);
                           localStorage.setItem('activeSidebarRole', role);
                           setRoleDropdownOpen(false);
+                          window.dispatchEvent(new Event('activeRoleChanged'));
                         }}
                         className={`w-full flex items-center px-3 py-2.5 text-xs text-left transition-all duration-150 cursor-pointer ${
                           isActive 
