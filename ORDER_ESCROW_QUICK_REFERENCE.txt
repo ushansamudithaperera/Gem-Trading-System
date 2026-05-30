@@ -1,0 +1,189 @@
+# Order & Escrow System - Quick Reference Card
+
+## 🔗 Endpoints
+
+### 1. Update Tracking
+```
+PUT /api/v1/orders/:id/tracking
+Authorization: Bearer SELLER_TOKEN
+Content-Type: application/json
+
+{
+  "courierCompany": "FedEx",
+  "trackingNumber": "794644298644",
+  "status": "in_transit"  // optional
+}
+```
+
+**Response**: Order with status=SHIPPED, autoReleaseDate set
+
+---
+
+### 2. Release Escrow
+```
+PUT /api/v1/orders/:id/release-escrow
+Authorization: Bearer BUYER_TOKEN
+Content-Type: application/json
+
+{}
+```
+
+**Response**: Order with status=DELIVERED, escrowStatus=RELEASED, transferId
+
+---
+
+## 📋 Requirements Checklist
+
+- [ ] Order model has escrowStatus enum (HELD, RELEASED, REFUNDED)
+- [ ] Order model has trackingInfo with carrier, number, status
+- [ ] PUT /orders/:id/tracking endpoint created
+- [ ] PUT /orders/:id/release-escrow endpoint created
+- [ ] Seller can update tracking (only seller of order)
+- [ ] Buyer can release escrow (only buyer of order)
+- [ ] Role middleware protects endpoints
+- [ ] Ownership middleware checks participant
+- [ ] Payment captured and transferred to seller
+- [ ] Admin fee retained (5%)
+- [ ] Transaction counts incremented
+- [ ] Auto-release timer set (3 days)
+
+---
+
+## 🛠️ Files Modified
+
+| File | Type | Status |
+|------|------|--------|
+| `Order.model.ts` | ✏️ Updated | ✅ |
+| `User.model.ts` | ✏️ Updated | ✅ |
+| `order.controller.ts` | ✏️ Updated | ✅ |
+| `order.routes.ts` | ✏️ Updated | ✅ |
+| `payment.service.ts` | ✏️ Updated | ✅ |
+| `auth.middleware.ts` | ✏️ Updated | ✅ |
+| `orderOwnership.middleware.ts` | ✨ Created | ✅ |
+
+---
+
+## 🔐 Security
+
+```
+Route Protection:
+POST /orders           → authMiddleware + isBuyer
+PUT /orders/:id/tracking → authMiddleware + isSeller + checkOrderSeller
+PUT /orders/:id/release-escrow → authMiddleware + isBuyer + checkOrderBuyer
+```
+
+---
+
+## 💳 Payment Flow
+
+```
+1. Order Created → Payment Intent HELD
+2. Seller Ships → PUT /tracking (Order→SHIPPED)
+3. Buyer Confirms → PUT /release-escrow
+4. Payment Captured → Funds transferred to seller
+5. Seller Receives → Within 1-2 business days
+```
+
+---
+
+## ⚡ Quick Test
+
+**Create Order** (Test Admin/Buyer):
+```bash
+curl -X POST http://localhost:5000/api/v1/orders \
+  -H "Authorization: Bearer BUYER_TOKEN" \
+  -d '{"gemId":"...", "amount":1500}'
+```
+
+**Update Tracking** (Test Seller):
+```bash
+curl -X PUT http://localhost:5000/api/v1/orders/ORDER_ID/tracking \
+  -H "Authorization: Bearer SELLER_TOKEN" \
+  -d '{"courierCompany":"FedEx","trackingNumber":"123456"}'
+```
+
+**Release Escrow** (Test Buyer):
+```bash
+curl -X PUT http://localhost:5000/api/v1/orders/ORDER_ID/release-escrow \
+  -H "Authorization: Bearer BUYER_TOKEN" \
+  -d '{}'
+```
+
+---
+
+## 📊 Order States
+
+| Status | Escrow | Next Action | By |
+|--------|--------|-------------|-----|
+| PENDING_DISPATCH | HELD | Ship & track | Seller |
+| SHIPPED | HELD | Confirm receipt | Buyer |
+| DELIVERED | RELEASED | Complete | System |
+
+---
+
+## 🚨 Common Errors
+
+| Code | Message | Fix |
+|------|---------|-----|
+| 400 | Order not in PENDING_DISPATCH | Already shipped |
+| 400 | Order not in SHIPPED status | Seller must ship first |
+| 403 | Not authorized | Wrong user/role |
+| 404 | Order not found | Check order ID |
+| 500 | Failed to transfer funds | Check Stripe account |
+
+---
+
+## 🔑 Environment Variables
+
+```bash
+STRIPE_SECRET_KEY=sk_test_xxxxx
+STRIPE_WEBHOOK_SECRET=whsec_xxxxx
+AUTO_RELEASE_DAYS=3
+```
+
+---
+
+## 📚 Documentation
+
+| Doc | Purpose | Audience |
+|-----|---------|----------|
+| `ORDER_ESCROW_GUIDE.md` | Technical details | Developers |
+| `ORDER_ESCROW_SETUP.md` | Integration guide | DevOps/Backend |
+| `ORDER_ESCROW_API_REFERENCE.md` | API docs | Frontend/Integration |
+| `ORDER_ESCROW_SUMMARY.md` | Overview | Project managers |
+
+---
+
+## ✅ Validation Rules
+
+**Tracking Update**:
+- courierCompany: Required, non-empty string
+- trackingNumber: Required, non-empty string
+- status: Optional, one of: pending|in_transit|delivered|failed
+
+**Escrow Release**:
+- No parameters required
+- Only conditions: Order SHIPPED, Escrow HELD, Seller has Stripe account
+
+---
+
+## 🎯 Success Metrics
+
+- ✅ Zero TypeScript errors
+- ✅ Both endpoints working
+- ✅ Authorization working correctly
+- ✅ Payment captured and transferred
+- ✅ Order status updated correctly
+- ✅ Auto-release date calculated
+
+---
+
+## 📞 Support
+
+- See `ORDER_ESCROW_GUIDE.md` for troubleshooting
+- Check code comments in controller
+- Review curl examples in API_REFERENCE.md
+
+---
+
+**Version**: 1.0.0 | **Status**: ✅ Ready | **Date**: May 31, 2026

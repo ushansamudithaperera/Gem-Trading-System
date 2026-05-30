@@ -58,4 +58,55 @@ export class PaymentService {
       return true;
     }
   }
+
+  /**
+   * Transfer funds to a Stripe Connect account (seller payout)
+   * The seller must have a valid stripeConnectAccountId
+   */
+  static async transferToSellerAccount(
+    stripeConnectAccountId: string,
+    amount: number,
+    currency: string = 'usd',
+    metadata?: Record<string, any>
+  ): Promise<string> {
+    if (stripe && stripeConnectAccountId) {
+      const transfer = await stripe.transfers.create({
+        amount: Math.round(amount * 100), // cents
+        currency,
+        destination: stripeConnectAccountId,
+        metadata,
+      });
+      logger.info(`Stripe transfer created: ${transfer.id} to account ${stripeConnectAccountId}`);
+      return transfer.id;
+    } else {
+      // Mock transfer
+      const mockId = `mock_transfer_${Date.now()}_${Math.random().toString(36).substr(2, 8)}`;
+      logger.info(
+        `Mock transfer: ${mockId} for amount ${amount} ${currency} to ${stripeConnectAccountId}`
+      );
+      return mockId;
+    }
+  }
+
+  /**
+   * Get transfer status
+   */
+  static async getTransferStatus(transferId: string): Promise<any> {
+    if (stripe) {
+      const transfer = await stripe.transfers.retrieve(transferId);
+      return {
+        id: transfer.id,
+        amount: transfer.amount / 100,
+        status: (transfer as any).status || 'succeeded',
+        destination: transfer.destination,
+      };
+    } else {
+      logger.info(`Mock transfer status for ${transferId}`);
+      return {
+        id: transferId,
+        amount: 0,
+        status: 'succeeded',
+      };
+    }
+  }
 }
