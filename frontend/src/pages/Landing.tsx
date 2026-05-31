@@ -2,18 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { GemLoader } from '../components/common/GemLoader';
-import { 
-  TrendingUp, 
-  Shield, 
-  Zap, 
-  Lock, 
-  BarChart3, 
-  Wallet,
-  ArrowRight,
-  Check,
-  Lightbulb,
-  MessageSquare
-} from 'lucide-react';
+import { FeaturesCarousel } from '../components/landing/FeaturesCarousel';
+import { ArrowRight, Check } from 'lucide-react';
 import './Landing.css';
 
 export const Landing: React.FC = () => {
@@ -141,86 +131,8 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">
-              Why Traders Choose GemTrade
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Built for professionals who demand transparency, security, and real-time insights
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: Shield,
-                title: 'Escrow Protection',
-                desc: 'Every transaction protected with multi-signature escrow technology',
-                color: 'from-emerald-500 to-teal-500'
-              },
-              {
-                icon: Zap,
-                title: 'Live Market Prices',
-                desc: 'Real-time pricing data updated every minute from global markets',
-                color: 'from-blue-500 to-cyan-500'
-              },
-              {
-                icon: Lock,
-                title: 'Verified Sellers',
-                desc: 'All traders verified with certification documentation',
-                color: 'from-purple-500 to-indigo-500'
-              },
-              {
-                icon: BarChart3,
-                title: 'Market Analytics',
-                desc: 'Advanced charts and historical pricing data for informed decisions',
-                color: 'from-pink-500 to-rose-500'
-              },
-              {
-                icon: Wallet,
-                title: 'Instant Payments',
-                desc: 'Fast settlement with multiple payment method options',
-                color: 'from-amber-500 to-orange-500'
-              },
-              {
-                icon: TrendingUp,
-                title: 'Price Tracking',
-                desc: 'Track gem values and receive alerts on price movements',
-                color: 'from-green-500 to-emerald-500'
-              },
-              {
-                icon: Lightbulb,
-                title: 'Expert Insights',
-                desc: 'Weekly market reports and trading analysis from industry experts',
-                color: 'from-yellow-500 to-amber-500'
-              },
-              {
-                icon: MessageSquare,
-                title: '24/7 Support',
-                desc: 'Dedicated support team available round the clock',
-                color: 'from-red-500 to-pink-500'
-              },
-            ].map((feature, idx) => {
-              const Icon = feature.icon;
-              return (
-                <div 
-                  key={idx} 
-                  className="p-6 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
-                    <Icon className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
-                  <p className="text-sm text-slate-600">{feature.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* Features Section - Auto-Playing Carousel */}
+      <FeaturesCarousel />
 
       {/* Roles Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
