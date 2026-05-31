@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
 import { DollarSign, Package, ShoppingCart, TrendingUp, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getSellerStats, getSellerGems } from '../../services/gem.service';
@@ -135,7 +136,7 @@ export const SellerDashboard: React.FC = () => {
                     <p className="font-semibold text-slate-900">${gem.price.toLocaleString()}</p>
                     <p className={`text-xs font-medium ${gem.status === 'AVAILABLE' ? 'text-emerald-600' : 'text-slate-500'}`}>
                       {gem.status}
-                    </span>
+                    </p>
                   </div>
                 </div>
               ))}
