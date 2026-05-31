@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import { Button } from '../../components/ui/Button';
 import { Package, Clock, DollarSign, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getUserOrders } from '../../services/order.service';
@@ -111,13 +110,16 @@ export const BuyerDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Spending Trend */}
+      {/* Spending Trend & Graph */}
       {recentOrders.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Spending Trend</CardTitle>
+        <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-emerald-300/40 hover:shadow-[0_20px_50px_-10px_rgba(16,185,129,0.05)]">
+          <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5">
+            <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Gem Acquisition Trend
+            </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -139,21 +141,24 @@ export const BuyerDashboard: React.FC = () => {
         </Card>
       )}
 
-      {/* Recent Orders */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Recent Orders</CardTitle>
+      {/* Recent Gem Transactions */}
+      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-emerald-300/40 hover:shadow-[0_20px_50px_-10px_rgba(16,185,129,0.05)]">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-teal-500 animate-pulse"></span>
+            Recent Gem Orders
+          </CardTitle>
           <Link to="/orders">
             <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">View All</Button>
           </Link>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {loading ? (
             <p className="text-slate-500">Loading...</p>
           ) : recentOrders.length === 0 ? (
             <p className="text-slate-500">No orders yet. Start browsing the marketplace!</p>
           ) : (
-            <div className="space-y-3">
+            <div className="divide-y divide-slate-100">
               {recentOrders.map((order) => (
                 <div key={order._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-3">

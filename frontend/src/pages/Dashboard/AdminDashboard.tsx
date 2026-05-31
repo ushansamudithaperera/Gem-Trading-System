@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import { Button } from '../../components/ui/Button';
 import { Users, ShoppingBag, DollarSign, AlertTriangle, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getAdminStats, getAdminDisputes } from '../../services/admin.service';
@@ -110,28 +109,36 @@ export const AdminDashboard: React.FC = () => {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Pending Disputes</CardTitle>
+      {/* Disputes Card */}
+      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-rose-300/40 hover:shadow-[0_20px_50px_-10px_rgba(244,63,94,0.05)]">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-rose-500"></span>
+            Dispute Investigation Backlog
+          </CardTitle>
           <Link to="/admin/disputes">
             <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">View All</Button>
           </Link>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {loading ? (
             <p className="text-slate-500">Loading...</p>
           ) : disputes.length === 0 ? (
             <p className="text-slate-500">No pending disputes. All good!</p>
           ) : (
-            <div className="space-y-3">
+            <div className="divide-y divide-slate-100">
               {disputes.map((dispute) => (
                 <div key={dispute._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div>
                     <p className="font-medium text-slate-900">Order #{dispute.orderId?.orderNumber?.slice(-8) || 'N/A'}</p>
                     <p className="text-sm text-slate-500">{dispute.reason}</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-red-600">Open since {new Date(dispute.createdAt).toLocaleDateString()}</p>
+                  <div className="text-right flex items-center gap-4">
+                    <div>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-rose-100 text-rose-700 border border-rose-200/20">
+                        Dispute Ticket
+                      </span>
+                    </div>
                     <Link to={`/admin/disputes/${dispute._id}`}>
                       <Button variant="link" size="sm" className="text-blue-700 hover:text-blue-800">Resolve</Button>
                     </Link>

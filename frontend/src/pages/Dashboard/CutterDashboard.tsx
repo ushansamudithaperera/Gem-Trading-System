@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import { Button } from '../../components/ui/Button';
 import { Scissors, DollarSign, CheckCircle, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCutterJobs } from '../../services/cutting.service';
@@ -98,17 +97,26 @@ export const CutterDashboard: React.FC = () => {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Cutting Jobs</CardTitle>
+      {/* Cutting Jobs Card */}
+      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-purple-300/40 hover:shadow-[0_20px_50px_-10px_rgba(168,85,247,0.05)]">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-purple-500 animate-pulse"></span>
+            Recent Faceting Contracts
+          </CardTitle>
+          <Link to="/service-hub/jobs">
+            <button className="inline-flex items-center text-xs font-semibold text-purple-600 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg px-3 py-1.5 transition-colors">
+              Manage Service Hub
+            </button>
+          </Link>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {loading ? (
             <p className="text-slate-500">Loading...</p>
           ) : jobs.length === 0 ? (
             <p className="text-slate-500">No cutting jobs assigned yet.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="divide-y divide-slate-100">
               {jobs.map((job) => (
                 <div key={job._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div>

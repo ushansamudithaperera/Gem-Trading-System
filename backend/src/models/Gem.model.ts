@@ -53,8 +53,12 @@ const GemSchema = new Schema<IGem>(
   { timestamps: true }
 );
 
-// Indexes for marketplace filtering
+// Indexes for marketplace filtering and seller inventory
 GemSchema.index({ type: 1, status: 1, price: -1 });
 GemSchema.index({ weightCarats: 1 });
+// Index for efficient seller inventory queries
+GemSchema.index({ sellerId: 1, status: 1 });
+// Index for seller stats aggregations
+GemSchema.index({ sellerId: 1, createdAt: -1 });
 
 export const Gem = mongoose.model<IGem>('Gem', GemSchema);

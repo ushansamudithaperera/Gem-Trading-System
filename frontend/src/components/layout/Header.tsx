@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { logout } from '../../store/slices/authSlice';
@@ -15,36 +15,90 @@ export const Header: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate('/');
   };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-slate-900 text-white shadow-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2">
+        <Link to={isAuthenticated ? '/marketplace' : '/'} className="flex items-center space-x-2">
           <Gem className="h-6 w-6 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-lg p-0.5" />
           <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">GemTrader</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/marketplace" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
-            Marketplace
-          </Link>
-          {isAuthenticated && user?.roles.includes('CUTTER') && (
-            <Link to="/service-hub" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
+        <nav className="hidden md:flex items-center space-x-1">
+          {isAuthenticated && (
+            <NavLink
+              to="/marketplace"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white/10 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                }`
+              }
+            >
+              Marketplace
+            </NavLink>
+          )}
+          {!isAuthenticated && (
+            <NavLink
+              to="/marketplace"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white/10 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                }`
+              }
+            >
+              Marketplace
+            </NavLink>
+          )}
+          {isAuthenticated && (user?.roles.includes('CUTTER') || user?.roles.includes('BUYER')) && (
+            <NavLink
+              to="/service-hub"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white/10 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                }`
+              }
+            >
               Service Hub
-            </Link>
+            </NavLink>
           )}
           {isAuthenticated && (
-            <Link to="/dashboard" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
-              Dashboard
-            </Link>
+            <>
+              <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? 'bg-white/10 text-white'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                  }`
+                }
+              >
+                Orders
+              </NavLink>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? 'bg-white/10 text-white'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                  }`
+                }
+              >
+                Dashboard
+              </NavLink>
+            </>
           )}
-          <Link to="/about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
-            About
-          </Link>
         </nav>
 
         {/* Right side: User actions */}
@@ -69,10 +123,13 @@ export const Header: React.FC = () => {
                     </span>
                   )}
                 </div>
-                <Button variant="ghost" size="sm" onClick={handleLogout} className="text-slate-300 hover:text-white border border-slate-500 hover:border-slate-300">
-                  <LogOut className="h-4 w-4 mr-1" />
+                <button
+                  onClick={handleLogout}
+                  className="inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-xs font-semibold text-rose-200 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 hover:border-rose-500/40 transition-all duration-300 shadow-sm"
+                >
+                  <LogOut className="h-3.5 w-3.5 mr-1.5 text-rose-300 hover:text-white transition-colors" />
                   Logout
-                </Button>
+                </button>
               </div>
 
               {/* Mobile menu button */}
@@ -86,11 +143,20 @@ export const Header: React.FC = () => {
           ) : (
             <div className="flex items-center space-x-3">
               <Link to="/login">
-                <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white border border-slate-400 hover:border-white">Sign In</Button>
+                <button className="inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700 hover:border-slate-500 transition-all duration-300">
+                  Sign In
+                </button>
               </Link>
               <Link to="/register">
                 <Button size="sm" className="bg-teal-500 hover:bg-teal-600 text-white font-semibold shadow-lg">Get Started Free</Button>
               </Link>
+              {/* Mobile menu button for unauthenticated */}
+              <button
+                className="md:hidden rounded-md p-2 text-slate-300 hover:text-white transition-colors"
+                onClick={() => setMobileMenuOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </button>
             </div>
           )}
         </div>

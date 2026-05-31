@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import { Button } from '../../components/ui/Button';
 import { DollarSign, Package, ShoppingCart, TrendingUp, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getSellerStats, getSellerGems } from '../../services/gem.service';
@@ -105,20 +104,24 @@ export const SellerDashboard: React.FC = () => {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Recent Listings</CardTitle>
+      {/* Recent Gem Listings Card */}
+      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-blue-300/40 hover:shadow-[0_20px_50px_-10px_rgba(59,130,246,0.05)]">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+            Gemstone Listings
+          </CardTitle>
           <Link to="/my-gems">
             <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">Manage Listings</Button>
           </Link>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {loading ? (
             <p className="text-slate-500">Loading...</p>
           ) : recentGems.length === 0 ? (
             <p className="text-slate-500">You haven't listed any gems yet.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="divide-y divide-slate-100">
               {recentGems.map((gem) => (
                 <div key={gem._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-3">
@@ -132,7 +135,7 @@ export const SellerDashboard: React.FC = () => {
                     <p className="font-semibold text-slate-900">${gem.price.toLocaleString()}</p>
                     <p className={`text-xs font-medium ${gem.status === 'AVAILABLE' ? 'text-emerald-600' : 'text-slate-500'}`}>
                       {gem.status}
-                    </p>
+                    </span>
                   </div>
                 </div>
               ))}

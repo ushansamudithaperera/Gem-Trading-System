@@ -22,5 +22,6 @@ export const roleMiddleware = (allowedRoles: UserRole[]) => {
 // Convenience middlewares
 export const isAdmin = roleMiddleware(['ADMIN']);
 export const isSeller = roleMiddleware(['SELLER', 'ADMIN']);
+export const isSellerOrCutter = roleMiddleware(['SELLER', 'CUTTER', 'ADMIN']);
 export const isBuyer = roleMiddleware(['BUYER', 'ADMIN']);
 export const isCutter = roleMiddleware(['CUTTER', 'ADMIN']);

@@ -8,6 +8,23 @@ export type UserRole = typeof UserRoles[number];
 // Default role for new users
 export const DEFAULT_ROLES: UserRole[] = ['BUYER'];
 
+// KYC Status enum
+export enum KYCStatus {
+  UNVERIFIED = 'unverified',
+  PENDING = 'pending',
+  VERIFIED = 'verified',
+  REJECTED = 'rejected',
+}
+
+// KYC interface
+export interface IKYC {
+  documentUrls: string[]; // S3/Cloudinary URLs
+  status: KYCStatus;
+  submittedAt?: Date;
+  reviewedAt?: Date;
+  rejectionReason?: string; // Reason for rejection if status is 'rejected'
+}
+
 export interface IUser extends Document {
   email: string;
   password: string;
@@ -19,6 +36,8 @@ export interface IUser extends Document {
   isEmailVerified: boolean;
   businessName?: string; // For sellers/cutters
   businessRegNo?: string;
+  stripeConnectAccountId?: string; // For sellers to receive payments
+  kyc: IKYC; // Know Your Customer verification
   address?: {
     street: string;
     city: string;
@@ -62,6 +81,28 @@ const UserSchema = new Schema<IUser>(
     isEmailVerified: { type: Boolean, default: false },
     businessName: { type: String, trim: true },
     businessRegNo: { type: String, trim: true },
+    stripeConnectAccountId: { type: String, sparse: true },
+    kyc: {
+      documentUrls: {
+        type: [String],
+        default: [],
+        validate: {
+          validator: function (v: string[]) {
+            return v.length <= 10; // Max 10 documents
+          },
+          message: 'Maximum 10 KYC documents allowed',
+        },
+      },
+      status: {
+        type: String,
+        enum: Object.values(KYCStatus),
+        default: KYCStatus.UNVERIFIED,
+        index: true,
+      },
+      submittedAt: { type: Date, sparse: true },
+      reviewedAt: { type: Date, sparse: true },
+      rejectionReason: { type: String, maxlength: 500 },
+    },
     address: {
       street: String,
       city: String,
@@ -93,5 +134,8 @@ UserSchema.methods.comparePassword = async function (
 // Compound index for role-based queries
 UserSchema.index({ roles: 1, rating: -1 });
 UserSchema.index({ email: 1 }, { unique: true });
+// KYC indexes for pending review queries
+UserSchema.index({ 'kyc.status': 1, 'kyc.submittedAt': -1 });
+UserSchema.index({ roles: 1, 'kyc.status': 1 });
 
 export const User = mongoose.model<IUser>('User', UserSchema);

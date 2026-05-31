@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import { Gem } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   return (
     <footer className="bg-slate-900 text-white shadow-md border-t border-slate-800">
@@ -11,7 +14,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
           <div className="flex flex-col">
-            <Link to="/" className="flex items-center space-x-2 mb-4">
+            <Link to={isAuthenticated ? '/marketplace' : '/'} className="flex items-center space-x-2 mb-4">
               <Gem className="h-6 w-6 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-lg p-0.5" />
               <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
                 GemTrader
@@ -31,21 +34,39 @@ export const Footer: React.FC = () => {
                   Marketplace
                 </Link>
               </li>
-              <li>
-                <Link to="/service-hub" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
-                  Service Hub
-                </Link>
-              </li>
-              <li>
-                <Link to="/dashboard" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
-                  About Us
-                </Link>
-              </li>
+              {isAuthenticated && (
+                <>
+                  <li>
+                    <Link to="/service-hub" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+                      Service Hub
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/orders" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+                      My Orders
+                    </Link>
+                  </li>
+                </>
+              )}
+              {!isAuthenticated && (
+                <>
+                  <li>
+                    <Link to="/login" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+                      Sign In
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/register" className="text-sm text-slate-400 hover:text-slate-300 transition-colors">
+                      Create Account
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 

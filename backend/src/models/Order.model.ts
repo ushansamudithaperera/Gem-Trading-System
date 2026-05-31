@@ -36,6 +36,7 @@ export interface IOrder extends Document {
     shippedAt?: Date;
     deliveredAt?: Date;
     autoReleaseDate?: Date; // When auto-release timer will fire
+    status?: 'pending' | 'in_transit' | 'delivered' | 'failed';
   };
   cancellationReason?: string;
   createdAt: Date;
@@ -76,6 +77,7 @@ const OrderSchema = new Schema<IOrder>(
       shippedAt: Date,
       deliveredAt: Date,
       autoReleaseDate: Date,
+      status: { type: String, enum: ['pending', 'in_transit', 'delivered', 'failed'] },
     },
     cancellationReason: { type: String },
   },

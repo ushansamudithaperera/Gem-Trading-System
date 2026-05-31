@@ -2,11 +2,21 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User.model';
 import { env } from '../config/env';
+import { IOrder } from '../models/Order.model';
+import { ICuttingJob } from '../models/CuttingJob.model';
 
 import { ApiError } from '../utils/ApiError';
 
 export interface AuthRequest extends Request {
   user?: any;
+  // Order-related properties
+  order?: IOrder;
+  isOrderBuyer?: boolean;
+  isOrderSeller?: boolean;
+  // Cutting job-related properties
+  cuttingJob?: ICuttingJob;
+  isCuttingJobBuyer?: boolean;
+  isCuttingJobCutter?: boolean;
 }
 
 export const authMiddleware = async (req: AuthRequest, _res: Response, next: NextFunction) => {

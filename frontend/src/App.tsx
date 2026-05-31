@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
 import { setLoading, setUser } from './store/slices/authSlice';
@@ -18,8 +18,7 @@ import { Landing } from './pages/Landing';
 import { NotFound } from './pages/NotFound';
 import { MarketplaceList } from './pages/Marketplace/MarketplaceList';
 import { GemDetails } from './pages/Marketplace/GemDetails';
-import { CutterList } from './pages/ServiceHub/CutterList';
-import { CuttingJobs } from './pages/ServiceHub/CuttingJobs';
+import { ServiceHub } from './pages/ServiceHub/ServiceHub';
 import { MyOrders } from './pages/Orders/MyOrders';
 import { OrderDetails } from './pages/Orders/OrderDetails';
 import { DisputeCenter } from './pages/Disputes/DisputeCenter';
@@ -35,7 +34,7 @@ import { LoadingSpinner } from './components/common/LoadingSpinner';
 function AppContent() {
   const dispatch = useDispatch();
   const { isAuthenticated, loading, user } = useSelector((state: RootState) => state.auth);
-  const { theme } = useSelector((state: RootState) => state.ui);
+  const { theme, sidebarOpen } = useSelector((state: RootState) => state.ui);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -65,36 +64,74 @@ function AppContent() {
     return <LoadingSpinner fullScreen />;
   }
 
-  // Show landing page for unauthenticated users on root path
+  // Unauthenticated layout: Landing, Login, Register, and public Marketplace
   if (!isAuthenticated) {
     return (
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/marketplace" element={<MarketplaceList />} />
-        <Route path="/gems/:id" element={<GemDetails />} />
+        <Route path="/marketplace" element={
+          <>
+            <Header />
+            <main className="flex-1 flex flex-col min-h-screen">
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
+                <div className="max-w-7xl mx-auto">
+                  <MarketplaceList />
+                </div>
+              </div>
+              <Footer />
+            </main>
+          </>
+        } />
+        <Route path="/gems/:id" element={
+          <>
+            <Header />
+            <main className="flex-1 flex flex-col min-h-screen">
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
+                <div className="max-w-7xl mx-auto">
+                  <GemDetails />
+                </div>
+              </div>
+              <Footer />
+            </main>
+          </>
+        } />
+        {/* Redirect any protected route to login */}
+        <Route path="/dashboard" element={<Navigate to="/login" state={{ from: { pathname: '/dashboard' } }} replace />} />
+        <Route path="/orders" element={<Navigate to="/login" state={{ from: { pathname: '/orders' } }} replace />} />
+        <Route path="/orders/:id" element={<Navigate to="/login" replace />} />
+        <Route path="/disputes" element={<Navigate to="/login" state={{ from: { pathname: '/disputes' } }} replace />} />
+        <Route path="/service-hub" element={<Navigate to="/login" state={{ from: { pathname: '/service-hub' } }} replace />} />
+        <Route path="/service-hub/jobs" element={<Navigate to="/login" state={{ from: { pathname: '/service-hub/jobs' } }} replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     );
   }
 
+  // Authenticated layout: Header + Sidebar + Footer
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
       <Header />
       <div className="flex flex-1">
-        {isAuthenticated && <Sidebar />}
-        <main className={`flex-1 flex flex-col ${isAuthenticated ? 'md:ml-64' : ''}`}>
+        <Sidebar />
+        <main className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
           <div className="flex-1 overflow-y-auto p-6 md:p-8">
             <div className="max-w-7xl mx-auto">
               <Routes>
-                {/* Public Routes */}
+                {/* Home redirects to marketplace when logged in */}
+                <Route path="/" element={<Navigate to="/marketplace" replace />} />
 
+                {/* Public routes accessible when logged in too */}
+                <Route path="/marketplace" element={<MarketplaceList />} />
                 <Route path="/gems/:id" element={<GemDetails />} />
+
+                {/* Auth routes redirect to dashboard when already logged in */}
+                <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/register" element={<Navigate to="/dashboard" replace />} />
 
                 {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
-                  <Route path="/" element={<MarketplaceList />} />
                   <Route path="/dashboard" element={
                     user?.roles.includes('ADMIN') ? <AdminDashboard /> :
                     user?.roles.includes('SELLER') ? <SellerDashboard /> :
@@ -106,10 +143,10 @@ function AppContent() {
                   <Route path="/disputes" element={<DisputeCenter />} />
                 </Route>
 
-                {/* Buyer + Seller + Cutter mixed routes */}
+                {/* Buyer + Cutter routes */}
                 <Route element={<PrivateRoute allowedRoles={['BUYER', 'CUTTER']} />}>
-                  <Route path="/service-hub" element={<CutterList />} />
-                  <Route path="/service-hub/jobs" element={<CuttingJobs />} />
+                  <Route path="/service-hub" element={<ServiceHub />} />
+                  <Route path="/service-hub/jobs" element={<ServiceHub />} />
                 </Route>
 
                 {/* 404 */}

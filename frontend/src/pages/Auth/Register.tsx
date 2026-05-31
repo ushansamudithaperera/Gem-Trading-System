@@ -7,7 +7,7 @@ import { Input } from '../../components/ui/Input';
 import { register } from '../../services/auth.service';
 import { setCredentials } from '../../store/slices/authSlice';
 import { toast } from '../../components/ui/Toast';
-import { Eye, EyeOff, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ArrowLeft, Gem } from 'lucide-react';
 
 type RoleOption = 'BUYER' | 'SELLER' | 'CUTTER';
 
@@ -69,7 +69,30 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-white via-slate-50 to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-slate-50 to-white">
+      {/* Mini navigation header */}
+      <div className="sticky top-0 z-50 w-full bg-slate-900 shadow-md">
+        <div className="container mx-auto flex h-14 items-center justify-between px-6">
+          <Link to="/" className="flex items-center space-x-2">
+            <Gem className="h-5 w-5 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-lg p-0.5" />
+            <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">GemTrader</span>
+          </Link>
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="flex items-center text-sm text-slate-300 hover:text-white transition-colors">
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Back to Home
+            </Link>
+            <Link to="/login" className="text-sm text-slate-300 hover:text-white transition-colors hidden sm:inline">
+              Sign In
+            </Link>
+            <Link to="/marketplace" className="text-sm text-slate-300 hover:text-white transition-colors hidden sm:inline">
+              Marketplace
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
       <Card className="w-full max-w-md border-emerald-200 shadow-lg">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -164,6 +187,7 @@ export const Register: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
