@@ -234,7 +234,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside 
-      className={`hidden md:flex md:flex-col md:fixed md:inset-y-16 md:left-0 bg-white/40 backdrop-blur-xl border-r border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] transition-all duration-300 z-40 ${
+      className={`hidden md:flex md:flex-col md:fixed md:inset-y-16 md:left-0 bg-white border-r border-slate-200 text-slate-800 shadow-sm transition-all duration-300 z-40 ${
         sidebarOpen ? 'md:w-64' : 'md:w-20'
       }`}
     >
@@ -268,8 +268,8 @@ export const Sidebar: React.FC = () => {
                       sidebarOpen ? 'px-4 justify-start' : 'px-2 justify-center'
                     } py-2.5 my-1 text-sm font-medium rounded-xl transition-all duration-200 ${
                       location.pathname.startsWith(item.href)
-                        ? 'bg-teal-600/10 text-teal-700 font-semibold border-l-4 border-teal-600 rounded-l-none'
-                        : 'text-slate-600 hover:bg-white/80 hover:text-slate-900 border-l-4 border-transparent'
+                        ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-700 rounded-l-none'
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-l-4 border-transparent'
                     }`}
                   >
                     <LinkIcon className={`${sidebarOpen ? 'mr-3' : 'mr-0'} h-5 w-5 flex-shrink-0 transition-all duration-200`} />
@@ -293,8 +293,8 @@ export const Sidebar: React.FC = () => {
                             className={({ isActive }) =>
                               `flex items-center px-3 py-2 text-xs font-medium rounded-lg transition-all duration-150 ${
                                 isActive
-                                  ? 'bg-teal-600/15 text-teal-700 font-semibold'
-                                  : 'text-slate-600 hover:bg-white/60 hover:text-slate-800'
+                                  ? 'bg-blue-50 text-blue-700 font-semibold'
+                                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-855'
                               }`
                             }
                           >
@@ -319,8 +319,8 @@ export const Sidebar: React.FC = () => {
                     sidebarOpen ? 'px-4 justify-start' : 'px-2 justify-center'
                   } py-2.5 my-1 text-sm font-medium rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-teal-600/10 text-teal-700 font-semibold border-l-4 border-teal-600 rounded-l-none'
-                      : 'text-slate-600 hover:bg-white/80 hover:text-slate-900 border-l-4 border-transparent'
+                      ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-700 rounded-l-none'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-l-4 border-transparent'
                   }`
                 }
               >
@@ -344,8 +344,8 @@ export const Sidebar: React.FC = () => {
                 </p>
                 <button
                   onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl border border-white/50 bg-white/30 hover:bg-white/50 backdrop-blur-md text-slate-700 hover:text-slate-900 shadow-sm transition-all duration-200 cursor-pointer ${
-                    roleDropdownOpen ? 'ring-2 ring-teal-500/20 border-teal-500/40' : ''
+                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 shadow-sm transition-all duration-200 cursor-pointer ${
+                    roleDropdownOpen ? 'ring-2 ring-blue-600/20 border-blue-600/40' : ''
                   }`}
                 >
                   <div className="flex items-center min-w-0">
@@ -361,8 +361,8 @@ export const Sidebar: React.FC = () => {
                 <button
                   onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
                   title={`Switch Perspective (${currentRoleMeta.label})`}
-                  className={`flex h-9 w-9 items-center justify-center rounded-xl border border-white/50 bg-white/30 hover:bg-white/50 text-slate-700 shadow-sm transition-all duration-200 cursor-pointer ${
-                    roleDropdownOpen ? 'ring-2 ring-teal-500/20 border-teal-500/40' : ''
+                  className={`flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm transition-all duration-200 cursor-pointer ${
+                    roleDropdownOpen ? 'ring-2 ring-blue-600/20 border-blue-600/40' : ''
                   }`}
                 >
                   <ActiveRoleIcon className={`h-4 w-4 ${currentRoleMeta.color}`} />
@@ -373,7 +373,7 @@ export const Sidebar: React.FC = () => {
             {/* Dropdown Floating Options list */}
             {roleDropdownOpen && (
               <div 
-                className={`absolute z-50 bg-white/90 backdrop-blur-md border border-white/80 rounded-2xl shadow-xl overflow-hidden animate-in fade-in duration-200 ${
+                className={`absolute z-50 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden animate-in fade-in duration-200 ${
                   sidebarOpen 
                     ? 'bottom-full left-0 right-0 mb-2 slide-in-from-bottom-2' 
                     : 'left-16 bottom-0 w-48 slide-in-from-left-2'
@@ -400,11 +400,11 @@ export const Sidebar: React.FC = () => {
                         }}
                         className={`w-full flex items-center px-3 py-2.5 text-xs text-left transition-all duration-150 cursor-pointer ${
                           isActive 
-                            ? 'bg-teal-600/10 text-teal-700 font-semibold border-l-2 border-teal-600' 
+                            ? 'bg-blue-50 text-blue-700 font-semibold border-l-2 border-blue-700' 
                             : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900 border-l-2 border-transparent'
                         }`}
                       >
-                        <RoleIcon className={`h-4 w-4 mr-2.5 flex-shrink-0 ${isActive ? 'text-teal-600' : 'text-slate-400'}`} />
+                        <RoleIcon className={`h-4 w-4 mr-2.5 flex-shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-400'}`} />
                         <span className="truncate">{meta.label}</span>
                       </button>
                     );

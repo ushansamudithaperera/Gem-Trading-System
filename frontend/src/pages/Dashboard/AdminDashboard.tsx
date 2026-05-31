@@ -110,9 +110,8 @@ export const AdminDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Disputes Card */}
-      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-rose-300/40 hover:shadow-[0_20px_50px_-10px_rgba(244,63,94,0.05)]">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
+        <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-rose-500"></span>
             Dispute Investigation Backlog

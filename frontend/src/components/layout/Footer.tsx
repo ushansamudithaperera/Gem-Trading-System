@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { Gem } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -14,10 +13,12 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
           <div className="flex flex-col">
-            <Link to={isAuthenticated ? '/marketplace' : '/'} className="flex items-center space-x-2 mb-4">
-              <Gem className="h-6 w-6 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-lg p-0.5" />
-              <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-                GemTrader
+            <Link to={isAuthenticated ? '/marketplace' : '/'} className="flex items-center gap-2.5 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-700 to-blue-900 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-sm">💎</span>
+              </div>
+              <span className="font-bold text-lg text-white tracking-tight">
+                GemTrade
               </span>
             </Link>
             <p className="text-sm text-slate-400">

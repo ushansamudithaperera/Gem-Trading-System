@@ -77,9 +77,9 @@ export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative w-full max-w-xs bg-white shadow-xl flex flex-col border-r border-emerald-200">
+            <Dialog.Panel className="relative w-full max-w-xs bg-white shadow-xl flex flex-col border-r border-slate-200">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-emerald-200">
+              <div className="flex items-center justify-between p-4 border-b border-slate-200">
                 <h2 className="text-lg font-semibold text-slate-900">Menu</h2>
                 <button
                   onClick={onClose}
@@ -99,7 +99,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
                     className={({ isActive }) =>
                       `block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                         isActive
-                          ? 'bg-emerald-50 text-emerald-700'
+                          ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-700 rounded-l-none'
                           : 'text-slate-700 hover:bg-slate-100'
                       }`
                     }

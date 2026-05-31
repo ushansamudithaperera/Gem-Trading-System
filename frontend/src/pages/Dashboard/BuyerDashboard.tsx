@@ -111,12 +111,11 @@ export const BuyerDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Spending Trend & Graph */}
       {recentOrders.length > 0 && (
-        <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-emerald-300/40 hover:shadow-[0_20px_50px_-10px_rgba(16,185,129,0.05)]">
-          <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5">
+        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
+          <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5">
             <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
               Gem Acquisition Trend
             </CardTitle>
           </CardHeader>
@@ -143,10 +142,10 @@ export const BuyerDashboard: React.FC = () => {
       )}
 
       {/* Recent Gem Transactions */}
-      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-emerald-300/40 hover:shadow-[0_20px_50px_-10px_rgba(16,185,129,0.05)]">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
+        <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-teal-500 animate-pulse"></span>
+            <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
             Recent Gem Orders
           </CardTitle>
           <Link to="/orders">

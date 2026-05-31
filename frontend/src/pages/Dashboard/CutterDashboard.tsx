@@ -98,15 +98,14 @@ export const CutterDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Cutting Jobs Card */}
-      <Card className="rounded-3xl border border-white/60 bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-xl shadow-lg overflow-hidden transition-all duration-500 hover:border-purple-300/40 hover:shadow-[0_20px_50px_-10px_rgba(168,85,247,0.05)]">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
+      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
+        <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-purple-500 animate-pulse"></span>
             Recent Faceting Contracts
           </CardTitle>
           <Link to="/service-hub/jobs">
-            <button className="inline-flex items-center text-xs font-semibold text-purple-600 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg px-3 py-1.5 transition-colors">
+            <button className="inline-flex items-center text-xs font-semibold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-1.5 transition-colors">
               Manage Service Hub
             </button>
           </Link>
