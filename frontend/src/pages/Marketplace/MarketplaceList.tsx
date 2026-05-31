@@ -61,11 +61,14 @@ interface AddGemModalProps {
 }
 
 const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess }) => {
+  const activeRole = getActiveRole();
+  const isCutter = activeRole === 'CUTTER';
+  
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     title: '',
     description: '',
-    type: 'ROUGH' as 'ROUGH' | 'POLISHED',
+    type: isCutter ? ('POLISHED' as 'ROUGH' | 'POLISHED') : ('ROUGH' as 'ROUGH' | 'POLISHED'),
     weightCarats: '',
     price: '',
     location: '',
@@ -89,7 +92,7 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
       });
       onSuccess();
       onClose();
-      setForm({ title: '', description: '', type: 'ROUGH', weightCarats: '', price: '', location: '' });
+      setForm({ title: '', description: '', type: isCutter ? 'POLISHED' : 'ROUGH', weightCarats: '', price: '', location: '' });
     } catch (err) {
       console.error('Failed to create gem:', err);
     } finally {
@@ -106,7 +109,14 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
         <div className="flex items-center justify-between border-b border-white/40 px-6 py-4">
           <div className="flex items-center gap-2">
             <GemIcon className="h-5 w-5 text-teal-600" />
-            <h2 className="text-lg font-bold text-slate-900">Add New Gemstone</h2>
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">
+                {isCutter ? 'List Polished Gemstone' : 'Add New Gemstone'}
+              </h2>
+              {isCutter && (
+                <p className="text-xs text-slate-500 mt-0.5">Add your finished polished gems to the marketplace</p>
+              )}
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -439,13 +449,23 @@ export const MarketplaceList: React.FC = () => {
 
   // ── Active perspective sync ─────────────────────────────
   const [activeRole, setActiveRole] = useState(getActiveRole);
+  const [cutterInventoryMode, setCutterInventoryMode] = useState(false); // Toggle for CUTTER: browse marketplace vs. inventory
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const isSeller = activeRole === 'SELLER';
+  const isCutterInInventory = activeRole === 'CUTTER' && cutterInventoryMode; // CUTTER in "inventory/seller" mode
+  const isInSellerMode = isSeller || isCutterInInventory; // Either SELLER or CUTTER in inventory mode
   const limit = 12;
 
   // Listen for sidebar role changes
   useEffect(() => {
-    const sync = () => setActiveRole(getActiveRole());
+    const sync = () => {
+      const newRole = getActiveRole();
+      setActiveRole(newRole);
+      // Reset inventory mode when role changes
+      if (newRole !== 'CUTTER') {
+        setCutterInventoryMode(false);
+      }
+    };
     window.addEventListener('activeRoleChanged', sync);
     window.addEventListener('storage', sync);
     return () => {
@@ -469,8 +489,8 @@ export const MarketplaceList: React.FC = () => {
   }, [page, filters]);
 
   useEffect(() => {
-    if (!isSeller) fetchBuyerGems();
-  }, [isSeller, fetchBuyerGems]);
+    if (!isInSellerMode) fetchBuyerGems();
+  }, [isInSellerMode, fetchBuyerGems]);
 
   // ── Seller data fetching ────────────────────────────────
   const fetchSellerData = useCallback(async () => {
@@ -498,8 +518,8 @@ export const MarketplaceList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isSeller && isAuthenticated) fetchSellerData();
-  }, [isSeller, isAuthenticated, fetchSellerData]);
+    if (isInSellerMode && isAuthenticated) fetchSellerData();
+  }, [isInSellerMode, isAuthenticated, fetchSellerData]);
 
   // ── Buyer handlers ──────────────────────────────────────
   const handleFilterChange = (newFilters: FilterState) => {
@@ -520,24 +540,63 @@ export const MarketplaceList: React.FC = () => {
   // ════════════════════════════════════════════════════════
   //  SELLER VIEW — Inventory / Listing Management
   // ════════════════════════════════════════════════════════
-  if (isSeller) {
+  if (isInSellerMode) {
     return (
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+        {/* Header with Role Badge + Toggle (for CUTTER) */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">My Listings</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-2xl font-bold text-slate-900">
+                {activeRole === 'CUTTER' ? 'My Polished Inventory' : 'My Listings'}
+              </h1>
+              {activeRole === 'CUTTER' && (
+                <Badge variant="info" className="bg-purple-500/10 text-purple-700 border-purple-500/25">
+                  Cutter - Seller Mode
+                </Badge>
+              )}
+            </div>
             <p className="text-sm text-slate-500 mt-1">
-              Manage your gemstone inventory and track performance
+              {activeRole === 'CUTTER'
+                ? 'Manage your polished gemstone inventory and track sales'
+                : 'Manage your gemstone inventory and track performance'}
             </p>
           </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-teal-700 hover:shadow-xl focus:ring-2 focus:ring-teal-500/30 transition-all cursor-pointer"
-          >
-            <Plus className="h-4 w-4" />
-            Add New Gemstone
-          </button>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+            {/* CUTTER Toggle: Browse Marketplace / My Inventory */}
+            {activeRole === 'CUTTER' && (
+              <div className="flex items-center gap-2 rounded-lg border border-white/60 bg-white/40 p-1 backdrop-blur-xl">
+                <button
+                  onClick={() => setCutterInventoryMode(false)}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    !cutterInventoryMode
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Browse Marketplace
+                </button>
+                <button
+                  onClick={() => setCutterInventoryMode(true)}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    cutterInventoryMode
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  My Polished Inventory
+                </button>
+              </div>
+            )}
+            {/* Add New Gemstone Button */}
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-teal-700 hover:shadow-xl focus:ring-2 focus:ring-teal-500/30 transition-all cursor-pointer"
+            >
+              <Plus className="h-4 w-4" />
+              Add New Gemstone
+            </button>
+          </div>
         </div>
 
         {/* Seller Inventory Content */}
