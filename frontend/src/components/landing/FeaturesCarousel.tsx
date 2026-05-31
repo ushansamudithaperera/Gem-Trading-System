@@ -18,9 +18,8 @@ interface Feature {
   icon: LucideIcon;
   title: string;
   description: string;
+  accentColor: string;
   iconBg: string;
-  iconColor: string;
-  glowColor: string;
 }
 
 const features: Feature[] = [
@@ -28,65 +27,57 @@ const features: Feature[] = [
     icon: Shield,
     title: 'Escrow Protection',
     description: 'Every transaction protected with multi-signature escrow technology ensuring completely safe trading.',
-    iconBg: 'bg-emerald-500/10',
-    iconColor: 'text-emerald-400',
-    glowColor: 'shadow-[0_0_15px_rgba(52,211,153,0.5)]',
+    accentColor: 'text-blue-700',
+    iconBg: 'bg-blue-50',
   },
   {
     icon: Zap,
     title: 'Live Market Prices',
     description: 'Real-time pricing data updated every minute from global markets directly to your dashboard.',
-    iconBg: 'bg-blue-500/10',
-    iconColor: 'text-blue-400',
-    glowColor: 'shadow-[0_0_15px_rgba(59,130,246,0.5)]',
+    accentColor: 'text-sky-700',
+    iconBg: 'bg-sky-50',
   },
   {
     icon: Lock,
     title: 'Verified Sellers',
     description: 'All platform traders are rigorously verified with strict KYC and certification documentation.',
-    iconBg: 'bg-purple-500/10',
-    iconColor: 'text-purple-400',
-    glowColor: 'shadow-[0_0_15px_rgba(168,85,247,0.5)]',
+    accentColor: 'text-indigo-700',
+    iconBg: 'bg-indigo-50',
   },
   {
     icon: BarChart3,
     title: 'Market Analytics',
     description: 'Advanced charting and historical pricing data for informed, data-driven buying and selling decisions.',
-    iconBg: 'bg-pink-500/10',
-    iconColor: 'text-pink-400',
-    glowColor: 'shadow-[0_0_15px_rgba(244,114,182,0.5)]',
+    accentColor: 'text-violet-700',
+    iconBg: 'bg-violet-50',
   },
   {
     icon: Wallet,
     title: 'Instant Payments',
-    description: 'Lightning-fast settlement with multiple integrated crypto and fiat payment method options.',
-    iconBg: 'bg-amber-500/10',
-    iconColor: 'text-amber-400',
-    glowColor: 'shadow-[0_0_15px_rgba(251,146,60,0.5)]',
+    description: 'Lightning-fast settlement with multiple integrated payment method options for global traders.',
+    accentColor: 'text-blue-700',
+    iconBg: 'bg-blue-50',
   },
   {
     icon: TrendingUp,
     title: 'Price Tracking',
     description: 'Track global gem values and receive customized SMS and email alerts on price movements.',
-    iconBg: 'bg-teal-500/10',
-    iconColor: 'text-teal-400',
-    glowColor: 'shadow-[0_0_15px_rgba(45,212,191,0.5)]',
+    accentColor: 'text-cyan-700',
+    iconBg: 'bg-cyan-50',
   },
   {
     icon: Lightbulb,
     title: 'Expert Insights',
     description: 'Exclusive weekly market reports and deep trading analysis from seasoned gem industry experts.',
-    iconBg: 'bg-yellow-500/10',
-    iconColor: 'text-yellow-400',
-    glowColor: 'shadow-[0_0_15px_rgba(250,204,21,0.5)]',
+    accentColor: 'text-amber-700',
+    iconBg: 'bg-amber-50',
   },
   {
     icon: MessageSquare,
     title: '24/7 Premium Support',
     description: 'Our dedicated support team is available round the clock for dispute resolution and assistance.',
-    iconBg: 'bg-rose-500/10',
-    iconColor: 'text-rose-400',
-    glowColor: 'shadow-[0_0_15px_rgba(251,113,133,0.5)]',
+    accentColor: 'text-rose-700',
+    iconBg: 'bg-rose-50',
   },
 ];
 
@@ -94,7 +85,6 @@ export const FeaturesCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
-  // Calculate offset for infinite carousel
   const getOffset = (index: number) => {
     let offset = (index - currentIndex) % features.length;
     if (offset < -Math.floor(features.length / 2)) offset += features.length;
@@ -102,18 +92,16 @@ export const FeaturesCarousel: React.FC = () => {
     return offset;
   };
 
-  // Auto-play interval (1.5 seconds)
   useEffect(() => {
     if (!isAutoPlay) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % features.length);
-    }, 1500);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [isAutoPlay]);
 
-  // Navigation functions
   const goToSlide = (idx: number) => {
     setCurrentIndex(idx);
     setIsAutoPlay(false);
@@ -133,24 +121,28 @@ export const FeaturesCarousel: React.FC = () => {
   };
 
   return (
-    <section className="py-24 px-4 bg-slate-950 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-teal-900/20 via-blue-900/20 to-slate-950 overflow-hidden border-y border-white/5 relative">
-      {/* Background glow effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+    <section className="py-24 px-4 bg-slate-50 overflow-hidden relative">
+      {/* Subtle decorative background blobs */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[400px] bg-indigo-100/30 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
-        {/* Header */}
+        {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-white drop-shadow-md">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full mb-6">
+            <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+            <span className="text-xs font-semibold text-blue-700 tracking-wide uppercase">Platform Features</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-5 text-slate-900 tracking-tight">
             Why Traders Choose GemTrade
           </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Built for professionals who demand transparency, security, and real-time insights
           </p>
         </div>
 
         {/* 3D Carousel */}
-        <div 
+        <div
           className="relative w-full h-[480px] flex items-center justify-center"
           onMouseEnter={() => setIsAutoPlay(false)}
           onMouseLeave={() => setIsAutoPlay(true)}
@@ -159,7 +151,6 @@ export const FeaturesCarousel: React.FC = () => {
             const offset = getOffset(idx);
             const isCenter = offset === 0;
 
-            // Calculate card positions
             let x = 0;
             let scale = 0.7;
             let zIndex = 10;
@@ -171,17 +162,17 @@ export const FeaturesCarousel: React.FC = () => {
               zIndex = 50;
               opacity = 1;
             } else if (offset === 1) {
-              x = 300;
+              x = 320;
               scale = 0.85;
               zIndex = 30;
               opacity = 0.5;
             } else if (offset === -1) {
-              x = -300;
+              x = -320;
               scale = 0.85;
               zIndex = 30;
               opacity = 0.5;
             } else if (Math.abs(offset) >= 2) {
-              x = offset > 0 ? 500 : -500;
+              x = offset > 0 ? 520 : -520;
               scale = 0.7;
               zIndex = 10;
               opacity = 0;
@@ -197,20 +188,20 @@ export const FeaturesCarousel: React.FC = () => {
                 className="absolute w-full max-w-sm cursor-pointer"
                 onClick={() => goToSlide(idx)}
               >
-                {/* Dark Frosted Glass Card */}
-                <div className="bg-slate-900/60 backdrop-blur-lg border border-slate-700 shadow-2xl rounded-2xl p-8 flex flex-col items-center justify-center min-h-[380px]">
-                  {/* Icon Circle with Glow */}
-                  <div className={`${feature.iconBg} p-5 rounded-full mb-6 border border-slate-600 ${feature.glowColor} transition-all duration-300`}>
-                    <Icon className={`w-8 h-8 ${feature.iconColor}`} />
+                {/* Clean White Card */}
+                <div className="bg-white border border-slate-200 shadow-xl rounded-2xl p-8 flex flex-col items-center justify-center min-h-[380px] hover:shadow-2xl hover:border-blue-200 transition-all duration-300">
+                  {/* Icon */}
+                  <div className={`${feature.iconBg} p-5 rounded-2xl mb-6 border border-slate-100 transition-all duration-300`}>
+                    <Icon className={`w-8 h-8 ${feature.accentColor}`} />
                   </div>
 
-                  {/* Heading */}
-                  <h3 className="text-white text-xl md:text-2xl font-bold mb-4">
+                  {/* Title */}
+                  <h3 className="text-slate-900 text-xl md:text-2xl font-bold mb-4 tracking-tight">
                     {feature.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-slate-300 text-sm md:text-base leading-relaxed text-center">
+                  <p className="text-slate-600 text-sm md:text-base leading-relaxed text-center">
                     {feature.description}
                   </p>
                 </div>
@@ -219,20 +210,20 @@ export const FeaturesCarousel: React.FC = () => {
           })}
 
           {/* Navigation Buttons */}
-          <button 
-            onClick={goToPrev} 
-            className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-slate-700/60 backdrop-blur-md border border-slate-600 hover:bg-slate-700 text-white transition-colors"
-            aria-label="Previous"
+          <button
+            onClick={goToPrev}
+            className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white border border-slate-200 shadow-lg hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-700 transition-all"
+            aria-label="Previous feature"
           >
-            <ChevronLeft className="h-6 w-6" />
+            <ChevronLeft className="h-5 w-5" />
           </button>
 
-          <button 
-            onClick={goToNext} 
-            className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-slate-700/60 backdrop-blur-md border border-slate-600 hover:bg-slate-700 text-white transition-colors"
-            aria-label="Next"
+          <button
+            onClick={goToNext}
+            className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white border border-slate-200 shadow-lg hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-700 transition-all"
+            aria-label="Next feature"
           >
-            <ChevronRight className="h-6 w-6" />
+            <ChevronRight className="h-5 w-5" />
           </button>
         </div>
 
@@ -244,10 +235,10 @@ export const FeaturesCarousel: React.FC = () => {
               onClick={() => goToSlide(idx)}
               className={`transition-all duration-500 rounded-full ${
                 idx === currentIndex
-                  ? 'w-10 h-2.5 bg-teal-400 shadow-[0_0_12px_rgba(45,212,191,0.8)]'
-                  : 'w-2.5 h-2.5 bg-slate-600 hover:bg-slate-400'
+                  ? 'w-10 h-2.5 bg-blue-600 shadow-[0_0_12px_rgba(37,99,235,0.4)]'
+                  : 'w-2.5 h-2.5 bg-slate-300 hover:bg-slate-400'
               }`}
-              aria-label={`Go to slide ${idx + 1}`}
+              aria-label={`Go to feature ${idx + 1}`}
             />
           ))}
         </div>
@@ -255,4 +246,3 @@ export const FeaturesCarousel: React.FC = () => {
     </section>
   );
 };
-
