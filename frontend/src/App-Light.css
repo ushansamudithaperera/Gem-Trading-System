@@ -1,15 +1,11 @@
-/* Global Light Theme Styles for Gem Trading System */
-
-* {
-  /* Override dark theme defaults */
-}
+/* Global Light Theme Styles — Ceylon Sapphire Enterprise Theme */
 
 body {
-  background-color: #ffffff;
+  background-color: #f8fafc;
   color: #1e293b;
 }
 
-/* Form elements */
+/* Form elements — Clean white with sapphire focus */
 input, textarea, select {
   background-color: #ffffff;
   color: #1e293b;
@@ -17,38 +13,33 @@ input, textarea, select {
 }
 
 input:focus, textarea:focus, select:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  outline: none;
 }
 
-/* Primary colors - Emerald */
-.bg-primary, .bg-emerald-600 {
-  background-color: #059669;
-  color: #ffffff;
+input::placeholder, textarea::placeholder {
+  color: #94a3b8;
 }
 
-.hover\:bg-primary:hover, .hover\:bg-emerald-600:hover {
-  background-color: #047857;
-}
-
-/* Links */
+/* Links — Sapphire Blue */
 a {
-  color: #059669;
+  color: #1d4ed8;
 }
 
 a:hover {
-  color: #047857;
+  color: #1e40af;
 }
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-  color: #1e293b;
+  color: #0f172a;
 }
 
-/* Cards and containers */
+/* Cards and containers — solid white, no glassmorphism */
 .card, [class*="Card"] {
   background-color: #ffffff;
-  border-color: #a7f3d0;
+  border-color: #e2e8f0;
   color: #1e293b;
 }
 
@@ -58,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Text colors */
 .text-gray-900, .text-foreground {
-  color: #1e293b;
+  color: #0f172a;
 }
 
 .text-gray-700, .text-secondary-foreground {
@@ -69,11 +60,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #64748b;
 }
 
-.text-gray-500 {
-  color: #64748b;
-}
-
-.text-muted-foreground {
+.text-gray-500, .text-muted-foreground {
   color: #64748b;
 }
 
@@ -89,14 +76,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Borders */
 .border-gray-200, .border-slate-200, .border-input {
   border-color: #e2e8f0;
-}
-
-.border-emerald-200 {
-  border-color: #a7f3d0;
-}
-
-.border-blue-200 {
-  border-color: #bfdbfe;
 }
 
 /* Hover states */
@@ -127,15 +106,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Status colors */
 .status-active {
-  color: #10b981;
+  color: #16a34a;
 }
 
 .status-pending {
-  color: #f59e0b;
+  color: #d97706;
 }
 
 .status-inactive, .status-cancelled {
-  color: #ef4444;
+  color: #dc2626;
 }
 
 /* Market gem elements */
@@ -145,7 +124,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gem-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 /* Toast notifications animation */
@@ -161,12 +140,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes toastProgress {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0%;
-  }
+  from { width: 100%; }
+  to { width: 0%; }
 }
 
 .animate-slideIn {
@@ -179,7 +154,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Buttons */
 button, .button {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 button:hover, .button:hover {
@@ -215,10 +190,10 @@ td, th {
   color: #1e293b;
 }
 
-/* Scrollbar styling */
+/* Scrollbar — Ceylon Sapphire */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -226,18 +201,10 @@ td, th {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #10b981, #0ea5e9);
-  border-radius: 4px;
+  background: linear-gradient(to bottom, #1e3a5f, #2563eb);
+  border-radius: 100px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #059669, #0284c7);
-}
-
-/* Ensure light backgrounds win */
-.dark .bg-white,
-.dark [class*="bg-white"],
-.dark body {
-  background-color: #ffffff;
-  color: #1e293b;
+  background: #1e40af;
 }

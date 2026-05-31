@@ -48,51 +48,51 @@ export const CutterDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Cutter Dashboard</h1>
-        <p className="text-slate-700">You are currently logged in as a <span className="font-semibold text-blue-700">Cutter</span>. Manage cutting jobs and track earnings</p>
+        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Cutter</span>. Manage cutting jobs and track earnings</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Total Earned</p>
+              <p className="text-sm text-slate-500 font-medium">Total Earned</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalEarned.toLocaleString()}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <DollarSign className="h-6 w-6 text-teal-600" />
+            <div className="bg-emerald-50 p-3 rounded-xl flex items-center justify-center border border-emerald-100">
+              <DollarSign className="h-6 w-6 text-emerald-700" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Pending Jobs</p>
+              <p className="text-sm text-slate-500 font-medium">Pending Jobs</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.pending}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <Clock className="h-6 w-6 text-teal-600" />
+            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
+              <Clock className="h-6 w-6 text-amber-700" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">In Progress</p>
+              <p className="text-sm text-slate-500 font-medium">In Progress</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.inProgress}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <Scissors className="h-6 w-6 text-teal-600" />
+            <div className="bg-blue-50 p-3 rounded-xl flex items-center justify-center border border-blue-100">
+              <Scissors className="h-6 w-6 text-blue-700" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Completed</p>
+              <p className="text-sm text-slate-500 font-medium">Completed</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completed}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <CheckCircle className="h-6 w-6 text-teal-600" />
+            <div className="bg-sky-50 p-3 rounded-xl flex items-center justify-center border border-sky-100">
+              <CheckCircle className="h-6 w-6 text-sky-700" />
             </div>
           </CardContent>
         </Card>
@@ -104,27 +104,27 @@ export const CutterDashboard: React.FC = () => {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <p>Loading...</p>
+            <p className="text-slate-500">Loading...</p>
           ) : jobs.length === 0 ? (
-            <p className="text-gray-500">No cutting jobs assigned yet.</p>
+            <p className="text-slate-500">No cutting jobs assigned yet.</p>
           ) : (
             <div className="space-y-3">
               {jobs.map((job) => (
-                <div key={job._id} className="flex items-center justify-between border-b pb-3">
+                <div key={job._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div>
-                    <p className="font-medium">Job #{job._id.slice(-8)}</p>
-                    <p className="text-sm text-gray-500">Fee: ${job.cutterFee}</p>
+                    <p className="font-medium text-slate-900">Job #{job._id.slice(-8)}</p>
+                    <p className="text-sm text-slate-500">Fee: ${job.cutterFee}</p>
                   </div>
                   <div className="text-right">
                     <p className={`text-sm font-medium capitalize ${
-                      job.status === 'PENDING' ? 'text-yellow-600' :
+                      job.status === 'PENDING' ? 'text-amber-600' :
                       job.status === 'IN_PROGRESS' ? 'text-blue-600' :
-                      job.status === 'COMPLETED' ? 'text-green-600' : 'text-gray-500'
+                      job.status === 'COMPLETED' ? 'text-emerald-600' : 'text-slate-500'
                     }`}>
                       {job.status}
                     </p>
                     <Link to={`/service-hub/jobs/${job._id}`}>
-                      <Button variant="link" size="sm">View</Button>
+                      <Button variant="link" size="sm" className="text-blue-700 hover:text-blue-800">View</Button>
                     </Link>
                   </div>
                 </div>

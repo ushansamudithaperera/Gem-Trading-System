@@ -60,7 +60,7 @@ export const BuyerDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
-        <p className="text-slate-700 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Buyer</span>. Track your purchases and orders</p>
+        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Buyer</span>. Track your purchases and orders</p>
       </div>
 
       {/* Stats Grid */}
@@ -68,44 +68,44 @@ export const BuyerDashboard: React.FC = () => {
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Total Spent</p>
+              <p className="text-sm text-slate-500 font-medium">Total Spent</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalSpent.toLocaleString()}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <DollarSign className="h-6 w-6 text-teal-600" />
+            <div className="bg-emerald-50 p-3 rounded-xl flex items-center justify-center border border-emerald-100">
+              <DollarSign className="h-6 w-6 text-emerald-700" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Active Orders</p>
+              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeOrders}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <Clock className="h-6 w-6 text-teal-600" />
+            <div className="bg-blue-50 p-3 rounded-xl flex items-center justify-center border border-blue-100">
+              <Clock className="h-6 w-6 text-blue-700" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Completed</p>
+              <p className="text-sm text-slate-500 font-medium">Completed</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completedOrders}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <Package className="h-6 w-6 text-teal-600" />
+            <div className="bg-sky-50 p-3 rounded-xl flex items-center justify-center border border-sky-100">
+              <Package className="h-6 w-6 text-sky-700" />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-700 font-medium">Disputes</p>
+              <p className="text-sm text-slate-500 font-medium">Disputes</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.disputes}</p>
             </div>
-            <div className="bg-white/60 backdrop-blur-md p-2 rounded-full flex items-center justify-center border border-white/50">
-              <AlertTriangle className="h-6 w-6 text-teal-600" />
+            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
+              <AlertTriangle className="h-6 w-6 text-amber-700" />
             </div>
           </CardContent>
         </Card>
@@ -120,11 +120,19 @@ export const BuyerDashboard: React.FC = () => {
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="amount" stroke="#2563eb" strokeWidth={2} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={{ stroke: '#e2e8f0' }} />
+                <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={{ stroke: '#e2e8f0' }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    color: '#0f172a',
+                  }}
+                />
+                <Line type="monotone" dataKey="amount" stroke="#1d4ed8" strokeWidth={2.5} dot={{ fill: '#1d4ed8', r: 4 }} activeDot={{ r: 6, fill: '#2563eb' }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -136,28 +144,28 @@ export const BuyerDashboard: React.FC = () => {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Recent Orders</CardTitle>
           <Link to="/orders">
-            <Button variant="ghost" size="sm">View All</Button>
+            <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">View All</Button>
           </Link>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <p>Loading...</p>
+            <p className="text-slate-500">Loading...</p>
           ) : recentOrders.length === 0 ? (
-            <p className="text-gray-500">No orders yet. Start browsing the marketplace!</p>
+            <p className="text-slate-500">No orders yet. Start browsing the marketplace!</p>
           ) : (
             <div className="space-y-3">
               {recentOrders.map((order) => (
-                <div key={order._id} className="flex items-center justify-between border-b pb-3">
+                <div key={order._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-3">
-                    <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-12 h-12 object-cover rounded" />
+                    <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-12 h-12 object-cover rounded-lg border border-slate-200" />
                     <div>
-                      <p className="font-medium">{order.gemId.title}</p>
-                      <p className="text-sm text-gray-500">Order #{order.orderNumber.slice(-8)}</p>
+                      <p className="font-medium text-slate-900">{order.gemId.title}</p>
+                      <p className="text-sm text-slate-500">Order #{order.orderNumber.slice(-8)}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold">${order.amount.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500 capitalize">{order.status.replace(/_/g, ' ').toLowerCase()}</p>
+                    <p className="font-semibold text-slate-900">${order.amount.toLocaleString()}</p>
+                    <p className="text-xs text-slate-500 capitalize">{order.status.replace(/_/g, ' ').toLowerCase()}</p>
                   </div>
                 </div>
               ))}
