@@ -56,74 +56,58 @@ export const BuyerDashboard: React.FC = () => {
   }));
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      {/* Premium Emerald Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 p-8 md:p-10 shadow-2xl border border-emerald-500/20">
-        <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-500/10 blur-3xl"></div>
-        <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-teal-500/5 blur-3xl"></div>
-        <div className="relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/10 rounded-full border border-emerald-500/20 backdrop-blur-md mb-4">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Gem VIP Buyer
-          </span>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            Welcome Back, <span className="bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent">{user?.firstName}</span>!
-          </h1>
-          <p className="text-slate-300 mt-2 max-w-2xl text-sm md:text-base">
-            Your exclusive portal to the world's finest gemstones. Track active escrows, coordinate cutting processes, and secure certified purchases.
-          </p>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
+        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Buyer</span>. Track your purchases and orders</p>
       </div>
 
-      {/* Elevated Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Total Invested */}
-        <div className="relative group overflow-hidden bg-gradient-to-br from-white/90 to-white/45 backdrop-blur-xl border border-white/60 rounded-2xl p-6 flex items-center justify-between shadow-[0_8px_32px_0_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_0_rgba(16,185,129,0.08)] hover:border-emerald-300/60">
-          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/50 to-transparent z-10 pointer-events-none" />
-          <div className="relative z-20">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Total Invested</p>
-            <p className="text-3xl font-extrabold text-slate-800 mt-2">${stats.totalSpent.toLocaleString()}</p>
-          </div>
-          <div className="relative z-20 bg-emerald-50 text-emerald-600 p-3.5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-emerald-100/80 shadow-inner">
-            <DollarSign className="h-6 w-6" />
-          </div>
-        </div>
-
-        {/* Active Escrows */}
-        <div className="relative group overflow-hidden bg-gradient-to-br from-white/90 to-white/45 backdrop-blur-xl border border-white/60 rounded-2xl p-6 flex items-center justify-between shadow-[0_8px_32px_0_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_0_rgba(245,158,11,0.08)] hover:border-amber-300/60">
-          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/50 to-transparent z-10 pointer-events-none" />
-          <div className="relative z-20">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Active Escrows</p>
-            <p className="text-3xl font-extrabold text-slate-800 mt-2">{stats.activeOrders}</p>
-          </div>
-          <div className="relative z-20 bg-amber-50 text-amber-600 p-3.5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-amber-100/80 shadow-inner">
-            <Clock className="h-6 w-6" />
-          </div>
-        </div>
-
-        {/* Completed Deals */}
-        <div className="relative group overflow-hidden bg-gradient-to-br from-white/90 to-white/45 backdrop-blur-xl border border-white/60 rounded-2xl p-6 flex items-center justify-between shadow-[0_8px_32px_0_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_0_rgba(20,184,166,0.08)] hover:border-teal-300/60">
-          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/50 to-transparent z-10 pointer-events-none" />
-          <div className="relative z-20">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Completed Deals</p>
-            <p className="text-3xl font-extrabold text-slate-800 mt-2">{stats.completedOrders}</p>
-          </div>
-          <div className="relative z-20 bg-teal-50 text-teal-600 p-3.5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-teal-100/80 shadow-inner">
-            <Package className="h-6 w-6" />
-          </div>
-        </div>
-
-        {/* Active Disputes */}
-        <div className="relative group overflow-hidden bg-gradient-to-br from-white/90 to-white/45 backdrop-blur-xl border border-white/60 rounded-2xl p-6 flex items-center justify-between shadow-[0_8px_32px_0_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_0_rgba(244,63,94,0.08)] hover:border-rose-300/60">
-          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/50 to-transparent z-10 pointer-events-none" />
-          <div className="relative z-20">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Active Disputes</p>
-            <p className="text-3xl font-extrabold text-slate-800 mt-2">{stats.disputes}</p>
-          </div>
-          <div className="relative z-20 bg-rose-50 text-rose-600 p-3.5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-rose-100/80 shadow-inner">
-            <AlertTriangle className="h-6 w-6" />
-          </div>
-        </div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Total Spent</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalSpent.toLocaleString()}</p>
+            </div>
+            <div className="bg-emerald-50 p-3 rounded-xl flex items-center justify-center border border-emerald-100">
+              <DollarSign className="h-6 w-6 text-emerald-700" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeOrders}</p>
+            </div>
+            <div className="bg-blue-50 p-3 rounded-xl flex items-center justify-center border border-blue-100">
+              <Clock className="h-6 w-6 text-blue-700" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Completed</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completedOrders}</p>
+            </div>
+            <div className="bg-sky-50 p-3 rounded-xl flex items-center justify-center border border-sky-100">
+              <Package className="h-6 w-6 text-sky-700" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Disputes</p>
+              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.disputes}</p>
+            </div>
+            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
+              <AlertTriangle className="h-6 w-6 text-amber-700" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Spending Trend & Graph */}
@@ -139,13 +123,18 @@ export const BuyerDashboard: React.FC = () => {
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
-                <Tooltip 
-                  contentStyle={{ background: 'rgba(15, 23, 42, 0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', color: '#fff', backdropFilter: 'blur(8px)' }}
-                  labelClassName="text-emerald-300 font-bold"
+                <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={{ stroke: '#e2e8f0' }} />
+                <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={{ stroke: '#e2e8f0' }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    color: '#0f172a',
+                  }}
                 />
-                <Line type="monotone" dataKey="amount" stroke="#10b981" strokeWidth={3} activeDot={{ r: 8 }} />
+                <Line type="monotone" dataKey="amount" stroke="#1d4ed8" strokeWidth={2.5} dot={{ fill: '#1d4ed8', r: 4 }} activeDot={{ r: 6, fill: '#2563eb' }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -160,40 +149,28 @@ export const BuyerDashboard: React.FC = () => {
             Recent Gem Orders
           </CardTitle>
           <Link to="/orders">
-            <button className="inline-flex items-center text-xs font-semibold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg px-3 py-1.5 transition-colors">
-              View All Orders
-            </button>
+            <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">View All</Button>
           </Link>
         </CardHeader>
         <CardContent className="p-6">
           {loading ? (
-            <p className="text-slate-500 text-sm animate-pulse">Retrieving order database...</p>
+            <p className="text-slate-500">Loading...</p>
           ) : recentOrders.length === 0 ? (
-            <p className="text-slate-400 text-sm text-center py-6">No purchases logged. Browse the marketplace to acquire gems!</p>
+            <p className="text-slate-500">No orders yet. Start browsing the marketplace!</p>
           ) : (
             <div className="divide-y divide-slate-100">
               {recentOrders.map((order) => (
-                <div key={order._id} className="flex items-center justify-between py-4 first:pt-0 last:pb-0 group">
-                  <div className="flex items-center gap-4">
-                    <img 
-                      src={order.gemId.images?.[0] || '/gem-placeholder.png'} 
-                      alt="" 
-                      className="w-14 h-14 object-cover rounded-2xl border border-slate-100 shadow-sm group-hover:scale-105 transition-transform duration-300" 
-                    />
+                <div key={order._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center gap-3">
+                    <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-12 h-12 object-cover rounded-lg border border-slate-200" />
                     <div>
-                      <p className="font-bold text-slate-800 text-sm md:text-base group-hover:text-emerald-600 transition-colors">{order.gemId.title}</p>
-                      <p className="text-xs text-slate-400 font-medium">Escrow ID: #{order.orderNumber.slice(-8).toUpperCase()}</p>
+                      <p className="font-medium text-slate-900">{order.gemId.title}</p>
+                      <p className="text-sm text-slate-500">Order #{order.orderNumber.slice(-8)}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-extrabold text-slate-850 text-base">${order.amount.toLocaleString()}</p>
-                    <span className={`inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${
-                      order.status === 'COMPLETED' ? 'bg-emerald-150 text-emerald-700 border border-emerald-250/20' :
-                      order.status === 'DISPUTED' ? 'bg-rose-100 text-rose-700 border border-rose-200/20' :
-                      'bg-amber-100 text-amber-700 border border-amber-200/20'
-                    }`}>
-                      {order.status.replace(/_/g, ' ')}
-                    </span>
+                    <p className="font-semibold text-slate-900">${order.amount.toLocaleString()}</p>
+                    <p className="text-xs text-slate-500 capitalize">{order.status.replace(/_/g, ' ').toLowerCase()}</p>
                   </div>
                 </div>
               ))}

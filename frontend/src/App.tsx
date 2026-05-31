@@ -111,7 +111,7 @@ function AppContent() {
 
   // Authenticated layout: Header + Sidebar + Footer
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
+    <div className="flex flex-col min-h-screen bg-slate-50">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
