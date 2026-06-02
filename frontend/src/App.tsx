@@ -64,18 +64,20 @@ function AppContent() {
     return <LoadingSpinner fullScreen />;
   }
 
-  // Unauthenticated layout: Landing, Login, Register, and public Marketplace
+  // Unauthenticated layout
   if (!isAuthenticated) {
     return (
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        {/* Public Marketplace - Sticky Footer Wrapper */}
         <Route path="/marketplace" element={
           <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />
-            <main className="flex-1 flex flex-col">
-              <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
+            <main className="flex-1 w-full flex flex-col">
+              <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
                 <div className="max-w-7xl mx-auto">
                   <MarketplaceList />
                 </div>
@@ -84,11 +86,13 @@ function AppContent() {
             </main>
           </div>
         } />
+
+        {/* Public Gem Details - Sticky Footer Wrapper */}
         <Route path="/gems/:id" element={
           <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />
-            <main className="flex-1 flex flex-col">
-              <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
+            <main className="flex-1 w-full flex flex-col">
+              <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
                 <div className="max-w-7xl mx-auto">
                   <GemDetails />
                 </div>
@@ -97,6 +101,7 @@ function AppContent() {
             </main>
           </div>
         } />
+
         {/* Redirect any protected route to login */}
         <Route path="/dashboard" element={<Navigate to="/login" state={{ from: { pathname: '/dashboard' } }} replace />} />
         <Route path="/orders" element={<Navigate to="/login" state={{ from: { pathname: '/orders' } }} replace />} />
@@ -109,14 +114,14 @@ function AppContent() {
     );
   }
 
-  // Authenticated layout: Header + Sidebar + Footer
+  // Authenticated layout
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       <Header />
-      <div className="flex flex-1">
+      <div className="flex flex-1 w-full">
         <Sidebar />
         <main className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
-          <div className="flex-1 overflow-y-auto p-6 md:p-8">
+          <div className="flex-1 p-6 md:p-8">
             <div className="max-w-7xl mx-auto">
               <Routes>
                 {/* Home redirects to marketplace when logged in */}
@@ -134,9 +139,9 @@ function AppContent() {
                 <Route element={<PrivateRoute />}>
                   <Route path="/dashboard" element={
                     user?.roles.includes('ADMIN') ? <AdminDashboard /> :
-                    user?.roles.includes('SELLER') ? <SellerDashboard /> :
-                    user?.roles.includes('CUTTER') ? <CutterDashboard /> :
-                    <BuyerDashboard />
+                      user?.roles.includes('SELLER') ? <SellerDashboard /> :
+                        user?.roles.includes('CUTTER') ? <CutterDashboard /> :
+                          <BuyerDashboard />
                   } />
                   <Route path="/orders" element={<MyOrders />} />
                   <Route path="/orders/:id" element={<OrderDetails />} />
