@@ -269,11 +269,11 @@ export const Landing: React.FC = () => {
                     'Secure payment with full buyer protection guarantee',
                     'Receive gems with insurance and tracking',
                   ].map((item, idx) => (
-                    <div key={idx} className="flex gap-4 group">
-                      <div className="check-icon-bounce flex-shrink-0 w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-md">
-                        <Check className="h-5 w-5 text-white" />
+                    <div key={idx} className="flex items-start gap-3 group">
+                      <div className="flex items-center justify-center shrink-0 w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-bold transform group-hover:scale-110 transition-transform shadow-sm">
+                        <Check className="h-3.5 w-3.5" />
                       </div>
-                      <p className="text-slate-700 pt-0.5 group-hover:text-slate-900 transition-colors font-medium leading-relaxed">
+                      <p className="text-slate-700 text-base leading-relaxed">
                         {item}
                       </p>
                     </div>
@@ -300,11 +300,11 @@ export const Landing: React.FC = () => {
                     'Build your seller reputation with verified reviews',
                     'Access premium marketing tools to boost sales',
                   ].map((item, idx) => (
-                    <div key={idx} className="flex gap-4 group">
-                      <div className="check-icon-bounce flex-shrink-0 w-8 h-8 rounded-lg bg-sky-600 flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-md">
-                        <Check className="h-5 w-5 text-white" />
+                    <div key={idx} className="flex items-start gap-3 group">
+                      <div className="flex items-center justify-center shrink-0 w-6 h-6 rounded-full bg-sky-50 text-sky-600 font-bold transform group-hover:scale-110 transition-transform shadow-sm">
+                        <Check className="h-3.5 w-3.5" />
                       </div>
-                      <p className="text-slate-700 pt-0.5 group-hover:text-slate-900 transition-colors font-medium leading-relaxed">
+                      <p className="text-slate-700 text-base leading-relaxed">
                         {item}
                       </p>
                     </div>
@@ -364,11 +364,11 @@ export const Landing: React.FC = () => {
                     'Build trusted reputation in the cutting community',
                     'Access advanced scheduling and project management tools',
                   ].map((item, idx) => (
-                    <div key={idx} className="flex gap-4 group">
-                      <div className="check-icon-bounce flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-md">
-                        <Check className="h-5 w-5 text-white" />
+                    <div key={idx} className="flex items-start gap-3 group">
+                      <div className="flex items-center justify-center shrink-0 w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 font-bold transform group-hover:scale-110 transition-transform shadow-sm">
+                        <Check className="h-3.5 w-3.5" />
                       </div>
-                      <p className="text-slate-700 pt-0.5 group-hover:text-slate-900 transition-colors font-medium leading-relaxed">
+                      <p className="text-slate-700 text-base leading-relaxed">
                         {item}
                       </p>
                     </div>
