@@ -68,36 +68,41 @@ function AppContent() {
   if (!isAuthenticated) {
     return (
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={
+          <div className="min-h-screen flex flex-col">
+            <main className="flex-1 flex flex-col">
+              <Landing />
+            </main>
+            <Footer />
+          </div>
+        } />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Public Marketplace - Sticky Footer Wrapper */}
+        {/* Public Marketplace - Sticky Wrapper (No Footer) */}
         <Route path="/marketplace" element={
           <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />
-            <main className="flex-1 w-full flex flex-col">
+            <main className="flex-1 flex flex-col">
               <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
                 <div className="max-w-7xl mx-auto">
                   <MarketplaceList />
                 </div>
               </div>
-              <Footer />
             </main>
           </div>
         } />
 
-        {/* Public Gem Details - Sticky Footer Wrapper */}
+        {/* Public Gem Details - Sticky Wrapper (No Footer) */}
         <Route path="/gems/:id" element={
           <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />
-            <main className="flex-1 w-full flex flex-col">
+            <main className="flex-1 flex flex-col">
               <div className="flex-1 p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
                 <div className="max-w-7xl mx-auto">
                   <GemDetails />
                 </div>
               </div>
-              <Footer />
             </main>
           </div>
         } />
@@ -116,11 +121,11 @@ function AppContent() {
 
   // Authenticated layout
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="h-screen flex flex-col overflow-hidden bg-slate-50">
       <Header />
-      <div className="flex flex-1 w-full">
+      <div className="flex flex-1 overflow-hidden w-full relative">
         <Sidebar />
-        <main className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
+        <main className={`flex-1 overflow-y-auto flex flex-col transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
           <div className="flex-1 p-6 md:p-8">
             <div className="max-w-7xl mx-auto">
               <Routes>
@@ -159,7 +164,6 @@ function AppContent() {
               </Routes>
             </div>
           </div>
-          <Footer />
         </main>
       </div>
     </div>

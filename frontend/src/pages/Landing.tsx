@@ -422,55 +422,6 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* ─────────────── Footer ─────────────── */}
-      <footer className="bg-slate-900 border-t border-slate-800 py-14 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-            <div>
-              <div className="flex items-center gap-2.5 mb-5">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">💎</span>
-                </div>
-                <span className="font-bold text-lg text-white tracking-tight">GemTrade</span>
-              </div>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                The premier marketplace for authentic precious gem trading with verified security and escrow protection.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">Platform</h4>
-              <ul className="space-y-2.5 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-blue-400 transition">Browse Gems</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition">List Your Gems</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition">Cutting Services</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">Resources</h4>
-              <ul className="space-y-2.5 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-blue-400 transition">Market Reports</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition">Pricing Guide</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition">Learning Hub</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">Legal</h4>
-              <ul className="space-y-2.5 text-sm text-slate-400">
-                <li><a href="#" className="hover:text-blue-400 transition">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition">Contact Support</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
-            <p>&copy; 2026 GemTrade. All rights reserved.</p>
-            <p className="text-xs text-slate-600 italic">
-              Bringing the heritage of Ceylon gems to the global digital stage
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
