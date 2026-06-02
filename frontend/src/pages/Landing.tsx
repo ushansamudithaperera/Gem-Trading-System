@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { GemLoader } from '../components/common/GemLoader';
 import { FeaturesCarousel } from '../components/landing/FeaturesCarousel';
-import { ArrowRight, Check, ShieldCheck, Globe, Award } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck, Globe, Award, ShoppingBag, Briefcase, Scissors } from 'lucide-react';
 import './Landing.css';
 
 export const Landing: React.FC = () => {
@@ -190,22 +190,31 @@ export const Landing: React.FC = () => {
           </div>
 
           {/* Role Tabs */}
-          <div className="flex gap-2 justify-center mb-14">
-            {['buyers', 'sellers', 'cutters'].map((role) => (
-              <button
-                key={role}
-                onClick={() => setActiveTab(role)}
-                className={`relative px-6 py-3 font-semibold text-sm rounded-xl transition-all duration-300 ${
-                  activeTab === role
-                    ? 'bg-blue-700 text-white shadow-lg shadow-blue-700/20'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50'
-                }`}
-              >
-                {role === 'buyers' && '🛍️ Buyers'}
-                {role === 'sellers' && '💼 Sellers'}
-                {role === 'cutters' && '✨ Cutters'}
-              </button>
-            ))}
+          <div className="flex justify-center mb-14">
+            <div className="inline-flex items-center p-1.5 bg-slate-100 rounded-xl border border-slate-200">
+              {[
+                { id: 'buyers', label: 'Buyers', icon: ShoppingBag },
+                { id: 'sellers', label: 'Sellers', icon: Briefcase },
+                { id: 'cutters', label: 'Cutters', icon: Scissors },
+              ].map((tab) => {
+                const TabIcon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={
+                      isActive
+                        ? 'flex items-center gap-2 px-6 py-2.5 bg-blue-700 text-white shadow-md rounded-lg font-medium transition-all duration-200'
+                        : 'flex items-center gap-2 px-6 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg font-medium transition-all duration-200'
+                    }
+                  >
+                    <TabIcon className="w-4 h-4" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Role Content — Split Layout */}
@@ -374,22 +383,19 @@ export const Landing: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/register">
-              <Button
-                size="lg"
-                className="bg-white hover:bg-slate-100 text-blue-900 font-bold shadow-lg rounded-xl px-8 h-12 transition-all"
+              <button
+                className="inline-flex items-center justify-center bg-blue-500 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-blue-400 transition-all cursor-pointer"
               >
                 Create Free Account
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+                <ArrowRight className="ml-2 h-5 w-5 animate-pulse" />
+              </button>
             </Link>
             <Link to="/marketplace">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-blue-400 text-blue-100 hover:bg-blue-800 hover:text-white rounded-xl px-8 h-12 transition-all"
+              <button
+                className="inline-flex items-center justify-center bg-white text-blue-900 px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-slate-50 transition-all cursor-pointer"
               >
                 Explore Marketplace
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
