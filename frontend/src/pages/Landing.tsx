@@ -73,7 +73,7 @@ export const Landing: React.FC = () => {
       </nav>
 
       {/* ─────────────── Hero Section — Clean Split Layout ─────────────── */}
-      <section 
+      <section
         onMouseMove={handleMouseMove}
         className="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-b from-white via-slate-50/50 to-slate-50 overflow-hidden"
       >
@@ -96,8 +96,8 @@ export const Landing: React.FC = () => {
               </h1>
 
               <p className="text-lg md:text-xl text-slate-500 mb-10 leading-relaxed max-w-lg animate-fadeInUp-delay-1">
-                Connect with verified gem traders worldwide. Real-time market prices, 
-                secure escrow protection, and instant certification verification — all 
+                Connect with verified gem traders worldwide. Real-time market prices,
+                secure escrow protection, and instant certification verification — all
                 on one trusted platform.
               </p>
 
@@ -263,7 +263,7 @@ export const Landing: React.FC = () => {
                 {/* Content */}
                 <div className="space-y-5">
                   {[
-                    'Access 50K+ certified gems from trusted sellers worldwide',
+                    'Access certified gems from trusted sellers worldwide',
                     'Compare prices in real-time across multiple listings',
                     'Get expert grading reports and certification verification',
                     'Secure payment with full buyer protection guarantee',
@@ -294,7 +294,7 @@ export const Landing: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center animate-fadeIn">
                 <div className="space-y-5 md:order-2">
                   {[
-                    'Reach 25K+ verified buyers actively looking for gems',
+                    'Reach verified buyers actively looking for gems',
                     'List unlimited inventory with detailed analytics',
                     'Get paid instantly with low commission rates',
                     'Build your seller reputation with verified reviews',
@@ -398,7 +398,7 @@ export const Landing: React.FC = () => {
             Ready to Trade Smarter?
           </h2>
           <p className="text-xl text-blue-200 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Join the community of gem traders who trust GemTrade for secure, 
+            Join the community of gem traders who trust GemTrade for secure,
             transparent, and profitable trading.
           </p>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { GemCard, Gem } from '../../components/marketplace/GemCard';
 import { GemFilters, FilterState } from '../../components/marketplace/GemFilters';
 import { BidModal } from '../../components/marketplace/BidModal';
@@ -65,6 +65,10 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
   const isCutter = activeRole === 'CUTTER';
   
   const [submitting, setSubmitting] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -83,6 +87,34 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleClose = () => {
+    setPreview(null);
+    onClose();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -95,9 +127,10 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
         weightCarats: Number(form.weightCarats),
         price: Number(form.price),
         location: 'Global Hub', // Defaulted since location is replaced by richer gem details in UI
+        images: preview ? [preview] : ['https://placehold.co/600x400?text=Gemstone'],
       });
       onSuccess();
-      onClose();
+      handleClose();
       setForm({
         title: '', description: '', type: isCutter ? 'POLISHED' : 'ROUGH', weightCarats: '', price: '',
         shapeCut: '', color: '', clarity: '', treatment: 'Untreated/Unheated', certificationLab: '', reportNumber: ''
@@ -110,6 +143,9 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
   };
 
   if (!isOpen) return null;
+
+  const premiumInputClass = "w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 px-4 py-2.5 transition-all outline-none";
+  const labelClass = "block text-sm font-medium text-slate-700 mb-1.5";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto">
@@ -128,7 +164,7 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
@@ -139,30 +175,65 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           
           {/* Image Upload Area */}
-          <div className="flex flex-col items-center justify-center w-full h-32 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-emerald-400 transition-colors cursor-pointer group">
-            <div className="flex flex-col items-center text-slate-500 group-hover:text-emerald-600">
-              <Upload className="h-6 w-6 mb-2" />
-              <p className="text-sm font-medium">Click to upload or drag and drop gem photos</p>
-              <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 5MB</p>
-            </div>
+          <div 
+            onClick={handleUploadClick}
+            className="relative flex flex-col items-center justify-center w-full h-40 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-emerald-400 transition-colors cursor-pointer group overflow-hidden"
+          >
+            <input 
+              type="file" 
+              hidden 
+              accept="image/*" 
+              ref={fileInputRef} 
+              onChange={handleImageChange} 
+            />
+            {preview ? (
+              <div className="relative w-full h-full flex items-center justify-center bg-slate-900/5 group">
+                <img src={preview} className="h-full w-full object-contain rounded-lg" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity duration-200">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUploadClick();
+                    }}
+                    className="px-3 py-1.5 text-xs font-semibold text-white bg-white/20 hover:bg-white/30 border border-white/40 rounded-lg transition-colors"
+                  >
+                    Change Photo
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="px-3 py-1.5 text-xs font-semibold text-white bg-rose-600/90 hover:bg-rose-700 rounded-lg transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center text-slate-500 group-hover:text-emerald-600">
+                <Upload className="h-6 w-6 mb-2" />
+                <p className="text-sm font-medium">Click to upload or drag and drop gem photos</p>
+                <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 5MB</p>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             {/* Basic Info */}
             <div className="col-span-2 md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+              <label className={labelClass}>Title</label>
               <input
                 required
                 type="text"
                 value={form.title}
                 onChange={e => handleChange('title', e.target.value)}
                 placeholder="e.g., Ceylon Blue Sapphire"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                className={premiumInputClass}
               />
             </div>
             <div className="grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Price ($)</label>
+                <label className={labelClass}>Price ($)</label>
                 <input
                   required
                   type="number"
@@ -171,11 +242,11 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
                   value={form.price}
                   onChange={e => handleChange('price', e.target.value)}
                   placeholder="2500"
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                  className={premiumInputClass}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Weight (ct)</label>
+                <label className={labelClass}>Weight (ct)</label>
                 <input
                   required
                   type="number"
@@ -184,61 +255,61 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
                   value={form.weightCarats}
                   onChange={e => handleChange('weightCarats', e.target.value)}
                   placeholder="3.50"
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                  className={premiumInputClass}
                 />
               </div>
             </div>
 
             {/* Gem Details */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Gem Type</label>
+              <label className={labelClass}>Gem Type</label>
               <select
                 value={form.type}
                 onChange={e => handleChange('type', e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                className={premiumInputClass}
               >
                 <option value="ROUGH">Rough</option>
                 <option value="POLISHED">Polished</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Shape/Cut</label>
+              <label className={labelClass}>Shape/Cut</label>
               <input
                 type="text"
                 value={form.shapeCut}
                 onChange={e => handleChange('shapeCut', e.target.value)}
                 placeholder="e.g. Oval, Cushion"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                className={premiumInputClass}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Color</label>
+              <label className={labelClass}>Color</label>
               <input
                 type="text"
                 value={form.color}
                 onChange={e => handleChange('color', e.target.value)}
                 placeholder="e.g. Royal Blue"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                className={premiumInputClass}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Clarity</label>
+              <label className={labelClass}>Clarity</label>
               <input
                 type="text"
                 value={form.clarity}
                 onChange={e => handleChange('clarity', e.target.value)}
                 placeholder="e.g. VVS, VS"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                className={premiumInputClass}
               />
             </div>
 
             {/* Trade Specifics & Verification */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Treatment</label>
+              <label className={labelClass}>Treatment</label>
               <select
                 value={form.treatment}
                 onChange={e => handleChange('treatment', e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                className={premiumInputClass}
               >
                 <option value="Untreated/Unheated">Untreated / Unheated</option>
                 <option value="Heated">Heated</option>
@@ -248,43 +319,43 @@ const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess })
             </div>
             <div className="grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Lab</label>
+                <label className={labelClass}>Lab</label>
                 <input
                   type="text"
                   value={form.certificationLab}
                   onChange={e => handleChange('certificationLab', e.target.value)}
                   placeholder="e.g. GIA"
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                  className={premiumInputClass}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Report #</label>
+                <label className={labelClass}>Report #</label>
                 <input
                   type="text"
                   value={form.reportNumber}
                   onChange={e => handleChange('reportNumber', e.target.value)}
                   placeholder="12345678"
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                  className={premiumInputClass}
                 />
               </div>
             </div>
 
             {/* Description */}
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Description (Optional)</label>
+              <label className={labelClass}>Description (Optional)</label>
               <textarea
                 rows={3}
                 value={form.description}
                 onChange={e => handleChange('description', e.target.value)}
                 placeholder="Add any extra details, origin info, or seller notes..."
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all resize-none"
+                className={`${premiumInputClass} resize-none`}
               />
             </div>
           </div>
 
           {/* Actions - Sticky Footer */}
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 mt-2">
-            <Button type="button" variant="outline" onClick={onClose} disabled={submitting}>
+            <Button type="button" variant="outline" onClick={handleClose} disabled={submitting}>
               Cancel
             </Button>
             <button
