@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { GemLoader } from '../components/common/GemLoader';
 import { FeaturesCarousel } from '../components/landing/FeaturesCarousel';
@@ -10,6 +10,23 @@ import './Landing.css';
 export const Landing: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('buyers');
+
+  // Interactive Mouse Parallax Coordinates
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    const { clientX, clientY } = event;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set(clientX / innerWidth);
+    mouseY.set(clientY / innerHeight);
+  };
+
+  const xTrans = useTransform(mouseX, [0, 1], [-20, 20]);
+  const yTrans = useTransform(mouseY, [0, 1], [-20, 20]);
+
+  const xSpring = useSpring(xTrans, { stiffness: 120, damping: 25 });
+  const ySpring = useSpring(yTrans, { stiffness: 120, damping: 25 });
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 2500);
@@ -56,7 +73,10 @@ export const Landing: React.FC = () => {
       </nav>
 
       {/* ─────────────── Hero Section — Clean Split Layout ─────────────── */}
-      <section className="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-b from-white via-slate-50/50 to-slate-50 overflow-hidden">
+      <section 
+        onMouseMove={handleMouseMove}
+        className="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-b from-white via-slate-50/50 to-slate-50 overflow-hidden"
+      >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left: Typography & CTA */}
@@ -122,11 +142,12 @@ export const Landing: React.FC = () => {
             {/* Right: Floating Gemstone */}
             <div className="flex justify-center lg:justify-end">
               <motion.div
-                animate={{ y: [-12, 12, -12] }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                style={{ x: xSpring, y: ySpring }}
                 transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
+                  duration: 1.2,
+                  ease: 'easeOut',
                 }}
                 className="relative"
               >
