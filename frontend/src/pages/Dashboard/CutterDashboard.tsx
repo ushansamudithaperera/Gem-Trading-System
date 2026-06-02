@@ -48,7 +48,7 @@ export const CutterDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Cutter Dashboard</h1>
-        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Cutter</span>. Manage cutting jobs and track earnings</p>
+        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-amber-600">Cutter</span>. Manage cutting jobs and track earnings</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -80,8 +80,8 @@ export const CutterDashboard: React.FC = () => {
               <p className="text-sm text-slate-500 font-medium">In Progress</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.inProgress}</p>
             </div>
-            <div className="bg-blue-50 p-3 rounded-xl flex items-center justify-center border border-blue-100">
-              <Scissors className="h-6 w-6 text-blue-700" />
+            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
+              <Scissors className="h-6 w-6 text-amber-600" />
             </div>
           </CardContent>
         </Card>
@@ -105,7 +105,7 @@ export const CutterDashboard: React.FC = () => {
             Recent Faceting Contracts
           </CardTitle>
           <Link to="/service-hub/jobs">
-            <button className="inline-flex items-center text-xs font-semibold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-lg px-3 py-1.5 transition-colors">
+            <button className="inline-flex items-center text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-lg px-3 py-1.5 transition-colors">
               Manage Service Hub
             </button>
           </Link>
@@ -126,13 +126,13 @@ export const CutterDashboard: React.FC = () => {
                   <div className="text-right">
                     <p className={`text-sm font-medium capitalize ${
                       job.status === 'PENDING' ? 'text-amber-600' :
-                      job.status === 'IN_PROGRESS' ? 'text-blue-600' :
+                      job.status === 'IN_PROGRESS' ? 'text-amber-500' :
                       job.status === 'COMPLETED' ? 'text-emerald-600' : 'text-slate-500'
                     }`}>
                       {job.status}
                     </p>
                     <Link to={`/service-hub/jobs/${job._id}`}>
-                      <Button variant="link" size="sm" className="text-blue-700 hover:text-blue-800">View</Button>
+                      <Button variant="link" size="sm" className="text-amber-600 hover:text-amber-700">View</Button>
                     </Link>
                   </div>
                 </div>

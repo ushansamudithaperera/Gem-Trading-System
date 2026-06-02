@@ -49,7 +49,7 @@ export const AdminDashboard: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
-        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Admin</span>. Platform overview and dispute management</p>
+        <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-purple-600">Admin</span>. Platform overview and dispute management</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -117,7 +117,7 @@ export const AdminDashboard: React.FC = () => {
             Dispute Investigation Backlog
           </CardTitle>
           <Link to="/admin/disputes">
-            <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">View All</Button>
+            <Button variant="ghost" size="sm" className="text-purple-600 hover:text-purple-700 hover:bg-purple-50">View All</Button>
           </Link>
         </CardHeader>
         <CardContent className="p-6">
@@ -140,7 +140,7 @@ export const AdminDashboard: React.FC = () => {
                       </span>
                     </div>
                     <Link to={`/admin/disputes/${dispute._id}`}>
-                      <Button variant="link" size="sm" className="text-blue-700 hover:text-blue-800">Resolve</Button>
+                      <Button variant="link" size="sm" className="text-purple-600 hover:text-purple-700">Resolve</Button>
                     </Link>
                   </div>
                 </div>

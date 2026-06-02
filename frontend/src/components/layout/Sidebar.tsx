@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { roleThemeMap, UserRole } from '../../utils/theme';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { toggleSidebar } from '../../store/slices/uiSlice';
@@ -139,6 +140,8 @@ export const Sidebar: React.FC = () => {
     return localStorage.getItem('activeSidebarRole') || availableRoles[0] || 'BUYER';
   });
 
+  const activeTheme = roleThemeMap[activeRole as UserRole] || roleThemeMap.BUYER;
+
   const [settingsExpanded, setSettingsExpanded] = useState(() => {
     return location.pathname.startsWith('/settings');
   });
@@ -268,7 +271,7 @@ export const Sidebar: React.FC = () => {
                       sidebarOpen ? 'px-4 justify-start' : 'px-2 justify-center'
                     } py-2.5 my-1 text-sm font-medium rounded-xl transition-all duration-200 ${
                       location.pathname.startsWith(item.href)
-                        ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-700 rounded-l-none'
+                        ? `${activeTheme.lightBg} ${activeTheme.lightText} font-semibold border-l-4 ${activeTheme.borderL} rounded-l-none`
                         : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-l-4 border-transparent'
                     }`}
                   >
@@ -293,7 +296,7 @@ export const Sidebar: React.FC = () => {
                             className={({ isActive }) =>
                               `flex items-center px-3 py-2 text-xs font-medium rounded-lg transition-all duration-150 ${
                                 isActive
-                                  ? 'bg-blue-50 text-blue-700 font-semibold'
+                                  ? `${activeTheme.lightBg} ${activeTheme.lightText} font-semibold`
                                   : 'text-slate-600 hover:bg-slate-50 hover:text-slate-855'
                               }`
                             }
@@ -319,7 +322,7 @@ export const Sidebar: React.FC = () => {
                     sidebarOpen ? 'px-4 justify-start' : 'px-2 justify-center'
                   } py-2.5 my-1 text-sm font-medium rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-700 rounded-l-none'
+                      ? `${activeTheme.lightBg} ${activeTheme.lightText} font-semibold border-l-4 ${activeTheme.borderL} rounded-l-none`
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-l-4 border-transparent'
                   }`
                 }
@@ -345,7 +348,7 @@ export const Sidebar: React.FC = () => {
                 <button
                   onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
                   className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 shadow-sm transition-all duration-200 cursor-pointer ${
-                    roleDropdownOpen ? 'ring-2 ring-blue-600/20 border-blue-600/40' : ''
+                    roleDropdownOpen ? `ring-2 ${activeTheme.ring}` : ''
                   }`}
                 >
                   <div className="flex items-center min-w-0">
@@ -362,7 +365,7 @@ export const Sidebar: React.FC = () => {
                   onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
                   title={`Switch Perspective (${currentRoleMeta.label})`}
                   className={`flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm transition-all duration-200 cursor-pointer ${
-                    roleDropdownOpen ? 'ring-2 ring-blue-600/20 border-blue-600/40' : ''
+                    roleDropdownOpen ? `ring-2 ${activeTheme.ring}` : ''
                   }`}
                 >
                   <ActiveRoleIcon className={`h-4 w-4 ${currentRoleMeta.color}`} />
@@ -389,6 +392,7 @@ export const Sidebar: React.FC = () => {
                     const meta = roleMeta[role] || roleMeta.BUYER;
                     const RoleIcon = meta.icon;
                     const isActive = role === activeRole;
+                    const roleTheme = roleThemeMap[role as UserRole] || roleThemeMap.BUYER;
                     return (
                       <button
                         key={role}
@@ -400,11 +404,11 @@ export const Sidebar: React.FC = () => {
                         }}
                         className={`w-full flex items-center px-3 py-2.5 text-xs text-left transition-all duration-150 cursor-pointer ${
                           isActive 
-                            ? 'bg-blue-50 text-blue-700 font-semibold border-l-2 border-blue-700' 
+                            ? `${roleTheme.lightBg} ${roleTheme.lightText} font-semibold border-l-2 ${roleTheme.borderL}` 
                             : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900 border-l-2 border-transparent'
                         }`}
                       >
-                        <RoleIcon className={`h-4 w-4 mr-2.5 flex-shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-400'}`} />
+                        <RoleIcon className={`h-4 w-4 mr-2.5 flex-shrink-0 ${isActive ? roleTheme.text : 'text-slate-400'}`} />
                         <span className="truncate">{meta.label}</span>
                       </button>
                     );

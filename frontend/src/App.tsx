@@ -72,9 +72,9 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/marketplace" element={
-          <>
+          <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />
-            <main className="flex-1 flex flex-col min-h-screen">
+            <main className="flex-1 flex flex-col">
               <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
                 <div className="max-w-7xl mx-auto">
                   <MarketplaceList />
@@ -82,12 +82,12 @@ function AppContent() {
               </div>
               <Footer />
             </main>
-          </>
+          </div>
         } />
         <Route path="/gems/:id" element={
-          <>
+          <div className="min-h-screen flex flex-col bg-slate-50">
             <Header />
-            <main className="flex-1 flex flex-col min-h-screen">
+            <main className="flex-1 flex flex-col">
               <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-br from-blue-100 via-slate-50 to-teal-100">
                 <div className="max-w-7xl mx-auto">
                   <GemDetails />
@@ -95,7 +95,7 @@ function AppContent() {
               </div>
               <Footer />
             </main>
-          </>
+          </div>
         } />
         {/* Redirect any protected route to login */}
         <Route path="/dashboard" element={<Navigate to="/login" state={{ from: { pathname: '/dashboard' } }} replace />} />

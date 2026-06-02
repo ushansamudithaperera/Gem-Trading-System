@@ -48,10 +48,10 @@ export const SellerDashboard: React.FC = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Seller Dashboard</h1>
-          <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Seller</span>. Manage your gem listings and sales</p>
+          <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-emerald-600">Seller</span>. Manage your gem listings and sales</p>
         </div>
         <Link to="/my-gems/new">
-          <Button className="bg-blue-700 hover:bg-blue-800 text-white shadow-md">
+          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md">
             <Plus className="h-4 w-4 mr-2" />
             List New Gem
           </Button>
@@ -76,8 +76,8 @@ export const SellerDashboard: React.FC = () => {
               <p className="text-sm text-slate-500 font-medium">Active Listings</p>
               <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeListings}</p>
             </div>
-            <div className="bg-blue-50 p-3 rounded-xl flex items-center justify-center border border-blue-100">
-              <Package className="h-6 w-6 text-blue-700" />
+            <div className="bg-emerald-50 p-3 rounded-xl flex items-center justify-center border border-emerald-100">
+              <Package className="h-6 w-6 text-emerald-600" />
             </div>
           </CardContent>
         </Card>
@@ -108,11 +108,11 @@ export const SellerDashboard: React.FC = () => {
       <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
         <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
           <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Gemstone Listings
           </CardTitle>
           <Link to="/my-gems">
-            <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">Manage Listings</Button>
+            <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">Manage Listings</Button>
           </Link>
         </CardHeader>
         <CardContent className="p-6">
