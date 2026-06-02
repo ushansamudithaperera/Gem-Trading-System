@@ -4,7 +4,7 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { GemLoader } from '../components/common/GemLoader';
 import { FeaturesCarousel } from '../components/landing/FeaturesCarousel';
-import { ArrowRight, Check, ShieldCheck, Globe, Award, ShoppingBag, Briefcase, Scissors } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck, Globe, Award, ShoppingBag, Briefcase, Scissors, Lock, UserCheck, Scale } from 'lucide-react';
 import './Landing.css';
 
 export const Landing: React.FC = () => {
@@ -164,27 +164,35 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* ─────────────── Trust Bar — Stats ─────────────── */}
-      <section className="trust-bar py-10 px-4">
+      {/* ─────────────── Trust Bar — Trust & Security Guarantees ─────────────── */}
+      <section className="trust-bar py-12 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div className="stat-card">
-              <div className="text-3xl md:text-4xl font-extrabold text-blue-700 mb-1">
-                50K+
+            {/* Card 1: 100% Secured */}
+            <div className="stat-card flex flex-col items-center justify-center p-6 text-center bg-white rounded-xl shadow-sm border border-slate-100">
+              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mb-4 shadow-sm">
+                <Lock className="w-6 h-6" />
               </div>
-              <p className="text-sm font-medium text-slate-500">Premium Gems Listed</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">100% Secured</h3>
+              <p className="text-sm font-medium text-slate-500">Bank-grade Escrow Protection</p>
             </div>
-            <div className="stat-card">
-              <div className="text-3xl md:text-4xl font-extrabold text-blue-800 mb-1">
-                25K+
+
+            {/* Card 2: Verified Traders */}
+            <div className="stat-card flex flex-col items-center justify-center p-6 text-center bg-white rounded-xl shadow-sm border border-slate-100">
+              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-700 mb-4 shadow-sm">
+                <UserCheck className="w-6 h-6" />
               </div>
-              <p className="text-sm font-medium text-slate-500">Verified Traders</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Verified Traders</h3>
+              <p className="text-sm font-medium text-slate-500">Strict KYC & Identity Checks</p>
             </div>
-            <div className="stat-card">
-              <div className="text-3xl md:text-4xl font-extrabold text-blue-900 mb-1">
-                $2.5B+
+
+            {/* Card 3: Zero Hidden Fees */}
+            <div className="stat-card flex flex-col items-center justify-center p-6 text-center bg-white rounded-xl shadow-sm border border-slate-100">
+              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-800 mb-4 shadow-sm">
+                <Scale className="w-6 h-6" />
               </div>
-              <p className="text-sm font-medium text-slate-500">Annual Volume</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Zero Hidden Fees</h3>
+              <p className="text-sm font-medium text-slate-500">Transparent pricing & commissions</p>
             </div>
           </div>
         </div>
