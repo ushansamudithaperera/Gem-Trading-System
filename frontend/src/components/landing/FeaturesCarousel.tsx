@@ -136,7 +136,7 @@ export const FeaturesCarousel: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-5 text-slate-900 tracking-tight">
             Why Traders Choose GemTrade
           </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed">
             Built for professionals who demand transparency, security, and real-time insights
           </p>
         </div>
@@ -201,7 +201,7 @@ export const FeaturesCarousel: React.FC = () => {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed text-center">
+                  <p className="text-slate-700 text-sm md:text-base leading-relaxed text-center">
                     {feature.description}
                   </p>
                 </div>

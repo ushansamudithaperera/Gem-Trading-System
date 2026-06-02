@@ -95,7 +95,7 @@ export const Landing: React.FC = () => {
                 <span className="text-slate-900">Total Confidence</span>
               </h1>
 
-              <p className="text-lg md:text-xl text-slate-500 mb-10 leading-relaxed max-w-lg animate-fadeInUp-delay-1">
+              <p className="text-lg md:text-xl text-slate-700 mb-10 leading-relaxed max-w-lg animate-fadeInUp-delay-1">
                 Connect with verified gem traders worldwide. Real-time market prices,
                 secure escrow protection, and instant certification verification - all
                 on one trusted platform.
@@ -123,7 +123,7 @@ export const Landing: React.FC = () => {
               </div>
 
               {/* Trust Indicators */}
-              <div className="flex flex-wrap gap-6 text-sm text-slate-500 animate-fadeInUp-delay-3">
+              <div className="flex flex-wrap gap-6 text-sm text-slate-700 animate-fadeInUp-delay-3">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4 text-blue-600" />
                   Escrow Protected
@@ -174,7 +174,7 @@ export const Landing: React.FC = () => {
                 <Lock className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-1">100% Secured</h3>
-              <p className="text-sm font-medium text-slate-500">Bank-grade Escrow Protection</p>
+              <p className="text-sm font-medium text-slate-700">Bank-grade Escrow Protection</p>
             </div>
 
             {/* Card 2: Verified Traders */}
@@ -183,7 +183,7 @@ export const Landing: React.FC = () => {
                 <UserCheck className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-1">Verified Traders</h3>
-              <p className="text-sm font-medium text-slate-500">Strict KYC & Identity Checks</p>
+              <p className="text-sm font-medium text-slate-700">Strict KYC & Identity Checks</p>
             </div>
 
             {/* Card 3: Zero Hidden Fees */}
@@ -192,7 +192,7 @@ export const Landing: React.FC = () => {
                 <Scale className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-1">Zero Hidden Fees</h3>
-              <p className="text-sm font-medium text-slate-500">Transparent pricing & commissions</p>
+              <p className="text-sm font-medium text-slate-700">Transparent pricing & commissions</p>
             </div>
           </div>
         </div>
@@ -213,7 +213,7 @@ export const Landing: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-5 text-slate-900 tracking-tight">
               Built For Every Role
             </h2>
-            <p className="text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-700 max-w-xl mx-auto leading-relaxed">
               Whether you buy, sell, or cut gems — we have tailored solutions for your success
             </p>
           </div>
@@ -288,7 +288,7 @@ export const Landing: React.FC = () => {
                   ))}
                   {/* Heritage Accent */}
                   <div className="mt-6 pt-6 border-t border-slate-200">
-                    <p className="text-xs text-slate-400 italic flex items-center gap-2">
+                    <p className="text-xs text-slate-700 italic flex items-center gap-2">
                       <span className="inline-block w-5 h-px bg-blue-300" />
                       Bringing the heritage of Ceylon gems to the global digital stage
                       <span className="inline-block w-5 h-px bg-blue-300" />
@@ -318,7 +318,7 @@ export const Landing: React.FC = () => {
                     </div>
                   ))}
                   <div className="mt-6 pt-6 border-t border-slate-200">
-                    <p className="text-xs text-slate-400 italic flex items-center gap-2">
+                    <p className="text-xs text-slate-700 italic flex items-center gap-2">
                       <span className="inline-block w-5 h-px bg-sky-300" />
                       Bringing the heritage of Ceylon gems to the global digital stage
                       <span className="inline-block w-5 h-px bg-sky-300" />
@@ -382,7 +382,7 @@ export const Landing: React.FC = () => {
                     </div>
                   ))}
                   <div className="mt-6 pt-6 border-t border-slate-200">
-                    <p className="text-xs text-slate-400 italic flex items-center gap-2">
+                    <p className="text-xs text-slate-700 italic flex items-center gap-2">
                       <span className="inline-block w-5 h-px bg-indigo-300" />
                       Bringing the heritage of Ceylon gems to the global digital stage
                       <span className="inline-block w-5 h-px bg-indigo-300" />
