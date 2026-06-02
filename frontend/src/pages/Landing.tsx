@@ -83,7 +83,7 @@ export const Landing: React.FC = () => {
             <div className="max-w-xl animate-fadeInUp">
               <div className="heritage-badge mb-8">
                 <span className="heritage-dot" />
-                Trusted by 25,000+ verified gem traders worldwide
+                This is your trusted digital Gem trade marketplace
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight mb-6">
@@ -97,7 +97,7 @@ export const Landing: React.FC = () => {
 
               <p className="text-lg md:text-xl text-slate-500 mb-10 leading-relaxed max-w-lg animate-fadeInUp-delay-1">
                 Connect with verified gem traders worldwide. Real-time market prices,
-                secure escrow protection, and instant certification verification — all
+                secure escrow protection, and instant certification verification - all
                 on one trusted platform.
               </p>
 

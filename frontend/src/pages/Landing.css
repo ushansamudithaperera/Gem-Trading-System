@@ -257,19 +257,48 @@ html {
 
 /* --- Stat Card --- */
 .stat-card {
+  position: relative;
+  overflow: hidden;
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   padding: 24px;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .stat-card:hover {
-  border-color: #bfdbfe;
-  box-shadow: 0 8px 30px rgba(30, 58, 138, 0.08);
-  transform: translateY(-2px);
+  border-color: #93c5fd;
+  box-shadow: 0 12px 30px rgba(30, 58, 138, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Shining sheen sweep effect on hover */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 65%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%) skewX(-20deg);
+  transition: none;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.stat-card:hover::after {
+  transform: translateX(100%) skewX(-20deg);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --- Mobile Responsive --- */
