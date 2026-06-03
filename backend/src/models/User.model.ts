@@ -38,6 +38,16 @@ export interface IUser extends Document {
   businessRegNo?: string;
   stripeConnectAccountId?: string; // For sellers to receive payments
   kyc: IKYC; // Know Your Customer verification
+  companyName?: string;
+  profilePicture?: string;
+  kycStatus: 'Unverified' | 'Pending' | 'Verified';
+  kycDetails?: {
+    documentType?: string;
+    idNumber?: string;
+    dob?: string;
+    documentUrls: string[];
+  };
+  is2FAEnabled: boolean;
   address?: {
     street: string;
     city: string;
@@ -82,6 +92,21 @@ const UserSchema = new Schema<IUser>(
     businessName: { type: String, trim: true },
     businessRegNo: { type: String, trim: true },
     stripeConnectAccountId: { type: String, sparse: true },
+    companyName: { type: String, trim: true },
+    profilePicture: { type: String },
+    kycStatus: {
+      type: String,
+      enum: ['Unverified', 'Pending', 'Verified'],
+      default: 'Unverified',
+      index: true,
+    },
+    kycDetails: {
+      documentType: { type: String },
+      idNumber: { type: String },
+      dob: { type: String },
+      documentUrls: { type: [String], default: [] },
+    },
+    is2FAEnabled: { type: Boolean, default: false },
     kyc: {
       documentUrls: {
         type: [String],

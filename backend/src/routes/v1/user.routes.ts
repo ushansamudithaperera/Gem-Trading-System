@@ -6,6 +6,8 @@ import {
   submitKYC,
   getPendingKYC,
   approveKYC,
+  changePassword,
+  toggle2FA,
 } from '../../controllers/user.controller';
 import { authMiddleware } from '../../middleware/auth.middleware';
 import { isAdmin } from '../../middleware/role.middleware';
@@ -18,6 +20,12 @@ router.use(authMiddleware); // All user routes require auth
 router.get('/profile', getProfile);
 router.put('/profile', updateProfile);
 
+// Password endpoint
+router.put('/password', changePassword);
+
+// 2FA endpoint
+router.patch('/2fa', toggle2FA);
+
 // Admin endpoints
 router.get('/', isAdmin, getAllUsers);
 
@@ -25,8 +33,12 @@ router.get('/', isAdmin, getAllUsers);
  * KYC (Know Your Customer) endpoints
  */
 
-// PUT /api/v1/users/kyc/submit
+// POST /api/v1/users/kyc
 // Logged-in user submits KYC documents for verification
+router.post('/kyc', submitKYC);
+
+// PUT /api/v1/users/kyc/submit
+// Logged-in user submits KYC documents for verification (backward compatibility)
 router.put('/kyc/submit', submitKYC);
 
 // GET /api/v1/users/kyc/pending

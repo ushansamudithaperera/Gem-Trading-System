@@ -8,6 +8,14 @@ export interface UserAddress {
   postalCode?: string;
 }
 
+export interface UserKYC {
+  documentUrls: string[];
+  status: 'unverified' | 'pending' | 'verified' | 'rejected';
+  submittedAt?: string;
+  reviewedAt?: string;
+  rejectionReason?: string;
+}
+
 export interface User {
   _id: string;
   email: string;
@@ -22,6 +30,7 @@ export interface User {
   address?: UserAddress;
   rating: number;
   totalTransactions: number;
+  kyc?: UserKYC;
   createdAt: string;
   updatedAt: string;
 }

@@ -7,6 +7,15 @@ interface User {
   lastName: string;
   roles: string[];
   avatar?: string;
+  phone?: string;
+  businessName?: string;
+  kyc?: {
+    documentUrls: string[];
+    status: 'unverified' | 'pending' | 'verified' | 'rejected';
+    submittedAt?: string;
+    reviewedAt?: string;
+    rejectionReason?: string;
+  };
 }
 
 interface AuthState {

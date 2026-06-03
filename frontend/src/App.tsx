@@ -27,6 +27,7 @@ import { SellerDashboard } from './pages/Dashboard/SellerDashboard';
 import { CutterDashboard } from './pages/Dashboard/CutterDashboard';
 import { AdminDashboard } from './pages/Dashboard/AdminDashboard';
 import { Bids } from './pages/Bids/Bids';
+import { Settings } from './pages/Settings/Settings';
 
 // Common Components
 import { PrivateRoute } from './components/common/PrivateRoute';
@@ -157,6 +158,8 @@ function AppContent() {
                   <Route path="/orders/:id" element={<OrderDetails />} />
                   <Route path="/disputes" element={<DisputeCenter />} />
                   <Route path="/bids" element={<Bids />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/settings/:tab" element={<Settings />} />
                 </Route>
 
                 {/* Buyer + Cutter routes */}

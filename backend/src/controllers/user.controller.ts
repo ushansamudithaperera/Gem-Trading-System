@@ -13,10 +13,32 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
 });
 
 export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const allowedUpdates = ['firstName', 'lastName', 'phone', 'avatar', 'address', 'businessName'];
-  const updates = Object.keys(req.body)
+  const allowedUpdates = [
+    'firstName',
+    'lastName',
+    'phone',
+    'avatar',
+    'businessName',
+    'companyName',
+    'profilePicture',
+    'address',
+  ];
+  const updates: any = Object.keys(req.body)
     .filter(key => allowedUpdates.includes(key))
     .reduce((obj, key) => ({ ...obj, [key]: req.body[key] }), {});
+
+  // Sync aliases for backward compatibility
+  if (updates.companyName && !updates.businessName) {
+    updates.businessName = updates.companyName;
+  } else if (updates.businessName && !updates.companyName) {
+    updates.companyName = updates.businessName;
+  }
+
+  if (updates.profilePicture && !updates.avatar) {
+    updates.avatar = updates.profilePicture;
+  } else if (updates.avatar && !updates.profilePicture) {
+    updates.profilePicture = updates.avatar;
+  }
 
   const user = await User.findByIdAndUpdate(req.user!._id, updates, { new: true }).select('-password');
   if (!user) throw new ApiError(404, 'User not found');
@@ -36,7 +58,7 @@ export const getAllUsers = asyncHandler(async (req: AuthRequest, res: Response) 
  * Status automatically changes to 'pending'
  */
 export const submitKYC = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const { documentUrls } = req.body;
+  const { documentUrls, idNumber, dob, documentType } = req.body;
   const userId = req.user!._id;
 
   // Validate input
@@ -59,11 +81,20 @@ export const submitKYC = asyncHandler(async (req: AuthRequest, res: Response) =>
     throw new ApiError(404, 'User not found');
   }
 
-  // Update KYC information
+  // Update KYC information (backward compatible)
   user.kyc = {
     documentUrls,
     status: KYCStatus.PENDING,
     submittedAt: new Date(),
+  };
+
+  // Update new KYC status and details
+  user.kycStatus = 'Pending';
+  user.kycDetails = {
+    documentType: documentType || 'NIC',
+    idNumber: idNumber || '',
+    dob: dob || '',
+    documentUrls,
   };
 
   await user.save();
@@ -172,6 +203,7 @@ export const approveKYC = asyncHandler(async (req: AuthRequest, res: Response) =
   // Update KYC status
   if (approved) {
     user.kyc.status = KYCStatus.VERIFIED;
+    user.kycStatus = 'Verified';
     logger.info(`KYC approved for user ${userId}`, {
       userId,
       approvedBy: req.user!._id,
@@ -179,6 +211,7 @@ export const approveKYC = asyncHandler(async (req: AuthRequest, res: Response) =
     });
   } else {
     user.kyc.status = KYCStatus.REJECTED;
+    user.kycStatus = 'Unverified';
     user.kyc.rejectionReason = rejectionReason;
     logger.info(`KYC rejected for user ${userId}`, {
       userId,
@@ -201,6 +234,66 @@ export const approveKYC = asyncHandler(async (req: AuthRequest, res: Response) =
       200,
       response,
       approved ? 'KYC approved successfully' : 'KYC rejected successfully'
+    )
+  );
+});
+
+export const changePassword = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user!._id;
+
+  if (!currentPassword || !newPassword) {
+    throw new ApiError(400, 'Current password and new password are required');
+  }
+
+  if (newPassword.length < 6) {
+    throw new ApiError(400, 'New password must be at least 6 characters long');
+  }
+
+  const user = await User.findById(userId).select('+password');
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  const isMatch = await user.comparePassword(currentPassword);
+  if (!isMatch) {
+    throw new ApiError(400, 'Incorrect current password');
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  logger.info(`Password changed for user ${userId}`);
+
+  res.json(new ApiResponse(200, null, 'Password updated successfully'));
+});
+
+export const toggle2FA = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const userId = req.user!._id;
+  const { is2FAEnabled } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  if (is2FAEnabled !== undefined) {
+    user.is2FAEnabled = Boolean(is2FAEnabled);
+  } else {
+    user.is2FAEnabled = !user.is2FAEnabled;
+  }
+
+  await user.save();
+
+  logger.info(`2FA status updated for user ${userId} to ${user.is2FAEnabled}`);
+
+  const response = await User.findById(userId).select('-password');
+
+  res.json(
+    new ApiResponse(
+      200,
+      response,
+      `2FA is now ${user.is2FAEnabled ? 'enabled' : 'disabled'}`
     )
   );
 });

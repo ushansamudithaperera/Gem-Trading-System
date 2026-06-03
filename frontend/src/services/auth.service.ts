@@ -52,3 +52,19 @@ export const getCurrentUser = async () => {
   const response = await api.get('/auth/me');
   return response.data.data;
 };
+
+export const updateUserProfile = async (data: {
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  avatar?: string;
+  businessName?: string;
+}) => {
+  const response = await api.put('/users/profile', data);
+  return response.data.data;
+};
+
+export const submitKYCDocuments = async (documentUrls: string[]) => {
+  const response = await api.put('/users/kyc/submit', { documentUrls });
+  return response.data.data;
+};
