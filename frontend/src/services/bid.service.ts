@@ -44,3 +44,8 @@ export const updateBidStatus = async (bidId: string, status: string): Promise<Bi
   const response = await api.patch(`/bids/${bidId}/status`, { status });
   return response.data.data;
 };
+
+export const createBid = async (data: { gemId: string; offeredPrice: number }): Promise<Bid> => {
+  const response = await api.post('/bids', data);
+  return response.data.data;
+};
