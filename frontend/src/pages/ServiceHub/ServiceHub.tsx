@@ -66,34 +66,34 @@ export interface ActiveJob {
   progressPhotos: { phase: string; img: string }[];
 }
 
-// Sample Curated Cutters Roster
+// Sample Curated Cutters Roster — Sri Lankan Lapidary Industry
 const MOCK_CUTTERS: Cutter[] = [
   {
     _id: 'cutter-1',
-    firstName: 'Marcus',
-    lastName: 'Vane',
-    businessName: 'Vane Precision Lapidary',
+    firstName: 'Nuwan',
+    lastName: 'Bandara',
+    businessName: 'Nuwan Lapidary Services',
     rating: 5.0,
     totalTransactions: 42,
-    location: 'Colombo, Sri Lanka',
-    bio: 'Specializing in maximizing light return through concave faceting. Over 15 years cutting premium sapphires and spinels.',
-    specialties: ['Concave Faceting', 'Custom Step Cuts', 'Spinels'],
+    location: 'Ratnapura, Sri Lanka',
+    bio: 'Third-generation lapidary master from "The City of Gems". Specializing in maximizing brilliance in Ceylon sapphires through precision concave faceting techniques passed down through our family.',
+    specialties: ['Concave Faceting', 'Custom Step Cuts', 'Ceylon Sapphires'],
     completedJobs: 38,
     averageTurnaroundDays: 12,
     hourlyRate: 75, // $75 per carat
     available: true,
     portfolio: [
       {
-        roughName: 'Rough Sapphire',
-        polishedName: 'Concave Oval Sapphire',
+        roughName: 'Rough Ceylon Sapphire',
+        polishedName: 'Concave Oval Ceylon Sapphire',
         roughWeight: '8.4 ct',
         polishedWeight: '4.1 ct',
         roughImg: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400',
         polishedImg: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=400',
       },
       {
-        roughName: 'Rough Aquamarine',
-        polishedName: 'Precision Emerald-Cut Aqua',
+        roughName: 'Rough Padparadscha',
+        polishedName: 'Precision Emerald-Cut Padparadscha',
         roughWeight: '14.2 ct',
         polishedWeight: '7.8 ct',
         roughImg: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=400',
@@ -103,22 +103,22 @@ const MOCK_CUTTERS: Cutter[] = [
   },
   {
     _id: 'cutter-2',
-    firstName: 'Sophia',
-    lastName: 'Sterling',
-    businessName: 'Sterling Lapidary Studio',
+    firstName: 'Chaminda',
+    lastName: 'Perera',
+    businessName: 'Chaminda Precision Cuts',
     rating: 4.9,
     totalTransactions: 29,
-    location: 'Antwerp, Belgium',
-    bio: 'Artisanal lapidary focusing on organic inclusions and high-dome cabochon cuts. Dedicated to preserving the natural soul of rough stones.',
-    specialties: ['Cabochons', 'Carvings', 'Freeform Cuts'],
+    location: 'Beruwala, Sri Lanka',
+    bio: 'Artisanal lapidary focusing on cabochon cuts and freeform shapes. Dedicated to preserving the natural beauty of Ceylon star sapphires and cat\'s eye chrysoberyl from the Beruwala gem market.',
+    specialties: ['Cabochons', 'Star Sapphires', 'Cat\'s Eye Cuts'],
     completedJobs: 26,
     averageTurnaroundDays: 8,
     hourlyRate: 45, // $45 per carat
     available: true,
     portfolio: [
       {
-        roughName: 'Rough Tourmaline',
-        polishedName: 'Bicolor Freeform Tourmaline',
+        roughName: 'Rough Star Sapphire',
+        polishedName: 'High-Dome Star Sapphire Cabochon',
         roughWeight: '15.0 ct',
         polishedWeight: '11.2 ct',
         roughImg: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=400',
@@ -128,22 +128,22 @@ const MOCK_CUTTERS: Cutter[] = [
   },
   {
     _id: 'cutter-3',
-    firstName: 'Liam',
-    lastName: 'Aurelius',
-    businessName: 'Aurelius High-Refractive Gems',
+    firstName: 'Ruwan',
+    lastName: 'Jayasekara',
+    businessName: 'Ruwan Gems — Premium Faceting',
     rating: 4.8,
     totalTransactions: 37,
     location: 'Ratnapura, Sri Lanka',
-    bio: 'Specialist in extreme mathematical symmetry, including 161-facet Portuguese cuts. Best for high-value tourmalines and garnets.',
-    specialties: ['Portuguese Cuts', 'Extreme Symmetry', 'Garnets'],
+    bio: 'Specialist in extreme mathematical symmetry, including 161-facet Portuguese cuts. Best known for cutting high-value Ceylon spinels and tsavorites sourced from the Balangoda mines.',
+    specialties: ['Portuguese Cuts', 'Extreme Symmetry', 'Ceylon Spinels'],
     completedJobs: 33,
     averageTurnaroundDays: 15,
     hourlyRate: 110, // $110 per carat
     available: true,
     portfolio: [
       {
-        roughName: 'Rough Tsavorite',
-        polishedName: '161-Facet Portuguese Tsavorite',
+        roughName: 'Rough Ceylon Spinel',
+        polishedName: '161-Facet Portuguese Ceylon Spinel',
         roughWeight: '9.3 ct',
         polishedWeight: '4.2 ct',
         roughImg: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400',
@@ -153,22 +153,22 @@ const MOCK_CUTTERS: Cutter[] = [
   },
   {
     _id: 'cutter-4',
-    firstName: 'Elena',
-    lastName: 'Rostova',
-    businessName: 'Rostova Precision Cuts',
+    firstName: 'Ishara',
+    lastName: 'De Silva',
+    businessName: 'De Silva Gem Atelier',
     rating: 4.9,
     totalTransactions: 53,
-    location: 'St. Petersburg, Russia',
-    bio: 'Award-winning cutter creating patented geometric fantasy cuts. Creating unique light-reflection matrices tailored to each specific stone.',
-    specialties: ['Fantasy Cuts', 'Patented Facet Mapping', 'Amethysts'],
+    location: 'Galle, Sri Lanka',
+    bio: 'Award-winning cutter creating patented geometric fantasy cuts. Known for transforming raw Ceylon alexandrites and moonstone into museum-grade collector pieces at our Galle Fort workshop.',
+    specialties: ['Fantasy Cuts', 'Alexandrites', 'Ceylon Moonstone'],
     completedJobs: 49,
     averageTurnaroundDays: 10,
     hourlyRate: 95,
     available: false, // Currently busy
     portfolio: [
       {
-        roughName: 'Rough Amethyst',
-        polishedName: 'Hexagonal Star Amethyst',
+        roughName: 'Rough Ceylon Alexandrite',
+        polishedName: 'Hexagonal Fantasy Ceylon Alexandrite',
         roughWeight: '12.5 ct',
         polishedWeight: '6.4 ct',
         roughImg: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400',
@@ -201,16 +201,16 @@ const INITIAL_MOCK_JOBS: ActiveJob[] = [
     roughWeight: '7.8 ct',
     targetCut: 'Oval Concave Brilliant',
     instructions: 'Maximize color depth and brilliance. Focus concave facets towards the culet area. Preserve weight above 3.5 carats if possible.',
-    cutterName: 'Marcus Vane',
+    cutterName: 'Nuwan Bandara',
     cutterId: 'cutter-1',
     status: 'Faceting',
     progress: 70,
     expectedDate: '2026-06-12',
     escrowFee: 585,
     logs: [
-      { date: '2026-05-24', message: 'Rough gemstone received at laboratory. Integrity checks complete: zero internal micro-fractures identified.', phase: 'Stone Received' },
+      { date: '2026-05-24', message: 'Rough gemstone received at Ratnapura laboratory. Integrity checks complete: zero internal micro-fractures identified.', phase: 'Stone Received' },
       { date: '2026-05-26', message: 'Pre-forming process completed. Girdle shape outlined and pavilion dop pin mounted successfully.', phase: 'Pre-forming' },
-      { date: '2026-05-29', message: ' Pavilion faceting completed under 20x magnification. Advancing to crown facet cutting.', phase: 'Faceting' }
+      { date: '2026-05-29', message: 'Pavilion faceting completed under 20x magnification. Advancing to crown facet cutting.', phase: 'Faceting' }
     ],
     progressPhotos: [
       { phase: 'Stone Received', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=300' },
@@ -219,18 +219,18 @@ const INITIAL_MOCK_JOBS: ActiveJob[] = [
   },
   {
     _id: 'job-102',
-    gemName: 'Mozambique Rubellites (Rough)',
+    gemName: 'Ceylon Star Sapphire (Rough)',
     roughWeight: '12.4 ct',
-    targetCut: 'Cushion Step Cut',
-    instructions: 'Maintain depth to amplify saturate magenta-rubellite hues. Medium girdle thickness required for heavy prong settings.',
-    cutterName: 'Sophia Sterling',
+    targetCut: 'High-Dome Cabochon',
+    instructions: 'Maintain depth to amplify asterism effect. Medium girdle thickness required for bezel settings. Preserve the silk inclusions for maximum star display.',
+    cutterName: 'Chaminda Perera',
     cutterId: 'cutter-2',
     status: 'Stone Received',
     progress: 20,
     expectedDate: '2026-06-18',
     escrowFee: 558,
     logs: [
-      { date: '2026-05-29', message: 'Stone received and verified. Weight calibrated at 12.38 carats.', phase: 'Stone Received' }
+      { date: '2026-05-29', message: 'Stone received at Beruwala workshop and verified. Weight calibrated at 12.38 carats.', phase: 'Stone Received' }
     ],
     progressPhotos: [
       { phase: 'Stone Received', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=300' }
@@ -240,9 +240,9 @@ const INITIAL_MOCK_JOBS: ActiveJob[] = [
 
 // Mock buyer owned rough gemstones
 const MOCK_OWNED_GEMS = [
-  { id: 'gem-1', name: 'Rough Tanzanite (9.2 ct) - Intense Violet', weight: '9.2 ct' },
-  { id: 'gem-2', name: 'Rough Colombian Emerald (5.4 ct) - Garden Inclusions', weight: '5.4 ct' },
-  { id: 'gem-3', name: 'Rough Tsavorite Garnet (4.1 ct) - Vivid Lime Green', weight: '4.1 ct' }
+  { id: 'gem-1', name: 'Rough Ceylon Padparadscha (9.2 ct) - Sunset Pink-Orange', weight: '9.2 ct' },
+  { id: 'gem-2', name: 'Rough Ceylon Alexandrite (5.4 ct) - Color-Change Green-Red', weight: '5.4 ct' },
+  { id: 'gem-3', name: 'Rough Ceylon Moonstone (4.1 ct) - Blue Sheen Adularescence', weight: '4.1 ct' }
 ];
 
 export const ServiceHub: React.FC = () => {
