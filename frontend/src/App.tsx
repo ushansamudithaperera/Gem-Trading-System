@@ -26,6 +26,7 @@ import { BuyerDashboard } from './pages/Dashboard/BuyerDashboard';
 import { SellerDashboard } from './pages/Dashboard/SellerDashboard';
 import { CutterDashboard } from './pages/Dashboard/CutterDashboard';
 import { AdminDashboard } from './pages/Dashboard/AdminDashboard';
+import { Bids } from './pages/Bids/Bids';
 
 // Common Components
 import { PrivateRoute } from './components/common/PrivateRoute';
@@ -115,6 +116,7 @@ function AppContent() {
         <Route path="/orders" element={<Navigate to="/login" state={{ from: { pathname: '/orders' } }} replace />} />
         <Route path="/orders/:id" element={<Navigate to="/login" replace />} />
         <Route path="/disputes" element={<Navigate to="/login" state={{ from: { pathname: '/disputes' } }} replace />} />
+        <Route path="/bids" element={<Navigate to="/login" state={{ from: { pathname: '/bids' } }} replace />} />
         <Route path="/service-hub" element={<Navigate to="/login" state={{ from: { pathname: '/service-hub' } }} replace />} />
         <Route path="/service-hub/jobs" element={<Navigate to="/login" state={{ from: { pathname: '/service-hub/jobs' } }} replace />} />
         <Route path="*" element={<NotFound />} />
@@ -151,9 +153,10 @@ function AppContent() {
                         user?.roles.includes('CUTTER') ? <CutterDashboard /> :
                           <BuyerDashboard />
                   } />
-                  <Route path="/orders" element={<MyOrders />} />
+                   <Route path="/orders" element={<MyOrders />} />
                   <Route path="/orders/:id" element={<OrderDetails />} />
                   <Route path="/disputes" element={<DisputeCenter />} />
+                  <Route path="/bids" element={<Bids />} />
                 </Route>
 
                 {/* Buyer + Cutter routes */}
