@@ -38,15 +38,17 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     next();
   } catch (error: any) {
     if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Session expired. Please log in again.',
         code: 'TOKEN_EXPIRED',
       });
+      return;
     }
     if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Invalid token',
       });
+      return;
     }
     next(error);
   }
