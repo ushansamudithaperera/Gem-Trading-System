@@ -34,6 +34,7 @@ export const GemCard: React.FC<GemCardProps> = ({ gem, onBid, isAuthenticated = 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  const activeRole = localStorage.getItem('activeSidebarRole') || 'BUYER';
   const defaultImage = 'https://placehold.co/400x300?text=Gem+Image';
 
   return (
@@ -99,9 +100,18 @@ export const GemCard: React.FC<GemCardProps> = ({ gem, onBid, isAuthenticated = 
           </Button>
         </Link>
         {isAuthenticated ? (
-          <Button className="flex-1" onClick={() => onBid?.(gem._id)}>
-            Place Bid
-          </Button>
+          activeRole === 'BUYER' ? (
+            <button
+              onClick={() => onBid?.(gem._id)}
+              className="flex-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-medium rounded-lg px-4 py-2 text-sm transition-colors cursor-pointer"
+            >
+              Make Offer
+            </button>
+          ) : (
+            <Button className="flex-1" onClick={() => onBid?.(gem._id)}>
+              Place Bid
+            </Button>
+          )
         ) : (
           <Link to="/login" className="flex-1">
             <Button className="w-full">Login to Bid</Button>

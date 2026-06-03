@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { GemCard, Gem } from '../../components/marketplace/GemCard';
 import { GemFilters, FilterState } from '../../components/marketplace/GemFilters';
 import { BidModal } from '../../components/marketplace/BidModal';
+import { PlaceBidModal } from '../../components/marketplace/PlaceBidModal';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -877,13 +878,21 @@ export const MarketplaceList: React.FC = () => {
         />
       )}
 
-      {/* Bid Modal */}
+      {/* Bid Modal / Place Bid Modal */}
       {selectedGem && (
-        <BidModal
-          isOpen={!!selectedGem}
-          onClose={() => setSelectedGem(null)}
-          gem={selectedGem}
-        />
+        activeRole === 'BUYER' ? (
+          <PlaceBidModal
+            isOpen={!!selectedGem}
+            onClose={() => setSelectedGem(null)}
+            gem={selectedGem}
+          />
+        ) : (
+          <BidModal
+            isOpen={!!selectedGem}
+            onClose={() => setSelectedGem(null)}
+            gem={selectedGem}
+          />
+        )
       )}
     </div>
   );
