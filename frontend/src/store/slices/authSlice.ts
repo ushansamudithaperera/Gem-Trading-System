@@ -28,7 +28,7 @@ const authSlice = createSlice({
     setCredentials: (state, action: PayloadAction<{ user: User; token: string }>) => {
       state.user = action.payload.user;
       state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload.token);
+      sessionStorage.setItem('token', action.payload.token);
     },
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
@@ -37,7 +37,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;

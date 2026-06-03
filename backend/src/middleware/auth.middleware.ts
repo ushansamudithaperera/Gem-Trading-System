@@ -19,7 +19,7 @@ export interface AuthRequest extends Request {
   isCuttingJobCutter?: boolean;
 }
 
-export const authMiddleware = async (req: AuthRequest, _res: Response, next: NextFunction) => {
+export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
     
@@ -36,13 +36,18 @@ export const authMiddleware = async (req: AuthRequest, _res: Response, next: Nex
 
     req.user = user;
     next();
-  } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      next(new ApiError(401, 'Invalid token'));
-    } else if (error instanceof jwt.TokenExpiredError) {
-      next(new ApiError(401, 'Token expired'));
-    } else {
-      next(error);
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        message: 'Session expired. Please log in again.',
+        code: 'TOKEN_EXPIRED',
+      });
     }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({
+        message: 'Invalid token',
+      });
+    }
+    next(error);
   }
 };

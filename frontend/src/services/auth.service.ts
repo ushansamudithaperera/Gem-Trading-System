@@ -33,19 +33,19 @@ interface AuthResponse {
 export const register = async (data: RegisterData): Promise<AuthResponse['data']> => {
   const response = await api.post<AuthResponse>('/auth/register', data);
   const { token, user } = response.data.data;
-  localStorage.setItem('token', token);
+  sessionStorage.setItem('token', token);
   return { token, user };
 };
 
 export const login = async (data: LoginData): Promise<AuthResponse['data']> => {
   const response = await api.post<AuthResponse>('/auth/login', data);
   const { token, user } = response.data.data;
-  localStorage.setItem('token', token);
+  sessionStorage.setItem('token', token);
   return { token, user };
 };
 
 export const logout = (): void => {
-  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
 };
 
 export const getCurrentUser = async () => {

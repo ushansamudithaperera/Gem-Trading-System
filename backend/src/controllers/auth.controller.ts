@@ -8,7 +8,7 @@ import { ApiResponse } from '../utils/ApiResponse';
 import { ApiError } from '../utils/ApiError';
 
 const generateToken = (userId: string): string => {
-  const options: SignOptions = { expiresIn: env.JWT_EXPIRES_IN as unknown as SignOptions['expiresIn'] };
+  const options: SignOptions = { expiresIn: '1h' };
   return jwt.sign({ userId }, env.JWT_SECRET, options);
 };
 

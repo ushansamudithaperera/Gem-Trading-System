@@ -19,7 +19,7 @@ export const useSocket = () => {
       return;
     }
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     const socket = io(SOCKET_URL, {
       auth: { token },
       transports: ['websocket', 'polling'],

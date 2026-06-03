@@ -18,8 +18,8 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-// Optional: Setup initial auth state from localStorage token
-const token = localStorage.getItem('token');
+// Optional: Setup initial auth state from sessionStorage token
+const token = sessionStorage.getItem('token');
 if (token) {
   // You could dispatch a thunk to fetch user here, but we'll do it in App.tsx
 }

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
-import { setLoading, setUser } from './store/slices/authSlice';
+import { setLoading, setUser, logout } from './store/slices/authSlice';
 import { getCurrentUser } from './services/auth.service';
 import './App-Light.css';  // Global light theme styles
 
@@ -38,14 +38,17 @@ function AppContent() {
 
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (token) {
         try {
           const user = await getCurrentUser();
           dispatch(setUser(user));
         } catch (error) {
-          localStorage.removeItem('token');
+          sessionStorage.removeItem('token');
+          dispatch(logout());
         }
+      } else {
+        dispatch(logout());
       }
       dispatch(setLoading(false));
     };

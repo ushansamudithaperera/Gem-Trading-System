@@ -11,7 +11,7 @@ export const useAuth = () => {
 
   const logoutUser = () => {
     dispatch(logout());
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     toast.success('Logged out', 'You have been successfully logged out.');
     navigate('/login');
   };
