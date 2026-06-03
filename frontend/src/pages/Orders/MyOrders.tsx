@@ -30,6 +30,9 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'succes
 
 export const MyOrders: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
+  const activeRole = localStorage.getItem('activeSidebarRole') || user?.roles?.[0] || 'BUYER';
+  const isSeller = activeRole === 'SELLER';
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -68,7 +71,9 @@ export const MyOrders: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-slate-900 mb-6">My Orders</h1>
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">
+        {isSeller ? 'Sales Orders' : 'My Orders'}
+      </h1>
 
       {/* Filter tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -89,11 +94,20 @@ export const MyOrders: React.FC = () => {
 
       {filteredOrders.length === 0 ? (
         <Card>
-          <CardContent className="py-12 text-center text-slate-500">
-            No orders found.
-            <Link to="/marketplace">
-              <Button className="mt-4">Start Shopping</Button>
-            </Link>
+          <CardContent className="py-12 text-center text-slate-700 flex flex-col items-center justify-center">
+            <Package className="h-12 w-12 text-slate-400 mb-4" />
+            <p className="text-lg font-medium mb-2">
+              {isSeller ? 'No sales orders yet.' : 'No orders found.'}
+            </p>
+            {isSeller ? (
+              <Link to="/dashboard">
+                <Button className="mt-2">Add New Listing</Button>
+              </Link>
+            ) : (
+              <Link to="/marketplace">
+                <Button className="mt-2">Start Shopping</Button>
+              </Link>
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -115,8 +129,8 @@ export const MyOrders: React.FC = () => {
                         {order.gemId.title}
                       </h3>
                     </Link>
-                    <p className="text-sm text-gray-500">Order #{order.orderNumber.slice(-8)}</p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-sm text-slate-700">Order #{order.orderNumber.slice(-8)}</p>
+                    <p className="text-xs text-slate-500">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </p>
                   </div>
