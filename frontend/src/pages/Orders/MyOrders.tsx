@@ -8,6 +8,7 @@ import { Badge } from '../../components/ui/Badge';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { getUserOrders } from '../../services/order.service';
 import { Package, Eye, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
+import { useRoleTheme } from '../../utils/theme';
 
 type Order = {
   _id: string;
@@ -29,8 +30,7 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'succes
 };
 
 export const MyOrders: React.FC = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
-  const activeRole = localStorage.getItem('activeSidebarRole') || user?.roles?.[0] || 'BUYER';
+  const { role: activeRole } = useRoleTheme();
   const isSeller = activeRole === 'SELLER';
 
   const [orders, setOrders] = useState<Order[]>([]);
@@ -101,11 +101,11 @@ export const MyOrders: React.FC = () => {
             </p>
             {isSeller ? (
               <Link to="/dashboard">
-                <Button className="mt-2">Add New Listing</Button>
+                <Button className="mt-2 bg-emerald-600 hover:bg-emerald-700 shadow-md text-white">Add New Listing</Button>
               </Link>
             ) : (
               <Link to="/marketplace">
-                <Button className="mt-2">Start Shopping</Button>
+                <Button className="mt-2 bg-blue-600 hover:bg-blue-700 shadow-md text-white">Start Shopping</Button>
               </Link>
             )}
           </CardContent>

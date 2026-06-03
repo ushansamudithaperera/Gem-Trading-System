@@ -312,11 +312,15 @@ export const Sidebar: React.FC = () => {
               );
             }
 
+            const displayName = item.href === '/orders'
+              ? (activeRole === 'SELLER' ? 'Sales Orders' : 'My Orders')
+              : item.name;
+
             return (
               <NavLink
-                key={item.name}
+                key={item.href}
                 to={item.href}
-                title={!sidebarOpen ? item.name : undefined}
+                title={!sidebarOpen ? displayName : undefined}
                 className={({ isActive }) =>
                   `group relative flex items-center ${
                     sidebarOpen ? 'px-4 justify-start' : 'px-2 justify-center'
@@ -328,7 +332,7 @@ export const Sidebar: React.FC = () => {
                 }
               >
                 <LinkIcon className={`${sidebarOpen ? 'mr-3' : 'mr-0'} h-5 w-5 flex-shrink-0 transition-all duration-200`} />
-                {sidebarOpen && <span className="transition-all duration-200 truncate">{item.name}</span>}
+                {sidebarOpen && <span className="transition-all duration-200 truncate">{displayName}</span>}
                 {renderBadge(item)}
               </NavLink>
             );
