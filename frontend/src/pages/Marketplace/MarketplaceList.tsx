@@ -54,13 +54,13 @@ const StatCard: React.FC<StatCardProps> = ({ icon, label, value, accent }) => (
 
 // ─── Add New Gemstone Modal ───────────────────────────────
 
-interface AddGemModalProps {
+export interface AddGemModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }
 
-const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess }) => {
+export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const activeRole = getActiveRole();
   const isCutter = activeRole === 'CUTTER';
   

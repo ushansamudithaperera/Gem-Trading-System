@@ -6,6 +6,7 @@ import { Button } from '../../components/ui/Button';
 import { DollarSign, Package, ShoppingCart, TrendingUp, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getSellerStats, getSellerGems } from '../../services/gem.service';
+import { AddGemModal } from '../Marketplace/MarketplaceList';
 
 interface SellerStats {
   totalRevenue: number;
@@ -24,22 +25,24 @@ export const SellerDashboard: React.FC = () => {
   });
   const [recentGems, setRecentGems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAddGemModalOpen, setIsAddGemModalOpen] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const [statsData, gems] = await Promise.all([
+        getSellerStats(),
+        getSellerGems(),
+      ]);
+      setStats(statsData);
+      setRecentGems(gems.slice(0, 5));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [statsData, gems] = await Promise.all([
-          getSellerStats(),
-          getSellerGems(),
-        ]);
-        setStats(statsData);
-        setRecentGems(gems.slice(0, 5));
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -50,12 +53,13 @@ export const SellerDashboard: React.FC = () => {
           <h1 className="text-3xl font-bold text-slate-900">Seller Dashboard</h1>
           <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-emerald-600">Seller</span>. Manage your gem listings and sales</p>
         </div>
-        <Link to="/my-gems/new">
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md">
-            <Plus className="h-4 w-4 mr-2" />
-            List New Gem
-          </Button>
-        </Link>
+        <Button 
+          onClick={() => setIsAddGemModalOpen(true)}
+          className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md cursor-pointer"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          List New Gem
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -143,6 +147,13 @@ export const SellerDashboard: React.FC = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Add New Gemstone Modal */}
+      <AddGemModal
+        isOpen={isAddGemModalOpen}
+        onClose={() => setIsAddGemModalOpen(false)}
+        onSuccess={fetchData}
+      />
     </div>
   );
 };
