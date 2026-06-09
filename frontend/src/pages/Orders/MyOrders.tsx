@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { Card, CardContent } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { getUserOrders } from '../../services/order.service';
-import { Package, Eye, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Package, Eye } from 'lucide-react';
 import { useRoleTheme } from '../../utils/theme';
 
 type Order = {

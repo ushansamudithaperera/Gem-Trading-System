@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 // Job status progression through the cutting workflow
 export enum JobStatus {
   PENDING_ACCEPTANCE = 'pending_acceptance',    // Buyer requested, awaiting cutter acceptance
+  REJECTED = 'rejected',                        // Cutter rejected the job request
   STONE_RECEIVED = 'stone_received',            // Cutter received the rough stone
   PRE_FORMING = 'pre_forming',                  // Initial shaping/planning stage
   FACETING = 'faceting',                        // Creating facets on the stone
@@ -20,11 +21,21 @@ export enum CuttingStatus {
   FAILED = 'FAILED',
 }
 
+// Progress log entry for detailed phase tracking
+export interface IProgressLog {
+  phase: string;
+  note: string;
+  photoUrl?: string;
+  date: Date;
+}
+
 export interface ICuttingJob extends Document {
   orderId: mongoose.Types.ObjectId;
   buyerId: mongoose.Types.ObjectId;
   cutterId: mongoose.Types.ObjectId;
   gemId: mongoose.Types.ObjectId;              // The gem being cut
+  stoneDetails?: string;                       // Description of the rough stone
+  targetCut?: string;                          // Desired cut type (e.g., "Oval Brilliant")
   agreedPrice: number;                         // Price agreed between buyer and cutter
   jobStatus: JobStatus;                        // Detailed job status (replaces status)
   status?: CuttingStatus;                      // Legacy field for backward compatibility
@@ -34,10 +45,21 @@ export interface ICuttingJob extends Document {
   expectedFinishDate: Date;
   actualFinishDate?: Date;
   progressImages: string[];                    // Updated during cutting
+  progressLogs: IProgressLog[];                // Detailed phase-by-phase progress log
   notes?: string;                              // Cutter notes during process
   createdAt: Date;
   updatedAt: Date;
 }
+
+const ProgressLogSchema = new Schema<IProgressLog>(
+  {
+    phase: { type: String, required: true },
+    note: { type: String, default: '' },
+    photoUrl: { type: String },
+    date: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
 
 const CuttingJobSchema = new Schema<ICuttingJob>(
   {
@@ -45,6 +67,8 @@ const CuttingJobSchema = new Schema<ICuttingJob>(
     buyerId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     cutterId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     gemId: { type: Schema.Types.ObjectId, ref: 'Gem', required: true },
+    stoneDetails: { type: String },
+    targetCut: { type: String },
     agreedPrice: { type: Number, required: true, min: 0 },
     jobStatus: {
       type: String,
@@ -64,6 +88,7 @@ const CuttingJobSchema = new Schema<ICuttingJob>(
     expectedFinishDate: { type: Date, required: true },
     actualFinishDate: { type: Date },
     progressImages: [{ type: String }], // Cloudinary URLs
+    progressLogs: { type: [ProgressLogSchema], default: [] },
     notes: { type: String },
   },
   { timestamps: true }

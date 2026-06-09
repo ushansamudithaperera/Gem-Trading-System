@@ -3,9 +3,8 @@ import { CutterProfile, Cutter } from '../../components/serviceHub/CutterProfile
 import { HireCutterForm } from '../../components/serviceHub/HireCutterForm';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { Input } from '../../components/ui/Input';
-import { Button } from '../../components/ui/Button';
 import { getAvailableCutters } from '../../services/cutting.service';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 export const CutterList: React.FC = () => {
   const [cutters, setCutters] = useState<Cutter[]>([]);

@@ -8,12 +8,34 @@ import { ApiResponse } from '../utils/ApiResponse';
 import { ApiError } from '../utils/ApiError';
 import { AuthRequest } from '../middleware/auth.middleware';
 
-/**
- * POST /api/v1/cutting-jobs
- * Buyer requests a cutter to process a rough gem
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// Ordered status progression for validation
+// ─────────────────────────────────────────────────────────────────────────────
+const STATUS_PROGRESSION = [
+  JobStatus.PENDING_ACCEPTANCE,
+  JobStatus.STONE_RECEIVED,
+  JobStatus.PRE_FORMING,
+  JobStatus.FACETING,
+  JobStatus.POLISHED,
+  JobStatus.READY_TO_SHIP,
+  JobStatus.COMPLETED,
+];
+
+// The phases that correspond to active work (used for progress updates)
+const ACTIVE_PHASES = [
+  JobStatus.STONE_RECEIVED,
+  JobStatus.PRE_FORMING,
+  JobStatus.FACETING,
+  JobStatus.POLISHED,
+  JobStatus.READY_TO_SHIP,
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /api/v1/cutting-jobs
+// Buyer requests a cutter to process a rough gem
+// ─────────────────────────────────────────────────────────────────────────────
 export const requestCutter = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const { cutterId, gemId, instructions, expectedFinishDate, agreedPrice } = req.body;
+  const { cutterId, gemId, instructions, expectedFinishDate, agreedPrice, stoneDetails, targetCut } = req.body;
   const buyerId = req.user!._id;
 
   // Validate inputs
@@ -59,8 +81,11 @@ export const requestCutter = asyncHandler(async (req: AuthRequest, res: Response
     instructions,
     expectedFinishDate: finishDate,
     agreedPrice,
+    stoneDetails: stoneDetails || '',
+    targetCut: targetCut || '',
     jobStatus: JobStatus.PENDING_ACCEPTANCE,
     status: CuttingStatus.PENDING,
+    progressLogs: [],
   });
 
   // Populate references for response
@@ -71,10 +96,10 @@ export const requestCutter = asyncHandler(async (req: AuthRequest, res: Response
   );
 });
 
-/**
- * PUT /api/v1/cutting-jobs/:id/status
- * Cutter updates the job status and progress
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// PUT /api/v1/cutting-jobs/:id/status
+// Cutter updates the job status and progress
+// ─────────────────────────────────────────────────────────────────────────────
 export const updateJobStatus = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id: jobId } = req.params;
   const { jobStatus, actualWeightCarats, progressImages, notes } = req.body;
@@ -96,27 +121,21 @@ export const updateJobStatus = asyncHandler(async (req: AuthRequest, res: Respon
     throw new ApiError(403, 'You can only update jobs assigned to you');
   }
 
-  // Verify the job is not already completed
+  // Verify the job is not already completed or rejected
   if (job.jobStatus === JobStatus.COMPLETED) {
     throw new ApiError(400, 'Cannot update a completed job');
   }
 
-  // Validate status progression (optional but recommended)
-  const statusProgression = [
-    JobStatus.PENDING_ACCEPTANCE,
-    JobStatus.STONE_RECEIVED,
-    JobStatus.PRE_FORMING,
-    JobStatus.FACETING,
-    JobStatus.POLISHED,
-    JobStatus.READY_TO_SHIP,
-    JobStatus.COMPLETED,
-  ];
+  if (job.jobStatus === JobStatus.REJECTED) {
+    throw new ApiError(400, 'Cannot update a rejected job');
+  }
 
+  // Validate status progression
   if (jobStatus) {
-    const currentIndex = statusProgression.indexOf(job.jobStatus);
-    const newIndex = statusProgression.indexOf(jobStatus);
+    const currentIndex = STATUS_PROGRESSION.indexOf(job.jobStatus);
+    const newIndex = STATUS_PROGRESSION.indexOf(jobStatus);
 
-    // Allow updates to same status or next status
+    // Allow updates to same status or next status only
     if (newIndex > currentIndex + 1) {
       throw new ApiError(
         400,
@@ -127,10 +146,17 @@ export const updateJobStatus = asyncHandler(async (req: AuthRequest, res: Respon
     // Update job status
     job.jobStatus = jobStatus;
 
+    // Push a progress log entry for the phase transition
+    job.progressLogs.push({
+      phase: jobStatus,
+      note: notes || `Status advanced to ${jobStatus}`,
+      date: new Date(),
+    });
+
     // If job is completed, record actual finish date
     if (jobStatus === JobStatus.COMPLETED) {
       job.actualFinishDate = new Date();
-      
+
       // Update linked order status (if exists)
       if (job.orderId) {
         await Order.findByIdAndUpdate(
@@ -164,13 +190,13 @@ export const updateJobStatus = asyncHandler(async (req: AuthRequest, res: Respon
   res.json(new ApiResponse(200, job, `Job status updated to ${job.jobStatus}`));
 });
 
-/**
- * GET /api/v1/cutting-jobs/my-jobs
- * Fetch jobs based on user role:
- * - Cutter: Shows jobs assigned to them (their queue)
- * - Buyer: Shows jobs they requested
- * - Admin: Shows all jobs
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/v1/cutting-jobs/my-jobs
+// Role-based fetching:
+//   - Cutter: Shows jobs assigned to them (their queue)
+//   - Buyer:  Shows jobs they requested
+//   - Admin:  Shows all jobs
+// ─────────────────────────────────────────────────────────────────────────────
 export const getMyJobs = asyncHandler(async (req: AuthRequest, res: Response) => {
   const userId = req.user!._id;
   const userRoles = req.user!.roles;
@@ -216,8 +242,8 @@ export const getMyJobs = asyncHandler(async (req: AuthRequest, res: Response) =>
   // Provide summary information
   const summary = {
     total: jobs.length,
-    byStatus: Object.values(JobStatus).reduce((acc, status) => {
-      acc[status] = jobs.filter(job => job.jobStatus === status).length;
+    byStatus: Object.values(JobStatus).reduce((acc, s) => {
+      acc[s] = jobs.filter(job => job.jobStatus === s).length;
       return acc;
     }, {} as Record<JobStatus, number>),
   };
@@ -227,10 +253,38 @@ export const getMyJobs = asyncHandler(async (req: AuthRequest, res: Response) =>
   );
 });
 
-/**
- * GET /api/v1/cutting-jobs/:id
- * Get details of a specific cutting job
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/v1/cutting-jobs/cutter
+// Dedicated endpoint: Fetch only jobs assigned to the authenticated cutter
+// ─────────────────────────────────────────────────────────────────────────────
+export const getCutterJobs = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const cutterId = req.user!._id;
+
+  const jobs = await CuttingJob.find({ cutterId })
+    .populate('buyerId', 'firstName lastName email phone')
+    .populate('gemId', 'name caratWeight quality color')
+    .sort({ createdAt: -1 })
+    .lean();
+
+  const summary = {
+    total: jobs.length,
+    pending: jobs.filter(j => j.jobStatus === JobStatus.PENDING_ACCEPTANCE).length,
+    active: jobs.filter(j =>
+      ACTIVE_PHASES.includes(j.jobStatus as JobStatus)
+    ).length,
+    completed: jobs.filter(j => j.jobStatus === JobStatus.COMPLETED).length,
+    rejected: jobs.filter(j => j.jobStatus === JobStatus.REJECTED).length,
+  };
+
+  res.json(
+    new ApiResponse(200, { jobs, summary }, 'Cutter jobs fetched successfully')
+  );
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/v1/cutting-jobs/:id
+// Get details of a specific cutting job
+// ─────────────────────────────────────────────────────────────────────────────
 export const getJobDetails = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id: jobId } = req.params;
   const userId = req.user!._id;
@@ -256,10 +310,10 @@ export const getJobDetails = asyncHandler(async (req: AuthRequest, res: Response
   res.json(new ApiResponse(200, job, 'Job details fetched'));
 });
 
-/**
- * PUT /api/v1/cutting-jobs/:id/accept
- * Cutter accepts the cutting job (changes status from PENDING_ACCEPTANCE to STONE_RECEIVED)
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// PUT /api/v1/cutting-jobs/:id/accept
+// Cutter accepts the cutting job
+// ─────────────────────────────────────────────────────────────────────────────
 export const acceptJob = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id: jobId } = req.params;
   const cutterId = req.user!._id;
@@ -280,13 +334,150 @@ export const acceptJob = asyncHandler(async (req: AuthRequest, res: Response) =>
   }
 
   job.jobStatus = JobStatus.STONE_RECEIVED;
+  job.status = CuttingStatus.ACCEPTED;
+
+  // Log the acceptance
+  job.progressLogs.push({
+    phase: JobStatus.STONE_RECEIVED,
+    note: 'Job accepted. Awaiting stone delivery.',
+    date: new Date(),
+  });
+
   await job.save();
   await job.populate(['buyerId', 'cutterId', 'gemId']);
 
   res.json(new ApiResponse(200, job, 'Cutting job accepted'));
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// PUT /api/v1/cutting-jobs/:id/reject
+// Cutter rejects a pending cutting job
+// ─────────────────────────────────────────────────────────────────────────────
+export const rejectJob = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { id: jobId } = req.params;
+  const { reason } = req.body;
+  const cutterId = req.user!._id;
+
+  const job = await CuttingJob.findById(jobId);
+  if (!job) {
+    throw new ApiError(404, 'Cutting job not found');
+  }
+
+  // Verify the user is the assigned cutter
+  if (job.cutterId.toString() !== cutterId.toString()) {
+    throw new ApiError(403, 'Only the assigned cutter can reject this job');
+  }
+
+  // Job must be in PENDING_ACCEPTANCE status
+  if (job.jobStatus !== JobStatus.PENDING_ACCEPTANCE) {
+    throw new ApiError(400, `Job is in status: ${job.jobStatus}. Can only reject jobs that are pending acceptance.`);
+  }
+
+  job.jobStatus = JobStatus.REJECTED;
+  job.status = CuttingStatus.FAILED;
+  job.notes = reason || 'Job rejected by cutter.';
+
+  // Log the rejection
+  job.progressLogs.push({
+    phase: JobStatus.REJECTED,
+    note: reason || 'Job rejected by cutter.',
+    date: new Date(),
+  });
+
+  await job.save();
+  await job.populate(['buyerId', 'cutterId', 'gemId']);
+
+  res.json(new ApiResponse(200, job, 'Cutting job rejected'));
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /api/v1/cutting-jobs/:id/progress
+// Cutter advances the currentPhase and pushes a new progress log entry
+// Accepts: { phase, note, photoUrl }
+// ─────────────────────────────────────────────────────────────────────────────
+export const updateJobProgress = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { id: jobId } = req.params;
+  const { phase, note, photoUrl } = req.body;
+  const cutterId = req.user!._id;
+
+  if (!phase) {
+    throw new ApiError(400, 'Phase is required to update progress');
+  }
+
+  // Validate phase is a valid JobStatus
+  if (!Object.values(JobStatus).includes(phase as JobStatus)) {
+    throw new ApiError(400, `Invalid phase. Must be one of: ${ACTIVE_PHASES.join(', ')}`);
+  }
+
+  const job = await CuttingJob.findById(jobId);
+  if (!job) {
+    throw new ApiError(404, 'Cutting job not found');
+  }
+
+  // Verify the user is the assigned cutter
+  if (job.cutterId.toString() !== cutterId.toString()) {
+    throw new ApiError(403, 'Only the assigned cutter can update progress');
+  }
+
+  // Cannot update rejected or completed jobs
+  if (job.jobStatus === JobStatus.REJECTED) {
+    throw new ApiError(400, 'Cannot update progress on a rejected job');
+  }
+  if (job.jobStatus === JobStatus.COMPLETED) {
+    throw new ApiError(400, 'Cannot update progress on a completed job');
+  }
+  if (job.jobStatus === JobStatus.PENDING_ACCEPTANCE) {
+    throw new ApiError(400, 'Cannot update progress on a job that has not been accepted yet');
+  }
+
+  // Validate phase progression (must not skip phases)
+  const currentIndex = STATUS_PROGRESSION.indexOf(job.jobStatus);
+  const newIndex = STATUS_PROGRESSION.indexOf(phase as JobStatus);
+
+  if (newIndex > currentIndex + 1) {
+    throw new ApiError(
+      400,
+      `Cannot skip phases. Current: ${job.jobStatus}, requested: ${phase}. You must advance one step at a time.`
+    );
+  }
+
+  // Advance the job status to the new phase
+  job.jobStatus = phase as JobStatus;
+
+  // Sync the legacy status field
+  if (phase === JobStatus.COMPLETED) {
+    job.status = CuttingStatus.COMPLETED;
+    job.actualFinishDate = new Date();
+    // Update linked order status if exists
+    if (job.orderId) {
+      await Order.findByIdAndUpdate(job.orderId, { status: OrderStatus.PENDING_DISPATCH });
+    }
+  } else {
+    job.status = CuttingStatus.IN_PROGRESS;
+  }
+
+  // Push the progress log entry
+  job.progressLogs.push({
+    phase,
+    note: note || `Advanced to ${phase}`,
+    photoUrl: photoUrl || undefined,
+    date: new Date(),
+  });
+
+  // Add photo to progressImages if provided
+  if (photoUrl) {
+    job.progressImages.push(photoUrl);
+  }
+
+  await job.save();
+  await job.populate(['buyerId', 'cutterId', 'gemId']);
+
+  res.json(new ApiResponse(200, job, `Job progress updated to ${phase}`));
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Backward compatibility exports
+// ─────────────────────────────────────────────────────────────────────────────
 export const hireCutter = requestCutter;
 
 export const updateCuttingProgress = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -310,4 +501,57 @@ export const updateCuttingProgress = asyncHandler(async (req: AuthRequest, res: 
 
   await job.save();
   res.json(new ApiResponse(200, job, 'Progress updated'));
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH /api/v1/cutting-jobs/:id/status
+// Cutter accepts or rejects a cutting job
+// ─────────────────────────────────────────────────────────────────────────────
+export const updateJobStatusPatch = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { id: jobId } = req.params;
+  const { status, reason } = req.body;
+  const cutterId = req.user!._id;
+
+  const job = await CuttingJob.findById(jobId);
+  if (!job) {
+    throw new ApiError(404, 'Cutting job not found');
+  }
+
+  if (job.cutterId.toString() !== cutterId.toString()) {
+    throw new ApiError(403, 'Only the assigned cutter can update this job');
+  }
+
+  const normalizedStatus = status ? status.toLowerCase() : '';
+
+  if (normalizedStatus === 'accepted' || normalizedStatus === 'accept') {
+    if (job.jobStatus !== JobStatus.PENDING_ACCEPTANCE) {
+      throw new ApiError(400, `Cannot accept job in status: ${job.jobStatus}`);
+    }
+    job.jobStatus = JobStatus.STONE_RECEIVED;
+    job.status = CuttingStatus.ACCEPTED;
+    job.progressLogs.push({
+      phase: JobStatus.STONE_RECEIVED,
+      note: 'Job accepted. Awaiting stone delivery.',
+      date: new Date(),
+    });
+  } else if (normalizedStatus === 'rejected' || normalizedStatus === 'reject' || normalizedStatus === 'declined') {
+    if (job.jobStatus !== JobStatus.PENDING_ACCEPTANCE) {
+      throw new ApiError(400, `Cannot reject job in status: ${job.jobStatus}`);
+    }
+    job.jobStatus = JobStatus.REJECTED;
+    job.status = CuttingStatus.FAILED;
+    job.notes = reason || 'Job rejected by cutter.';
+    job.progressLogs.push({
+      phase: JobStatus.REJECTED,
+      note: reason || 'Job rejected by cutter.',
+      date: new Date(),
+    });
+  } else {
+    throw new ApiError(400, `Invalid status value: ${status}. Expected 'Accepted' or 'Rejected'`);
+  }
+
+  await job.save();
+  await job.populate(['buyerId', 'cutterId', 'gemId']);
+
+  res.json(new ApiResponse(200, job, `Job status updated to ${job.jobStatus}`));
 });

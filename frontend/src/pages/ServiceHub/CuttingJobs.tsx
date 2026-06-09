@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { CuttingProgress } from '../../components/serviceHub/CuttingProgress';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { Card, CardContent } from '../../components/ui/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/Tabs';
 import { getCutterJobs, getBuyerCuttingJobs } from '../../services/cutting.service';

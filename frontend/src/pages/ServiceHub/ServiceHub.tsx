@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import {
   Scissors,
   Star,
@@ -17,15 +19,11 @@ import {
   Layers,
   X,
   Camera,
-  FolderKanban,
-  Inbox,
-  CheckCircle,
-  XCircle,
-  Gem,
-  Package
+  FolderKanban
 } from 'lucide-react';
 import { toast } from '../../components/ui/Toast';
 import { useRoleTheme } from '../../utils/theme';
+import { MyCuttingJobs } from './MyCuttingJobs';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared Interfaces
@@ -71,22 +69,6 @@ export interface ActiveJob {
   escrowFee: number;
   logs: { date: string; message: string; phase: string }[];
   progressPhotos: { phase: string; img: string }[];
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// CUTTER-specific: Incoming Job Request from a Buyer
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface IncomingJobRequest {
-  _id: string;
-  buyerName: string;
-  gemName: string;
-  roughWeight: string;
-  targetCut: string;
-  instructions: string;
-  offeredFee: number;
-  requestDate: string;
-  status: 'Pending' | 'Accepted' | 'Declined';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -273,89 +255,6 @@ const INITIAL_BUYER_JOBS: ActiveJob[] = [
   }
 ];
 
-// ─── Cutter: Jobs they are currently working on ───
-const INITIAL_CUTTER_ACTIVE_JOBS: ActiveJob[] = [
-  {
-    _id: 'cjob-201',
-    gemName: 'Ceylon Blue Sapphire (Rough)',
-    roughWeight: '7.8 ct',
-    targetCut: 'Oval Concave Brilliant',
-    instructions: 'Maximize color depth and brilliance. Focus concave facets towards the culet area. Preserve weight above 3.5 carats if possible.',
-    cutterName: 'You',
-    cutterId: 'cutter-self',
-    status: 'Faceting',
-    progress: 70,
-    expectedDate: '2026-06-12',
-    escrowFee: 175500,
-    logs: [
-      { date: '2026-05-24', message: 'Rough gemstone received at Ratnapura laboratory. Integrity checks complete.', phase: 'Stone Received' },
-      { date: '2026-05-26', message: 'Pre-forming process completed. Girdle shape outlined and pavilion dop pin mounted.', phase: 'Pre-forming' },
-      { date: '2026-05-29', message: 'Pavilion faceting completed under 20x magnification. Advancing to crown facets.', phase: 'Faceting' }
-    ],
-    progressPhotos: [
-      { phase: 'Stone Received', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=300' },
-      { phase: 'Pre-forming', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=300' }
-    ]
-  },
-  {
-    _id: 'cjob-202',
-    gemName: 'Ceylon Padparadscha (Rough)',
-    roughWeight: '5.2 ct',
-    targetCut: 'Cushion Modified Brilliant',
-    instructions: 'Preserve the pink-orange hue. Shallow pavilion to maintain pastel saturation. Final weight must exceed 2.5 carats.',
-    cutterName: 'You',
-    cutterId: 'cutter-self',
-    status: 'Pre-forming',
-    progress: 45,
-    expectedDate: '2026-06-20',
-    escrowFee: 117000,
-    logs: [
-      { date: '2026-05-30', message: 'Stone received from Colombo escrow vault. Weight verified at 5.18 carats.', phase: 'Stone Received' },
-      { date: '2026-06-01', message: 'Pre-forming initiated. Mapping optimal symmetry angles for cushion shape.', phase: 'Pre-forming' }
-    ],
-    progressPhotos: [
-      { phase: 'Stone Received', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=300' }
-    ]
-  }
-];
-
-// ─── Cutter: Incoming job requests from buyers ───
-const INITIAL_INCOMING_REQUESTS: IncomingJobRequest[] = [
-  {
-    _id: 'req-301',
-    buyerName: 'Kasun Wijeratne',
-    gemName: 'Rough Ceylon Moonstone (6.8 ct)',
-    roughWeight: '6.8 ct',
-    targetCut: 'Oval Cabochon — High Dome',
-    instructions: 'Maximize blue adularescence. Keep dome height at 60% of width for optimal light play. Must retain minimum 4 carats.',
-    offeredFee: 91800,
-    requestDate: '2026-06-02',
-    status: 'Pending',
-  },
-  {
-    _id: 'req-302',
-    buyerName: 'Dinesh Karunaratne',
-    gemName: 'Rough Ceylon Spinel (4.3 ct)',
-    roughWeight: '4.3 ct',
-    targetCut: 'Round Brilliant — 57 Facet',
-    instructions: 'Standard round brilliant with excellent symmetry. Vivid red color must be preserved. Table size 55-58%. Crown angle 34°.',
-    offeredFee: 141900,
-    requestDate: '2026-06-01',
-    status: 'Pending',
-  },
-  {
-    _id: 'req-303',
-    buyerName: 'Amaya Rajapaksha',
-    gemName: 'Rough Ceylon Alexandrite (3.1 ct)',
-    roughWeight: '3.1 ct',
-    targetCut: 'Emerald Step Cut',
-    instructions: 'Color-change effect must be clearly visible under both daylight and incandescent. Keep depth ratio under 70%.',
-    offeredFee: 102300,
-    requestDate: '2026-05-28',
-    status: 'Pending',
-  }
-];
-
 // Mock buyer owned rough gemstones (for hiring modal)
 const MOCK_OWNED_GEMS = [
   { id: 'gem-1', name: 'Rough Ceylon Padparadscha (9.2 ct) - Sunset Pink-Orange', weight: '9.2 ct' },
@@ -372,11 +271,13 @@ export const ServiceHub: React.FC = () => {
   const navigate = useNavigate();
   const { role: activeRole } = useRoleTheme();
 
-  const isCutter = activeRole === 'CUTTER';
+  const { user } = useSelector((state: RootState) => state.auth);
+  const isCutterUser = user?.roles.includes('CUTTER');
+  const isCutter = activeRole === 'CUTTER' || isCutterUser;
 
   // ─── BUYER/SELLER State ───
   const [activeTab, setActiveTab] = useState<'find-cutter' | 'my-jobs'>(() => {
-    if (location.pathname.endsWith('/jobs')) return 'my-jobs';
+    if (isCutterUser || location.pathname.endsWith('/jobs')) return 'my-jobs';
     return 'find-cutter';
   });
   const [cutters] = useState<Cutter[]>(MOCK_CUTTERS);
@@ -393,23 +294,12 @@ export const ServiceHub: React.FC = () => {
   const [showDemoControls, setShowDemoControls] = useState(true);
   const [newLogMessage, setNewLogMessage] = useState<Record<string, string>>({});
 
-  // ─── CUTTER State ───
-  const [cutterTab, setCutterTab] = useState<'incoming' | 'active'>(() => {
-    if (location.pathname.endsWith('/jobs')) return 'active';
-    return 'incoming';
-  });
-  const [incomingRequests, setIncomingRequests] = useState<IncomingJobRequest[]>(INITIAL_INCOMING_REQUESTS);
-  const [cutterActiveJobs, setCutterActiveJobs] = useState<ActiveJob[]>(INITIAL_CUTTER_ACTIVE_JOBS);
-  const [cutterNewLogMessage, setCutterNewLogMessage] = useState<Record<string, string>>({});
-
   // Sync tabs with route
   useEffect(() => {
     if (location.pathname.endsWith('/jobs')) {
       setActiveTab('my-jobs');
-      setCutterTab('active');
     } else {
       setActiveTab('find-cutter');
-      setCutterTab('incoming');
     }
   }, [location.pathname]);
 
@@ -519,57 +409,6 @@ export const ServiceHub: React.FC = () => {
     }));
     setLogMap(prev => ({ ...prev, [jobId]: '' }));
     toast.success('Log Note Dispatched', 'Your note has been appended to the progress timeline.');
-  };
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // CUTTER Handlers
-  // ─────────────────────────────────────────────────────────────────────────
-
-  const handleCutterTabChange = (tab: 'incoming' | 'active') => {
-    setCutterTab(tab);
-    if (tab === 'active') {
-      navigate('/service-hub/jobs');
-    } else {
-      navigate('/service-hub');
-    }
-  };
-
-  const handleAcceptRequest = (requestId: string) => {
-    const request = incomingRequests.find(r => r._id === requestId);
-    if (!request) return;
-
-    setIncomingRequests(prev => prev.map(r =>
-      r._id === requestId ? { ...r, status: 'Accepted' as const } : r
-    ));
-
-    const newJob: ActiveJob = {
-      _id: `cjob-${Date.now()}`,
-      gemName: request.gemName,
-      roughWeight: request.roughWeight,
-      targetCut: request.targetCut,
-      instructions: request.instructions,
-      cutterName: 'You',
-      cutterId: 'cutter-self',
-      status: 'Stone Received',
-      progress: 20,
-      expectedDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      escrowFee: request.offeredFee,
-      logs: [
-        { date: new Date().toISOString().split('T')[0], message: `Job accepted from ${request.buyerName}. Awaiting gemstone shipment to workshop.`, phase: 'Stone Received' }
-      ],
-      progressPhotos: []
-    };
-
-    setCutterActiveJobs(prev => [newJob, ...prev]);
-    toast.success('Job Accepted!', `You accepted the cutting request from ${request.buyerName}. ${formatLKR(request.offeredFee)} has been secured in escrow.`);
-    handleCutterTabChange('active');
-  };
-
-  const handleDeclineRequest = (requestId: string) => {
-    setIncomingRequests(prev => prev.map(r =>
-      r._id === requestId ? { ...r, status: 'Declined' as const } : r
-    ));
-    toast.info('Request Declined', 'The buyer has been notified.');
   };
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -789,210 +628,7 @@ export const ServiceHub: React.FC = () => {
   // ═══════════════════════════════════════════════════════════════════════════
 
   if (isCutter) {
-    const pendingRequests = incomingRequests.filter(r => r.status === 'Pending');
-    const processedRequests = incomingRequests.filter(r => r.status !== 'Pending');
-
-    return (
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-              <Scissors className="h-8 w-8 text-purple-600 animate-pulse" />
-              Lapidary Dashboard
-            </h1>
-            <p className="text-slate-600 mt-1 max-w-xl text-sm">
-              Manage incoming cutting requests from buyers, accept new commissions, and track your active lapidary jobs.
-            </p>
-          </div>
-
-          {/* Tab Switcher */}
-          <div className="bg-white/50 backdrop-blur-md rounded-2xl p-1.5 border border-white/80 shadow-md flex gap-2 w-fit">
-            <button
-              onClick={() => handleCutterTabChange('incoming')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer relative ${
-                cutterTab === 'incoming'
-                  ? 'bg-purple-600 text-white shadow-md hover:bg-purple-700'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
-              }`}
-            >
-              <Inbox className="h-4 w-4" />
-              Incoming Requests
-              {pendingRequests.length > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm ring-1 ring-white">
-                  {pendingRequests.length}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => handleCutterTabChange('active')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer relative ${
-                cutterTab === 'active'
-                  ? 'bg-purple-600 text-white shadow-md hover:bg-purple-700'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
-              }`}
-            >
-              <FolderKanban className="h-4 w-4" />
-              Active Jobs
-              {cutterActiveJobs.length > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-teal-500 text-[9px] font-bold text-white shadow-sm ring-1 ring-white">
-                  {cutterActiveJobs.length}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* ─── CUTTER TAB: Incoming Job Requests ─── */}
-        {cutterTab === 'incoming' && (
-          <div className="space-y-6">
-            {/* Pending Requests */}
-            {pendingRequests.length === 0 && processedRequests.length === 0 ? (
-              <div className="bg-white/30 backdrop-blur-xl border border-white/50 rounded-3xl p-12 text-center">
-                <Inbox className="h-12 w-12 text-slate-400 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-slate-900">No Incoming Requests</h3>
-                <p className="text-xs text-slate-600 mt-1">You have no pending cutting requests from buyers at the moment.</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {/* Pending */}
-                {pendingRequests.length > 0 && (
-                  <div className="space-y-3">
-                    <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                      <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-                      Pending Review ({pendingRequests.length})
-                    </h2>
-                    {pendingRequests.map(req => (
-                      <div
-                        key={req._id}
-                        className="bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-2xl p-6 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300"
-                      >
-                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                          <div className="flex gap-4 items-start flex-1">
-                            <div className="h-12 w-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-700 flex-shrink-0">
-                              <Gem className="h-6 w-6" />
-                            </div>
-                            <div className="flex-1 space-y-2">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="text-lg font-extrabold text-slate-900">{req.gemName}</h3>
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-700 border border-amber-500/20">
-                                  Pending
-                                </span>
-                              </div>
-                              <div className="flex flex-wrap gap-3 text-xs text-slate-600">
-                                <span className="flex items-center gap-1">
-                                  <User className="h-3 w-3" /> Buyer: <strong className="text-slate-900">{req.buyerName}</strong>
-                                </span>
-                                <span className="font-semibold bg-white/70 px-2 py-0.5 rounded border border-slate-200">
-                                  Weight: {req.roughWeight}
-                                </span>
-                                <span className="font-semibold bg-white/70 px-2 py-0.5 rounded border border-slate-200">
-                                  Target: {req.targetCut}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="h-3 w-3" /> {req.requestDate}
-                                </span>
-                              </div>
-                              <div className="bg-white/50 backdrop-blur-md rounded-xl p-3 border border-white/60 mt-2">
-                                <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                  <strong className="text-slate-900">Instructions:</strong> {req.instructions}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col items-end gap-3 shrink-0">
-                            <div className="text-right">
-                              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">
-                                Offered Fee
-                              </span>
-                              <p className="text-2xl font-black text-teal-600">
-                                {formatLKR(req.offeredFee)}
-                              </p>
-                            </div>
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleAcceptRequest(req._id)}
-                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all duration-200 hover:scale-[1.02] cursor-pointer"
-                              >
-                                <CheckCircle className="h-4 w-4" />
-                                Accept
-                              </button>
-                              <button
-                                onClick={() => handleDeclineRequest(req._id)}
-                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 shadow-sm transition-all duration-200 cursor-pointer"
-                              >
-                                <XCircle className="h-4 w-4" />
-                                Decline
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Processed Requests */}
-                {processedRequests.length > 0 && (
-                  <div className="space-y-3 mt-6">
-                    <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                      Previously Processed ({processedRequests.length})
-                    </h2>
-                    {processedRequests.map(req => (
-                      <div
-                        key={req._id}
-                        className="bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl p-4 opacity-60"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className={`h-8 w-8 rounded-xl flex items-center justify-center ${
-                              req.status === 'Accepted' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'
-                            }`}>
-                              {req.status === 'Accepted' ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-                            </div>
-                            <div>
-                              <p className="text-sm font-bold text-slate-700">{req.gemName}</p>
-                              <p className="text-[11px] text-slate-500">from {req.buyerName} • {req.requestDate}</p>
-                            </div>
-                          </div>
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${
-                            req.status === 'Accepted'
-                              ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20'
-                              : 'bg-rose-500/10 text-rose-700 border-rose-500/20'
-                          }`}>
-                            {req.status}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ─── CUTTER TAB: Active Jobs ─── */}
-        {cutterTab === 'active' && (
-          <div className="space-y-8">
-            {cutterActiveJobs.length === 0 ? (
-              <div className="bg-white/30 backdrop-blur-xl border border-white/50 rounded-3xl p-12 text-center">
-                <Package className="h-12 w-12 text-slate-400 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-slate-900">No Active Cutting Jobs</h3>
-                <p className="text-xs text-slate-600 mt-1">Accept an incoming request to start a new cutting job.</p>
-              </div>
-            ) : (
-              <div className="space-y-8">
-                {cutterActiveJobs.map(job =>
-                  renderJobCard(job, cutterActiveJobs, setCutterActiveJobs, cutterNewLogMessage, setCutterNewLogMessage, false)
-                )}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
+    return <MyCuttingJobs />;
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1015,17 +651,19 @@ export const ServiceHub: React.FC = () => {
 
         {/* Tab Switcher */}
         <div className="bg-white/50 backdrop-blur-md rounded-2xl p-1.5 border border-white/80 shadow-md flex gap-2 w-fit">
-          <button
-            onClick={() => handleTabChange('find-cutter')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
-              activeTab === 'find-cutter'
-                ? 'bg-teal-600 text-white shadow-md hover:bg-teal-700'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
-            }`}
-          >
-            <User className="h-4 w-4" />
-            Find a Cutter
-          </button>
+          {!isCutterUser && (
+            <button
+              onClick={() => handleTabChange('find-cutter')}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${
+                activeTab === 'find-cutter'
+                  ? 'bg-teal-600 text-white shadow-md hover:bg-teal-700'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
+              }`}
+            >
+              <User className="h-4 w-4" />
+              Find a Cutter
+            </button>
+          )}
           <button
             onClick={() => handleTabChange('my-jobs')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer relative ${

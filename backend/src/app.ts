@@ -78,6 +78,7 @@ app.use('/api/v1/gemstones', gemstoneRoutes);
 app.use('/api/v1/bids', bidRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/cutting', cuttingRoutes);
+app.use('/api/v1/jobs', cuttingRoutes);
 app.use('/api/disputes', disputeRoutes);
 app.use('/api/v1/disputes', disputeRoutes);
 app.use('/api/admin', adminRoutes);
