@@ -138,7 +138,7 @@ export const getDisputes = asyncHandler(async (req: AuthRequest, res: Response) 
   // Summary info
   const summary = {
     total: disputes.length,
-    byStatus: Object.values(DisputeStatus).reduce((acc, status) => {
+    byStatus: Object.values(DisputeStatus).reduce((acc: Record<string, number>, status) => {
       acc[status] = disputes.filter((d) => d.status === status).length;
       return acc;
     }, {} as Record<string, number>),

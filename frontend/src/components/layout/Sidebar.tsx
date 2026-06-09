@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { roleThemeMap, UserRole } from '../../utils/theme';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
@@ -24,8 +24,6 @@ import {
   Lock,
   ChevronDown,
   LogOut,
-  Shield,
-  TrendingUp,
   LucideIcon
 } from 'lucide-react';
 
@@ -33,6 +31,7 @@ interface SubMenuItem {
   name: string;
   href: string;
   icon: LucideIcon;
+  roles?: string[];
 }
 
 interface NavItemConfig {
@@ -70,10 +69,16 @@ const navConfig: NavItemConfig[] = [
     badgeKey: 'disputesCount',
   },
   {
+    name: 'KYC Verifications',
+    href: '/admin/kyc',
+    icon: ShieldCheck,
+    roles: ['ADMIN'],
+  },
+  {
     name: 'Marketplace',
     href: '/marketplace',
     icon: ShoppingBag,
-    roles: ['BUYER', 'SELLER'],
+    roles: ['BUYER'],
   },
   {
     name: 'My Orders',
@@ -119,41 +124,26 @@ const navConfig: NavItemConfig[] = [
     icon: Settings,
     subItems: [
       { name: 'Profile', href: '/settings/profile', icon: User },
-      { name: 'KYC Verification', href: '/settings/kyc', icon: ShieldCheck },
+      { name: 'KYC Verification', href: '/settings/kyc', icon: ShieldCheck, roles: ['BUYER', 'SELLER', 'CUTTER'] },
       { name: 'Security', href: '/settings/security', icon: Lock },
     ],
   },
 ];
-
-const roleMeta: Record<string, { label: string; badgeBg: string; color: string; icon: LucideIcon }> = {
-  ADMIN: { label: 'Admin View', badgeBg: 'bg-amber-500/10 text-amber-700 border-amber-500/25', color: 'text-amber-600', icon: Shield },
-  BUYER: { label: 'Buyer View', badgeBg: 'bg-sky-500/10 text-sky-700 border-sky-500/25', color: 'text-sky-600', icon: ShoppingBag },
-  SELLER: { label: 'Seller View', badgeBg: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/25', color: 'text-emerald-600', icon: TrendingUp },
-  CUTTER: { label: 'Cutter View', badgeBg: 'bg-purple-500/10 text-purple-700 border-purple-500/25', color: 'text-purple-600', icon: Scissors },
-};
 
 export const Sidebar: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { sidebarOpen } = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const userRoles = user?.roles || [];
-  // For demonstration & testing, list all standard roles if profile doesn't have multiple roles
-  const availableRoles = userRoles.length > 0 ? userRoles : ['BUYER', 'SELLER', 'CUTTER', 'ADMIN'];
-
-  const [activeRole, setActiveRole] = useState<string>(() => {
-    return localStorage.getItem('activeSidebarRole') || availableRoles[0] || 'BUYER';
-  });
-
+  // Primary active role is the first defined role in the user's roles array (defaults to 'BUYER' as fallback)
+  const activeRole = user?.roles[0] || 'BUYER';
   const activeTheme = roleThemeMap[activeRole as UserRole] || roleThemeMap.BUYER;
 
   const [settingsExpanded, setSettingsExpanded] = useState(() => {
     return location.pathname.startsWith('/settings');
   });
-
-  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Sync settings expansion if active route changes to a sub-page
   useEffect(() => {
@@ -162,27 +152,10 @@ export const Sidebar: React.FC = () => {
     }
   }, [location.pathname]);
 
-  // Sync active role with user updates
+  // Keep other dynamic layout components in sync with changes in the active user's role
   useEffect(() => {
-    if (userRoles.length > 0 && !userRoles.includes(activeRole)) {
-      setActiveRole(userRoles[0]);
-      localStorage.setItem('activeSidebarRole', userRoles[0]);
-      window.dispatchEvent(new Event('activeRoleChanged'));
-    }
-  }, [userRoles, activeRole]);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setRoleDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    window.dispatchEvent(new Event('activeRoleChanged'));
+  }, [activeRole]);
 
   const handleSettingsClick = (e: React.MouseEvent) => {
     if (!sidebarOpen) {
@@ -197,6 +170,9 @@ export const Sidebar: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    sessionStorage.clear();
+    localStorage.clear();
+    navigate('/login');
   };
 
   const filteredNavItems = navConfig.filter(item => {
@@ -236,10 +212,6 @@ export const Sidebar: React.FC = () => {
       </span>
     );
   };
-
-  // Get active role metadata
-  const currentRoleMeta = roleMeta[activeRole] || roleMeta.BUYER;
-  const ActiveRoleIcon = currentRoleMeta.icon;
 
   return (
     <aside 
@@ -293,25 +265,27 @@ export const Sidebar: React.FC = () => {
                   {/* Settings sub-links Accordion */}
                   {settingsExpanded && sidebarOpen && item.subItems && (
                     <div className="pl-9 pr-2 space-y-1 mt-1 border-l border-slate-200/60 ml-6 animate-in slide-in-from-top-2 duration-200">
-                      {item.subItems.map((subItem) => {
-                        const SubIcon = subItem.icon;
-                        return (
-                          <NavLink
-                            key={subItem.name}
-                            to={subItem.href}
-                            className={({ isActive }) =>
-                              `flex items-center px-3 py-2 text-xs font-medium rounded-lg transition-all duration-150 ${
-                                isActive
-                                  ? `${activeTheme.lightBg} ${activeTheme.lightText} font-semibold`
-                                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-855'
-                              }`
-                            }
-                          >
-                            <SubIcon className="h-4 w-4 mr-2.5 text-slate-400 flex-shrink-0" />
-                            <span>{subItem.name}</span>
-                          </NavLink>
-                        );
-                      })}
+                      {item.subItems
+                        .filter(subItem => !subItem.roles || subItem.roles.includes(activeRole))
+                        .map((subItem) => {
+                          const SubIcon = subItem.icon;
+                          return (
+                            <NavLink
+                              key={subItem.name}
+                              to={subItem.href}
+                              className={({ isActive }) =>
+                                `flex items-center px-3 py-2 text-xs font-medium rounded-lg transition-all duration-150 ${
+                                  isActive
+                                    ? `${activeTheme.lightBg} ${activeTheme.lightText} font-semibold`
+                                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-855'
+                                }`
+                              }
+                            >
+                              <SubIcon className="h-4 w-4 mr-2.5 text-slate-400 flex-shrink-0" />
+                              <span>{subItem.name}</span>
+                            </NavLink>
+                          );
+                        })}
                     </div>
                   )}
                 </div>
@@ -345,94 +319,12 @@ export const Sidebar: React.FC = () => {
           })}
         </nav>
 
-        {/* Footer Area: Switch View & Logout */}
-        <div className="mt-auto px-3 pt-4 border-t border-white/40 space-y-2">
-          {/* Active View Selector */}
-          <div ref={dropdownRef} className="relative">
-            {sidebarOpen ? (
-              // Expanded Role Switcher
-              <div>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 px-1">
-                  Active View
-                </p>
-                <button
-                  onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 shadow-sm transition-all duration-200 cursor-pointer ${
-                    roleDropdownOpen ? `ring-2 ${activeTheme.ring}` : ''
-                  }`}
-                >
-                  <div className="flex items-center min-w-0">
-                    <ActiveRoleIcon className={`h-4 w-4 mr-2 flex-shrink-0 ${currentRoleMeta.color}`} />
-                    <span className="truncate">{currentRoleMeta.label}</span>
-                  </div>
-                  <ChevronDown className={`h-3 w-3 text-slate-400 transition-transform duration-200 flex-shrink-0 ml-1 ${roleDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-              </div>
-            ) : (
-              // Collapsed Role Switcher (Compact Circle Badge with Popover)
-              <div className="flex justify-center">
-                <button
-                  onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-                  title={`Switch Perspective (${currentRoleMeta.label})`}
-                  className={`flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm transition-all duration-200 cursor-pointer ${
-                    roleDropdownOpen ? `ring-2 ${activeTheme.ring}` : ''
-                  }`}
-                >
-                  <ActiveRoleIcon className={`h-4 w-4 ${currentRoleMeta.color}`} />
-                </button>
-              </div>
-            )}
-
-            {/* Dropdown Floating Options list */}
-            {roleDropdownOpen && (
-              <div 
-                className={`absolute z-50 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden animate-in fade-in duration-200 ${
-                  sidebarOpen 
-                    ? 'bottom-full left-0 right-0 mb-2 slide-in-from-bottom-2' 
-                    : 'left-16 bottom-0 w-48 slide-in-from-left-2'
-                }`}
-              >
-                {!sidebarOpen && (
-                  <div className="px-3 py-1.5 border-b border-slate-100 text-[9px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50/50">
-                    Switch Perspective
-                  </div>
-                )}
-                <div className="py-1">
-                  {availableRoles.map((role) => {
-                    const meta = roleMeta[role] || roleMeta.BUYER;
-                    const RoleIcon = meta.icon;
-                    const isActive = role === activeRole;
-                    const roleTheme = roleThemeMap[role as UserRole] || roleThemeMap.BUYER;
-                    return (
-                      <button
-                        key={role}
-                        onClick={() => {
-                          setActiveRole(role);
-                          localStorage.setItem('activeSidebarRole', role);
-                          setRoleDropdownOpen(false);
-                          window.dispatchEvent(new Event('activeRoleChanged'));
-                        }}
-                        className={`w-full flex items-center px-3 py-2.5 text-xs text-left transition-all duration-150 cursor-pointer ${
-                          isActive 
-                            ? `${roleTheme.lightBg} ${roleTheme.lightText} font-semibold border-l-2 ${roleTheme.borderL}` 
-                            : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900 border-l-2 border-transparent'
-                        }`}
-                      >
-                        <RoleIcon className={`h-4 w-4 mr-2.5 flex-shrink-0 ${isActive ? roleTheme.text : 'text-slate-400'}`} />
-                        <span className="truncate">{meta.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Logout Button */}
+        {/* Footer Area: Logout */}
+        <div className="mt-auto px-3 py-4 border-t border-slate-200/60">
           {sidebarOpen ? (
             <button
               onClick={handleLogout}
-              className="flex items-center w-full px-4 py-2.5 my-1 text-sm font-medium rounded-xl transition-all duration-200 text-rose-600 hover:bg-rose-500/10 hover:text-rose-700 cursor-pointer"
+              className="flex items-center w-full px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 text-rose-600 hover:bg-rose-500/10 hover:text-rose-700 cursor-pointer"
             >
               <LogOut className="h-5 w-5 mr-3 flex-shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
               <span className="truncate">Logout</span>

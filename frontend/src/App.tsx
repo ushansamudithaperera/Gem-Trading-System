@@ -28,6 +28,10 @@ import { CutterDashboard } from './pages/Dashboard/CutterDashboard';
 import { AdminDashboard } from './pages/Dashboard/AdminDashboard';
 import { Bids } from './pages/Bids/Bids';
 import { Settings } from './pages/Settings/Settings';
+import { AdminKYC } from './pages/Admin/AdminKYC';
+import { UserManagement } from './pages/Admin/UserManagement';
+import { AllSystemOrders } from './pages/Admin/AllSystemOrders';
+import { Wallet } from './pages/Wallet/Wallet';
 
 // Common Components
 import { PrivateRoute } from './components/common/PrivateRoute';
@@ -162,10 +166,22 @@ function AppContent() {
                   <Route path="/settings/:tab" element={<Settings />} />
                 </Route>
 
-                {/* Buyer + Cutter routes */}
-                <Route element={<PrivateRoute allowedRoles={['BUYER', 'CUTTER']} />}>
+                {/* Admin-only routes */}
+                <Route element={<PrivateRoute allowedRoles={['ADMIN']} />}>
+                  <Route path="/admin/kyc" element={<AdminKYC />} />
+                  <Route path="/admin/users" element={<UserManagement />} />
+                  <Route path="/admin/orders" element={<AllSystemOrders />} />
+                </Route>
+
+                {/* Buyer + Seller + Cutter routes */}
+                <Route element={<PrivateRoute allowedRoles={['BUYER', 'SELLER', 'CUTTER']} />}>
                   <Route path="/service-hub" element={<ServiceHub />} />
                   <Route path="/service-hub/jobs" element={<ServiceHub />} />
+                </Route>
+
+                {/* Seller + Cutter routes */}
+                <Route element={<PrivateRoute allowedRoles={['SELLER', 'CUTTER']} />}>
+                  <Route path="/wallet" element={<Wallet />} />
                 </Route>
 
                 {/* 404 */}

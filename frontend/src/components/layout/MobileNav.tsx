@@ -48,8 +48,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({ open, onClose }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    sessionStorage.clear();
+    localStorage.clear();
     onClose();
-    navigate('/');
+    navigate('/login');
   };
 
   return (

@@ -32,13 +32,20 @@ import {
 } from 'lucide-react';
 
 export const Settings: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { tab } = useParams<{ tab?: string }>();
 
   // Determine active tab based on URL param, defaulting to 'profile'
   const activeTab = tab || 'profile';
+
+  // Redirect admin users if they try to access kyc settings directly
+  useEffect(() => {
+    if (activeTab === 'kyc' && isAdmin) {
+      navigate('/settings/profile', { replace: true });
+    }
+  }, [activeTab, isAdmin, navigate]);
 
   // --- Profile State ---
   const [profileForm, setProfileForm] = useState({
@@ -340,20 +347,22 @@ export const Settings: React.FC = () => {
               Profile Details
             </button>
 
-            <button
-              onClick={() => handleTabChange('kyc')}
-              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all whitespace-nowrap md:w-full ${
-                activeTab === 'kyc'
-                  ? 'bg-white text-emerald-700 shadow-sm border border-slate-200/60 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-              }`}
-            >
-              <Shield className={`w-4 h-4 ${activeTab === 'kyc' ? 'text-emerald-600' : 'text-slate-400'}`} />
-              KYC Verification
-              {kycStatus === 'verified' && (
-                <Check className="w-3.5 h-3.5 ml-auto text-emerald-600 bg-emerald-50 rounded-full" />
-              )}
-            </button>
+            {!isAdmin && (
+              <button
+                onClick={() => handleTabChange('kyc')}
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all whitespace-nowrap md:w-full ${
+                  activeTab === 'kyc'
+                    ? 'bg-white text-emerald-700 shadow-sm border border-slate-200/60 font-semibold'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`}
+              >
+                <Shield className={`w-4 h-4 ${activeTab === 'kyc' ? 'text-emerald-600' : 'text-slate-400'}`} />
+                KYC Verification
+                {kycStatus === 'verified' && (
+                  <Check className="w-3.5 h-3.5 ml-auto text-emerald-600 bg-emerald-50 rounded-full" />
+                )}
+              </button>
+            )}
 
             <button
               onClick={() => handleTabChange('security')}
@@ -545,7 +554,7 @@ export const Settings: React.FC = () => {
             )}
 
             {/* TAB 2: KYC VERIFICATION PANEL */}
-            {activeTab === 'kyc' && (
+            {activeTab === 'kyc' && !isAdmin && (
               <div className="space-y-6">
                 
                 {/* KYC Compliance Status Card */}

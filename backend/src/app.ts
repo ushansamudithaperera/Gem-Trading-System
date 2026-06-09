@@ -14,9 +14,10 @@ import gemstoneRoutes from './routes/v1/gemRoutes';
 import bidRoutes from './routes/v1/bidRoutes';
 import orderRoutes from './routes/v1/order.routes';
 import cuttingRoutes from './routes/v1/cutting.routes';
-import disputeRoutes from './routes/v1/dispute.routes';
+import disputeRoutes from './routes/disputeRoutes';
 import healthRoutes from './routes/v1/health.routes';
 import webhookRoutes from './routes/v1/webhook.routes';
+import adminRoutes from './routes/adminRoutes';
 
 // Middleware
 import { loggingMiddleware, devLoggingMiddleware } from './middleware/logging.middleware';
@@ -77,7 +78,11 @@ app.use('/api/v1/gemstones', gemstoneRoutes);
 app.use('/api/v1/bids', bidRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/cutting', cuttingRoutes);
+app.use('/api/disputes', disputeRoutes);
 app.use('/api/v1/disputes', disputeRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/v1/admin', adminRoutes);
+
 
 // 404 handler
 app.use((req: Request, res: Response) => {

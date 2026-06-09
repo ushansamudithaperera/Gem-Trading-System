@@ -15,7 +15,9 @@ export const Header: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
+    sessionStorage.clear();
+    localStorage.clear();
+    navigate('/login');
   };
 
   return (
