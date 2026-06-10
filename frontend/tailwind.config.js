@@ -53,6 +53,7 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.4s ease-out',
+        'shine': 'shine 4s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -62,6 +63,11 @@ module.exports = {
         slideUp: {
           '0%': { transform: 'translateY(20px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        shine: {
+          '0%': { transform: 'translateX(-150%) skewX(-25deg)' },
+          '30%': { transform: 'translateX(150%) skewX(-25deg)' },
+          '100%': { transform: 'translateX(150%) skewX(-25deg)' },
         },
       },
     },

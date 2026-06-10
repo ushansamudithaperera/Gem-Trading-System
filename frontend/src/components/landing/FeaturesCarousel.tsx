@@ -189,19 +189,22 @@ export const FeaturesCarousel: React.FC = () => {
                 onClick={() => goToSlide(idx)}
               >
                 {/* Clean White Card */}
-                <div className="bg-white border border-slate-200 shadow-xl rounded-2xl p-8 flex flex-col items-center justify-center min-h-[380px] hover:shadow-2xl hover:border-blue-200 transition-all duration-300">
+                <div className="relative overflow-hidden z-0 bg-white border border-slate-200 shadow-xl rounded-2xl p-8 flex flex-col items-center justify-center min-h-[380px] hover:shadow-2xl hover:border-blue-200 transition-all duration-300">
+                  {/* Premium Inner Shine Layer */}
+                  <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none z-10 animate-shine" />
+
                   {/* Icon */}
-                  <div className={`${feature.iconBg} p-5 rounded-2xl mb-6 border border-slate-100 transition-all duration-300`}>
+                  <div className={`relative z-20 ${feature.iconBg} p-5 rounded-2xl mb-6 border border-slate-100 transition-all duration-300`}>
                     <Icon className={`w-8 h-8 ${feature.accentColor}`} />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-slate-900 text-xl md:text-2xl font-bold mb-4 tracking-tight">
+                  <h3 className="relative z-20 text-slate-900 text-xl md:text-2xl font-bold mb-4 tracking-tight">
                     {feature.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-slate-700 text-sm md:text-base leading-relaxed text-center">
+                  <p className="relative z-20 text-slate-700 text-sm md:text-base leading-relaxed text-center">
                     {feature.description}
                   </p>
                 </div>
