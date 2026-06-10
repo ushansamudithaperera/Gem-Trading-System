@@ -7,7 +7,7 @@ import { Input } from '../../components/ui/Input';
 import { login } from '../../services/auth.service';
 import { setCredentials } from '../../store/slices/authSlice';
 import { toast } from '../../components/ui/Toast';
-import { Eye, EyeOff, LogIn, ArrowLeft, Gem } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Gem, Home, ShoppingBag } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -39,94 +39,112 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-slate-50 to-white">
-      {/* Mini navigation header */}
-      <div className="sticky top-0 z-50 w-full bg-slate-900 shadow-md">
-        <div className="container mx-auto flex h-14 items-center justify-between px-6">
-          <Link to="/" className="flex items-center space-x-2">
-            <Gem className="h-5 w-5 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-lg p-0.5" />
-            <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">GemTrader</span>
-          </Link>
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center text-sm text-slate-300 hover:text-white transition-colors">
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Home
-            </Link>
-            <Link to="/marketplace" className="text-sm text-slate-300 hover:text-white transition-colors hidden sm:inline">
-              Marketplace
-            </Link>
-          </div>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative p-4">
+      {/* Top Right Icon Navigation */}
+      <div className="absolute top-6 right-6 flex items-center gap-3 z-50">
+        <Link
+          to="/"
+          title="Go to Home"
+          className="p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-full transition-all duration-200 relative group flex items-center justify-center bg-white shadow-sm border border-slate-200/50"
+        >
+          <Home className="h-5 w-5" />
+          <span className="absolute right-0 top-12 scale-0 group-hover:scale-100 transition-all duration-150 origin-top rounded bg-slate-800 px-2.5 py-1.5 text-xs text-white whitespace-nowrap shadow-md pointer-events-none z-50 font-semibold">
+            Go to Home
+          </span>
+        </Link>
+        
+        <Link
+          to="/marketplace"
+          title="Go to Marketplace"
+          className="p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-full transition-all duration-200 relative group flex items-center justify-center bg-white shadow-sm border border-slate-200/50"
+        >
+          <ShoppingBag className="h-5 w-5" />
+          <span className="absolute right-0 top-12 scale-0 group-hover:scale-100 transition-all duration-150 origin-top rounded bg-slate-800 px-2.5 py-1.5 text-xs text-white whitespace-nowrap shadow-md pointer-events-none z-50 font-semibold">
+            Go to Marketplace
+          </span>
+        </Link>
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md border-emerald-200 shadow-lg">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xl">💎</span>
-            </div>
-          </div>
-          <CardTitle className="text-2xl text-slate-900">Welcome Back</CardTitle>
-          <p className="text-sm text-slate-600 mt-1">Sign in to your GemTrade account</p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-1">
-                Email Address
-              </label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-900 mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+      {/* Centered Login Card */}
+      <div className="w-full max-w-md">
+        <Card className="border-slate-200/60 shadow-xl bg-white/90 backdrop-blur-md rounded-3xl overflow-hidden">
+          <CardHeader className="text-center pt-8 pb-4">
+            <div className="flex justify-center mb-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <Gem className="h-8 w-8 text-white" />
               </div>
             </div>
-            <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
-                Forgot password?
+            <CardTitle className="text-2xl font-black text-slate-950 tracking-tight">Welcome Back</CardTitle>
+            <p className="text-sm text-slate-500 mt-1.5 font-medium">Sign in to your GemTrade account</p>
+          </CardHeader>
+          
+          <CardContent className="px-8 pb-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label htmlFor="email" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Email Address
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  className="rounded-xl border-slate-200 bg-white/50 focus:bg-white"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    autoComplete="current-password"
+                    className="rounded-xl border-slate-200 bg-white/50 focus:bg-white pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex justify-end">
+                <Link to="/forgot-password" className="text-xs text-emerald-600 hover:text-emerald-700 font-bold transition-colors">
+                  Forgot password?
+                </Link>
+              </div>
+              
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-750 hover:to-emerald-800 text-white font-bold py-2.5 rounded-xl shadow-md shadow-emerald-500/10 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer"
+                disabled={loading}
+              >
+                {loading ? 'Signing in...' : 'Sign In'}
+                {!loading && <LogIn className="h-4 w-4" />}
+              </Button>
+            </form>
+            
+            <div className="mt-6 text-center text-xs text-slate-500 font-medium">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors">
+                Create an account
               </Link>
             </div>
-            <Button type="submit" className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign In'}
-              {!loading && <LogIn className="ml-2 h-4 w-4" />}
-            </Button>
-          </form>
-          <div className="mt-6 text-center text-sm text-slate-600">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-emerald-600 hover:text-emerald-700 font-medium">
-              Create an account
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

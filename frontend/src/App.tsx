@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store';
 import { setLoading, setUser, logout } from './store/slices/authSlice';
@@ -39,8 +39,10 @@ import { LoadingSpinner } from './components/common/LoadingSpinner';
 
 function AppContent() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { isAuthenticated, loading, user } = useSelector((state: RootState) => state.auth);
   const { theme, sidebarOpen } = useSelector((state: RootState) => state.ui);
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   useEffect(() => {
     const initAuth = async () => {
@@ -132,7 +134,7 @@ function AppContent() {
   // Authenticated layout
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-slate-50">
-      <Header />
+      {!isAuthPage && <Header />}
       <div className="flex flex-1 overflow-hidden w-full relative">
         <Sidebar />
         <main className={`flex-1 overflow-y-auto flex flex-col transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'}`}>
