@@ -189,9 +189,9 @@ export const FeaturesCarousel: React.FC = () => {
                 onClick={() => goToSlide(idx)}
               >
                 {/* Clean White Card */}
-                <div className="relative overflow-hidden z-0 bg-white border border-slate-200 shadow-xl rounded-2xl p-8 flex flex-col items-center justify-center min-h-[380px] hover:shadow-2xl hover:border-blue-200 transition-all duration-300">
-                  {/* Premium Inner Shine Layer */}
-                  <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none z-10 animate-shine" />
+                <div className="group relative overflow-hidden z-0 bg-white border border-slate-200 shadow-xl rounded-2xl p-8 flex flex-col items-center justify-center min-h-[380px] hover:shadow-2xl hover:border-blue-200 transition-all duration-300">
+                  {/* Premium Hover Shine Layer */}
+                  <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-20 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none z-10" />
 
                   {/* Icon */}
                   <div className={`relative z-20 ${feature.iconBg} p-5 rounded-2xl mb-6 border border-slate-100 transition-all duration-300`}>
