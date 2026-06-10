@@ -4,7 +4,7 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { GemLoader } from '../components/common/GemLoader';
 import { FeaturesCarousel } from '../components/landing/FeaturesCarousel';
-import { ArrowRight, Check, ShieldCheck, Globe, Award, ShoppingBag, Briefcase, Scissors, Lock, UserCheck, Scale } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck, Globe, Award, ShoppingBag, Briefcase, Scissors } from 'lucide-react';
 import './Landing.css';
 
 export const Landing: React.FC = () => {
@@ -170,27 +170,33 @@ export const Landing: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {/* Card 1: 100% Secured */}
             <div className="stat-card flex flex-col items-center justify-center p-6 text-center bg-white rounded-xl shadow-sm border border-slate-100">
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mb-4 shadow-sm">
-                <Lock className="w-6 h-6" />
-              </div>
+              <img
+                src="/assets/secure-3d.png"
+                alt="100% Secured"
+                className="w-20 h-20 object-contain animate-float drop-shadow-2xl mb-4"
+              />
               <h3 className="text-lg font-bold text-slate-900 mb-1">100% Secured</h3>
               <p className="text-sm font-medium text-slate-700">Bank-grade Escrow Protection</p>
             </div>
 
             {/* Card 2: Verified Traders */}
             <div className="stat-card flex flex-col items-center justify-center p-6 text-center bg-white rounded-xl shadow-sm border border-slate-100">
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-700 mb-4 shadow-sm">
-                <UserCheck className="w-6 h-6" />
-              </div>
+              <img
+                src="/assets/verified-3d.png"
+                alt="Verified Traders"
+                className="w-20 h-20 object-contain animate-float drop-shadow-2xl mb-4"
+              />
               <h3 className="text-lg font-bold text-slate-900 mb-1">Verified Traders</h3>
               <p className="text-sm font-medium text-slate-700">Strict KYC & Identity Checks</p>
             </div>
 
             {/* Card 3: Zero Hidden Fees */}
             <div className="stat-card flex flex-col items-center justify-center p-6 text-center bg-white rounded-xl shadow-sm border border-slate-100">
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-800 mb-4 shadow-sm">
-                <Scale className="w-6 h-6" />
-              </div>
+              <img
+                src="/assets/fees-3d.png"
+                alt="Zero Hidden Fees"
+                className="w-20 h-20 object-contain animate-float drop-shadow-2xl mb-4"
+              />
               <h3 className="text-lg font-bold text-slate-900 mb-1">Zero Hidden Fees</h3>
               <p className="text-sm font-medium text-slate-700">Transparent pricing & commissions</p>
             </div>

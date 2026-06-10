@@ -54,6 +54,7 @@ module.exports = {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.4s ease-out',
         'shine': 'shine 4s ease-in-out infinite',
+        'float': 'float 4s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -68,6 +69,10 @@ module.exports = {
           '0%': { transform: 'translateX(-150%) skewX(-25deg)' },
           '30%': { transform: 'translateX(150%) skewX(-25deg)' },
           '100%': { transform: 'translateX(150%) skewX(-25deg)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
         },
       },
     },
