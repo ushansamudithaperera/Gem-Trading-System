@@ -16,6 +16,14 @@ export interface UserKYC {
   rejectionReason?: string;
 }
 
+export interface LapidaryProfile {
+  description?: string;
+  location?: string;
+  avgTurnaroundDays?: number;
+  specialties?: string[];
+  portfolio?: string[];
+}
+
 export interface User {
   _id: string;
   email: string;
@@ -32,6 +40,7 @@ export interface User {
   rating: number;
   totalTransactions: number;
   kyc?: UserKYC;
+  lapidaryProfile?: LapidaryProfile;
   createdAt: string;
   updatedAt: string;
 }

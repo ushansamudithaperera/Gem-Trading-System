@@ -1,23 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  roles: string[];
-  avatar?: string;
-  phone?: string;
-  businessName?: string;
-  stripeConnectAccountId?: string;
-  kyc?: {
-    documentUrls: string[];
-    status: 'unverified' | 'pending' | 'verified' | 'rejected';
-    submittedAt?: string;
-    reviewedAt?: string;
-    rejectionReason?: string;
-  };
-}
+import { User } from '../../types/user.types';
 
 interface AuthState {
   user: User | null;

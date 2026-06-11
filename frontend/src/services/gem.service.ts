@@ -51,7 +51,10 @@ export const getGemById = async (id: string): Promise<Gem> => {
 };
 
 export const createGem = async (data: FormData | any) => {
-  const response = await api.post('/gems', data);
+  const isFormData = data instanceof FormData;
+  const response = await api.post('/gems', data, {
+    headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined,
+  });
   return response.data.data;
 };
 

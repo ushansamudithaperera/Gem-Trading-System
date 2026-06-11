@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { toast } from '../../components/ui/Toast';
-import { Loader2, Check, User, MapPin, Clock, Star, Image as ImageIcon } from 'lucide-react';
+import { Loader2, Check, User, MapPin, Clock, Star, UploadCloud, X } from 'lucide-react';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -16,24 +16,25 @@ export const CutterProfileSettings: React.FC = () => {
     location: '',
     avgTurnaroundDays: '',
     specialties: '',
-    portfolio: '',
   });
 
+  const [existingPortfolio, setExistingPortfolio] = useState<string[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
   useEffect(() => {
-    // If the user object already has the lapidary profile, we can populate it.
-    // If we want fresh data, we can also fetch from GET /api/v1/users/profile or similar.
-    // Since we just added it to the user object on the backend, we can check if it exists on the auth user.
     if (user?.lapidaryProfile) {
       setForm({
         description: user.lapidaryProfile.description || '',
         location: user.lapidaryProfile.location || '',
         avgTurnaroundDays: user.lapidaryProfile.avgTurnaroundDays?.toString() || '',
         specialties: user.lapidaryProfile.specialties?.join(', ') || '',
-        portfolio: user.lapidaryProfile.portfolio?.join(', ') || '',
       });
+      if (user.lapidaryProfile.portfolio) {
+        setExistingPortfolio(user.lapidaryProfile.portfolio);
+      }
       setFetching(false);
     } else {
-      // In case we need to fetch the profile manually (optional if not in Redux store yet)
       const fetchProfile = async () => {
         try {
           const res = await api.get('/users/profile');
@@ -44,8 +45,10 @@ export const CutterProfileSettings: React.FC = () => {
               location: lapidaryProfile.location || '',
               avgTurnaroundDays: lapidaryProfile.avgTurnaroundDays?.toString() || '',
               specialties: lapidaryProfile.specialties?.join(', ') || '',
-              portfolio: lapidaryProfile.portfolio?.join(', ') || '',
             });
+            if (lapidaryProfile.portfolio) {
+              setExistingPortfolio(lapidaryProfile.portfolio);
+            }
           }
         } catch (error) {
           console.error('Failed to fetch lapidary profile', error);
@@ -57,9 +60,44 @@ export const CutterProfileSettings: React.FC = () => {
     }
   }, [user]);
 
+  // Clean up object URLs to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      
+      if (filesArray.length > 5) {
+        toast.error('Too many files', 'You can only upload up to 5 portfolio images.');
+        return;
+      }
+
+      setSelectedFiles(filesArray);
+      
+      // Generate preview URLs
+      const newPreviews = filesArray.map(file => URL.createObjectURL(file));
+      setPreviewUrls(newPreviews);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
+
+    const updatedPreviews = [...previewUrls];
+    URL.revokeObjectURL(updatedPreviews[index]);
+    updatedPreviews.splice(index, 1);
+    setPreviewUrls(updatedPreviews);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,16 +105,30 @@ export const CutterProfileSettings: React.FC = () => {
     setLoading(true);
 
     try {
-      const payload = {
-        description: form.description,
-        location: form.location,
-        avgTurnaroundDays: form.avgTurnaroundDays ? parseInt(form.avgTurnaroundDays, 10) : undefined,
-        specialties: form.specialties.split(',').map((s) => s.trim()).filter(Boolean),
-        portfolio: form.portfolio.split(',').map((s) => s.trim()).filter(Boolean),
-      };
+      const formData = new FormData();
+      formData.append('description', form.description);
+      formData.append('location', form.location);
+      if (form.avgTurnaroundDays) {
+        formData.append('avgTurnaroundDays', form.avgTurnaroundDays);
+      }
+      formData.append('specialties', form.specialties); // The backend splits this by comma
 
-      await api.put('/users/cutter-profile', payload);
+      selectedFiles.forEach((file) => {
+        formData.append('portfolio', file);
+      });
+
+      await api.put('/users/cutter-profile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       toast.success('Profile Updated', 'Your Lapidary public profile has been updated successfully.');
+      
+      // Clear selections on success
+      setSelectedFiles([]);
+      setPreviewUrls([]);
+      
     } catch (error: any) {
       const message = error.response?.data?.message || 'Failed to update profile';
       toast.error('Update Failed', message);
@@ -94,7 +146,7 @@ export const CutterProfileSettings: React.FC = () => {
   }
 
   return (
-    <Card className="border border-slate-200 shadow-sm">
+    <Card className="border border-slate-200 shadow-sm mt-6">
       <CardHeader>
         <CardTitle className="text-xl font-bold text-slate-900">Lapidary Public Profile</CardTitle>
         <CardDescription className="text-slate-500">
@@ -103,6 +155,8 @@ export const CutterProfileSettings: React.FC = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
+          
+          {/* Bio / Description */}
           <div className="space-y-1.5">
             <label htmlFor="description" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
               About Me / Bio
@@ -122,6 +176,7 @@ export const CutterProfileSettings: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Location */}
             <div className="space-y-1.5">
               <label htmlFor="location" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
                 Location
@@ -140,6 +195,7 @@ export const CutterProfileSettings: React.FC = () => {
               </div>
             </div>
 
+            {/* Average Turnaround Time */}
             <div className="space-y-1.5">
               <label htmlFor="avgTurnaroundDays" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
                 Average Turnaround Time (Days)
@@ -160,6 +216,7 @@ export const CutterProfileSettings: React.FC = () => {
             </div>
           </div>
 
+          {/* Specialties */}
           <div className="space-y-1.5">
             <label htmlFor="specialties" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
               Specialties (Comma Separated)
@@ -179,23 +236,67 @@ export const CutterProfileSettings: React.FC = () => {
             <p className="text-[10px] text-slate-400 ml-1">List your top skills separated by commas.</p>
           </div>
 
-          <div className="space-y-1.5">
-            <label htmlFor="portfolio" className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-              Portfolio Image URLs (Comma Separated)
+          {/* Real File Upload - Portfolio */}
+          <div className="space-y-3">
+            <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
+              Portfolio Images (Max 5)
             </label>
-            <div className="relative">
-              <Input
-                id="portfolio"
-                name="portfolio"
-                type="text"
-                value={form.portfolio}
-                onChange={handleChange}
-                placeholder="e.g., https://example.com/img1.jpg, https://example.com/img2.jpg"
-                className="pl-9"
-              />
-              <ImageIcon className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            
+            {/* File Input */}
+            <div className="flex items-center justify-center w-full">
+              <label htmlFor="portfolio-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <UploadCloud className="w-8 h-8 mb-2 text-slate-400" />
+                  <p className="mb-1 text-sm text-slate-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                  <p className="text-xs text-slate-400">JPEG, PNG or WEBP (Max 5MB per file)</p>
+                </div>
+                <input 
+                  id="portfolio-upload" 
+                  type="file" 
+                  className="hidden" 
+                  multiple 
+                  accept="image/jpeg, image/png, image/webp" 
+                  onChange={handleFileChange}
+                />
+              </label>
             </div>
-            <p className="text-[10px] text-slate-400 ml-1">Provide URLs to images showcasing your previous work.</p>
+
+            {/* Existing Portfolio (if no new files selected) */}
+            {existingPortfolio.length > 0 && selectedFiles.length === 0 && (
+              <div className="mt-2">
+                <p className="text-xs font-medium text-slate-500 mb-2">Current Portfolio:</p>
+                <div className="flex flex-wrap gap-3">
+                  {existingPortfolio.map((url, idx) => (
+                    <div key={idx} className="relative h-16 w-16 rounded-md overflow-hidden border border-slate-200">
+                      {/* Assuming backend serves them via /uploads/filename */}
+                      <img src={`http://localhost:5000${url}`} alt="Portfolio" className="h-full w-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">Uploading new files will replace your current portfolio.</p>
+              </div>
+            )}
+
+            {/* Selected Files Previews */}
+            {previewUrls.length > 0 && (
+              <div className="mt-2">
+                <p className="text-xs font-medium text-emerald-600 mb-2">New Portfolio Previews:</p>
+                <div className="flex flex-wrap gap-3">
+                  {previewUrls.map((url, idx) => (
+                    <div key={idx} className="relative h-16 w-16 rounded-md overflow-hidden border border-slate-200 group">
+                      <img src={url} alt={`Preview ${idx}`} className="h-full w-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => removeFile(idx)}
+                        className="absolute top-1 right-1 bg-black/60 hover:bg-black/80 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="pt-4 border-t border-slate-100 flex justify-end">
@@ -207,7 +308,7 @@ export const CutterProfileSettings: React.FC = () => {
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Saving Profile...
+                  Uploading...
                 </>
               ) : (
                 <>

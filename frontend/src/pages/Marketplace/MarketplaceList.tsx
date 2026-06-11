@@ -6,6 +6,7 @@ import { PlaceBidModal } from '../../components/marketplace/PlaceBidModal';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import { toast } from '../../components/ui/Toast';
 import { getMarketplace, getSellerGems, getSellerStats, createGem } from '../../services/gem.service';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -66,7 +67,8 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
   const isCutter = activeRole === 'CUTTER';
   
   const [submitting, setSubmitting] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -88,14 +90,25 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
+  // Clean up object URLs
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      
+      if (filesArray.length > 5) {
+        toast.error('Too many files', 'You can only upload up to 5 gemstone images.');
+        return;
+      }
+
+      setSelectedFiles(filesArray);
+      const newPreviews = filesArray.map(file => URL.createObjectURL(file));
+      setPreviewUrls(newPreviews);
     }
   };
 
@@ -103,16 +116,25 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
     fileInputRef.current?.click();
   };
 
-  const handleRemoveImage = (e: React.MouseEvent) => {
+  const handleRemoveImage = (e: React.MouseEvent, index: number) => {
     e.stopPropagation();
-    setPreview(null);
-    if (fileInputRef.current) {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
+
+    const updatedPreviews = [...previewUrls];
+    URL.revokeObjectURL(updatedPreviews[index]);
+    updatedPreviews.splice(index, 1);
+    setPreviewUrls(updatedPreviews);
+
+    if (fileInputRef.current && updatedFiles.length === 0) {
       fileInputRef.current.value = '';
     }
   };
 
   const handleClose = () => {
-    setPreview(null);
+    setSelectedFiles([]);
+    setPreviewUrls([]);
     onClose();
   };
 
@@ -121,23 +143,31 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
     setSubmitting(true);
     try {
       const fullDescription = `Shape/Cut: ${form.shapeCut}\nColor: ${form.color}\nClarity: ${form.clarity}\nTreatment: ${form.treatment}\nLab: ${form.certificationLab}\nReport No: ${form.reportNumber}\n\n${form.description}`;
-      await createGem({
-        title: form.title,
-        description: fullDescription,
-        type: form.type,
-        weightCarats: Number(form.weightCarats),
-        price: Number(form.price),
-        location: 'Global Hub', // Defaulted since location is replaced by richer gem details in UI
-        images: preview ? [preview] : ['https://placehold.co/600x400?text=Gemstone'],
+      
+      const formData = new FormData();
+      formData.append('title', form.title);
+      formData.append('description', fullDescription);
+      formData.append('type', form.type);
+      formData.append('weightCarats', form.weightCarats);
+      formData.append('price', form.price);
+      formData.append('location', 'Global Hub');
+
+      selectedFiles.forEach((file) => {
+        formData.append('images', file);
       });
+
+      await createGem(formData);
+      
+      toast.success('Gemstone Listed', 'Your gemstone has been successfully published.');
       onSuccess();
       handleClose();
       setForm({
         title: '', description: '', type: isCutter ? 'POLISHED' : 'ROUGH', weightCarats: '', price: '',
         shapeCut: '', color: '', clarity: '', treatment: 'Untreated/Unheated', certificationLab: '', reportNumber: ''
       });
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to create gem:', err);
+      toast.error('Listing Failed', err.response?.data?.message || 'Failed to list gemstone.');
     } finally {
       setSubmitting(false);
     }
@@ -176,45 +206,45 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           
           {/* Image Upload Area */}
-          <div 
-            onClick={handleUploadClick}
-            className="relative flex flex-col items-center justify-center w-full h-40 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-emerald-400 transition-colors cursor-pointer group overflow-hidden"
-          >
-            <input 
-              type="file" 
-              hidden 
-              accept="image/*" 
-              ref={fileInputRef} 
-              onChange={handleImageChange} 
-            />
-            {preview ? (
-              <div className="relative w-full h-full flex items-center justify-center bg-slate-900/5 group">
-                <img src={preview} className="h-full w-full object-contain rounded-lg" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity duration-200">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleUploadClick();
-                    }}
-                    className="px-3 py-1.5 text-xs font-semibold text-white bg-white/20 hover:bg-white/30 border border-white/40 rounded-lg transition-colors"
-                  >
-                    Change Photo
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="px-3 py-1.5 text-xs font-semibold text-white bg-rose-600/90 hover:bg-rose-700 rounded-lg transition-colors"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ) : (
+          <div className="space-y-3">
+            <label className={labelClass}>Gemstone Photos (Max 5)</label>
+            <div 
+              onClick={handleUploadClick}
+              className="relative flex flex-col items-center justify-center w-full h-32 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-emerald-400 transition-colors cursor-pointer group"
+            >
+              <input 
+                type="file" 
+                hidden 
+                multiple
+                accept="image/jpeg, image/png, image/webp" 
+                ref={fileInputRef} 
+                onChange={handleImageChange} 
+              />
               <div className="flex flex-col items-center text-slate-500 group-hover:text-emerald-600">
                 <Upload className="h-6 w-6 mb-2" />
                 <p className="text-sm font-medium">Click to upload or drag and drop gem photos</p>
                 <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 5MB</p>
+              </div>
+            </div>
+
+            {/* Selected Files Previews */}
+            {previewUrls.length > 0 && (
+              <div className="mt-2">
+                <p className="text-xs font-medium text-emerald-600 mb-2">Selected Previews:</p>
+                <div className="flex flex-wrap gap-3">
+                  {previewUrls.map((url, idx) => (
+                    <div key={idx} className="relative h-16 w-16 rounded-md overflow-hidden border border-slate-200 group bg-slate-900/5">
+                      <img src={url} alt={`Preview ${idx}`} className="h-full w-full object-contain" />
+                      <button
+                        type="button"
+                        onClick={(e) => handleRemoveImage(e, idx)}
+                        className="absolute top-1 right-1 bg-rose-600/90 hover:bg-rose-700 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
