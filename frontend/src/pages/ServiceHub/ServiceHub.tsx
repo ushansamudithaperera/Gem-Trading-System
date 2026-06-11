@@ -664,22 +664,24 @@ export const ServiceHub: React.FC = () => {
               Find a Cutter
             </button>
           )}
-          <button
-            onClick={() => handleTabChange('my-jobs')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer relative ${
-              activeTab === 'my-jobs'
-                ? 'bg-teal-600 text-white shadow-md hover:bg-teal-700'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
-            }`}
-          >
-            <FolderKanban className="h-4 w-4" />
-            My Cutting Jobs
-            {buyerActiveJobs.length > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm ring-1 ring-white">
-                {buyerActiveJobs.length}
-              </span>
-            )}
-          </button>
+          {isCutterUser && (
+            <button
+              onClick={() => handleTabChange('my-jobs')}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer relative ${
+                activeTab === 'my-jobs'
+                  ? 'bg-teal-600 text-white shadow-md hover:bg-teal-700'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
+              }`}
+            >
+              <FolderKanban className="h-4 w-4" />
+              My Cutting Jobs
+              {buyerActiveJobs.length > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm ring-1 ring-white">
+                  {buyerActiveJobs.length}
+                </span>
+              )}
+            </button>
+          )}
         </div>
       </div>
 

@@ -57,6 +57,8 @@ export interface IUser extends Document {
   };
   rating: number; // Average rating (from completed orders)
   totalTransactions: number;
+  availableBalance: number;
+  escrowBalance: number;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -137,6 +139,8 @@ const UserSchema = new Schema<IUser>(
     },
     rating: { type: Number, default: 0, min: 0, max: 5 },
     totalTransactions: { type: Number, default: 0 },
+    availableBalance: { type: Number, default: 0 },
+    escrowBalance: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -27,6 +27,7 @@ export interface User {
   isEmailVerified: boolean;
   businessName?: string;
   businessRegNo?: string;
+  stripeConnectAccountId?: string;
   address?: UserAddress;
   rating: number;
   totalTransactions: number;

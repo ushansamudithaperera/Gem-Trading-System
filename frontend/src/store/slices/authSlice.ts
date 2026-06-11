@@ -9,6 +9,7 @@ interface User {
   avatar?: string;
   phone?: string;
   businessName?: string;
+  stripeConnectAccountId?: string;
   kyc?: {
     documentUrls: string[];
     status: 'unverified' | 'pending' | 'verified' | 'rejected';
