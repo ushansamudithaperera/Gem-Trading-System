@@ -11,6 +11,7 @@ import {
 } from '../../controllers/gem.controller';
 import { authMiddleware } from '../../middleware/auth.middleware';
 import { isSellerOrCutter } from '../../middleware/role.middleware';
+import { upload } from '../../middleware/upload.middleware';
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.get('/:id', getGemById);
 
 // ─── Protected Routes: Seller/Cutter Actions ────────────
 // Create gem listing (SELLER or CUTTER)
-router.post('/', authMiddleware, isSellerOrCutter, createGem);
+router.post('/', authMiddleware, isSellerOrCutter, upload.array('images', 5), createGem);
 
 // Get my inventory (SELLER or CUTTER) - must be before /:id route
 router.get('/inventory/my', authMiddleware, isSellerOrCutter, getMyInventory);

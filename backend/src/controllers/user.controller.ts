@@ -305,14 +305,28 @@ export const updateCutterProfile = asyncHandler(async (req: AuthRequest, res: Re
     throw new ApiError(403, 'Only users with the CUTTER role can update a lapidary profile');
   }
 
-  const { description, location, avgTurnaroundDays, specialties, portfolio } = req.body;
+  const { description, location, avgTurnaroundDays, specialties } = req.body;
+  let portfolioUrls: string[] | undefined;
+
+  // Handle uploaded files
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    portfolioUrls = req.files.map(file => `/uploads/${file.filename}`);
+  }
 
   const updates: any = {};
   if (description !== undefined) updates['lapidaryProfile.description'] = description;
   if (location !== undefined) updates['lapidaryProfile.location'] = location;
   if (avgTurnaroundDays !== undefined) updates['lapidaryProfile.avgTurnaroundDays'] = avgTurnaroundDays;
-  if (specialties !== undefined) updates['lapidaryProfile.specialties'] = specialties;
-  if (portfolio !== undefined) updates['lapidaryProfile.portfolio'] = portfolio;
+  if (specialties !== undefined) {
+    // Check if specialties is a string (from FormData), split by comma
+    updates['lapidaryProfile.specialties'] = typeof specialties === 'string' 
+      ? specialties.split(',').map((s: string) => s.trim()).filter(Boolean)
+      : specialties;
+  }
+  if (portfolioUrls !== undefined) {
+    // If files were uploaded, overwrite the portfolio array
+    updates['lapidaryProfile.portfolio'] = portfolioUrls;
+  }
 
   const user = await User.findByIdAndUpdate(
     req.user!._id,

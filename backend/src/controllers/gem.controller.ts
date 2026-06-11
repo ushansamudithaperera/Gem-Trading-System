@@ -8,8 +8,14 @@ import { ApiError } from '../utils/ApiError';
 // CREATE: Create a new gem listing (SELLER or CUTTER)
 // ────────────────────────────────────────────────────────
 export const createGem = asyncHandler(async (req: Request, res: Response) => {
-  const { title, description, type, weightCarats, images, price, location, certificate } = req.body;
+  const { title, description, type, weightCarats, price, location, certificate } = req.body;
+  let { images } = req.body;
   
+  // Handle uploaded files
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    images = req.files.map(file => `/uploads/${file.filename}`);
+  }
+
   // Ensure userId from JWT is saved as sellerId
   const gem = await Gem.create({
     sellerId: req.user!._id,

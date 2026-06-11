@@ -13,6 +13,7 @@ import {
 } from '../../controllers/user.controller';
 import { authMiddleware } from '../../middleware/auth.middleware';
 import { isAdmin } from '../../middleware/role.middleware';
+import { upload } from '../../middleware/upload.middleware';
 
 const router = express.Router();
 
@@ -57,7 +58,7 @@ router.put('/:userId/kyc/approve', isAdmin, approveKYC);
 
 // PUT /api/v1/users/cutter-profile
 // Logged-in CUTTER updates their lapidary profile
-router.put('/cutter-profile', updateCutterProfile);
+router.put('/cutter-profile', upload.array('portfolio', 5), updateCutterProfile);
 
 // GET /api/v1/users/cutters
 // Fetch all cutters
