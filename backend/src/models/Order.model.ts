@@ -9,6 +9,7 @@ export enum OrderStatus {
   CANCELLED = 'CANCELLED',
   DISPUTED = 'DISPUTED',
   RETURN_REQUESTED = 'RETURN_REQUESTED',
+  PAID = 'PAID',
 }
 
 export enum EscrowStatus {

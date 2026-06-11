@@ -18,6 +18,7 @@ import disputeRoutes from './routes/disputeRoutes';
 import healthRoutes from './routes/v1/health.routes';
 import webhookRoutes from './routes/v1/webhook.routes';
 import adminRoutes from './routes/adminRoutes';
+import paymentRoutes from './routes/paymentRoutes';
 
 // Middleware
 import { loggingMiddleware, devLoggingMiddleware } from './middleware/logging.middleware';
@@ -83,6 +84,7 @@ app.use('/api/disputes', disputeRoutes);
 app.use('/api/v1/disputes', disputeRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/payments', paymentRoutes);
 
 
 // 404 handler
