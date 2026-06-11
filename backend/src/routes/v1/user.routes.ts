@@ -8,6 +8,8 @@ import {
   approveKYC,
   changePassword,
   toggle2FA,
+  updateCutterProfile,
+  getAllCutters,
 } from '../../controllers/user.controller';
 import { authMiddleware } from '../../middleware/auth.middleware';
 import { isAdmin } from '../../middleware/role.middleware';
@@ -48,5 +50,17 @@ router.get('/kyc/pending', isAdmin, getPendingKYC);
 // PUT /api/v1/users/:userId/kyc/approve
 // ADMIN ONLY - Approve or reject user's KYC
 router.put('/:userId/kyc/approve', isAdmin, approveKYC);
+
+/**
+ * Cutter Profile endpoints
+ */
+
+// PUT /api/v1/users/cutter-profile
+// Logged-in CUTTER updates their lapidary profile
+router.put('/cutter-profile', updateCutterProfile);
+
+// GET /api/v1/users/cutters
+// Fetch all cutters
+router.get('/cutters', getAllCutters);
 
 export default router;

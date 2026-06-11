@@ -297,3 +297,37 @@ export const toggle2FA = asyncHandler(async (req: AuthRequest, res: Response) =>
     )
   );
 });
+
+// Cutter Profile Controllers
+
+export const updateCutterProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
+  if (!req.user!.roles.includes('CUTTER')) {
+    throw new ApiError(403, 'Only users with the CUTTER role can update a lapidary profile');
+  }
+
+  const { description, location, avgTurnaroundDays, specialties, portfolio } = req.body;
+
+  const updates: any = {};
+  if (description !== undefined) updates['lapidaryProfile.description'] = description;
+  if (location !== undefined) updates['lapidaryProfile.location'] = location;
+  if (avgTurnaroundDays !== undefined) updates['lapidaryProfile.avgTurnaroundDays'] = avgTurnaroundDays;
+  if (specialties !== undefined) updates['lapidaryProfile.specialties'] = specialties;
+  if (portfolio !== undefined) updates['lapidaryProfile.portfolio'] = portfolio;
+
+  const user = await User.findByIdAndUpdate(
+    req.user!._id,
+    { $set: updates },
+    { new: true }
+  ).select('-password');
+
+  if (!user) throw new ApiError(404, 'User not found');
+  res.json(new ApiResponse(200, user, 'Cutter profile updated successfully'));
+});
+
+export const getAllCutters = asyncHandler(async (_req: AuthRequest, res: Response) => {
+  const cutters = await User.find({ roles: 'CUTTER' })
+    .select('_id firstName lastName email rating lapidaryProfile avatar profilePicture businessName')
+    .limit(100);
+    
+  res.json(new ApiResponse(200, cutters, 'Cutters fetched successfully'));
+});

@@ -59,6 +59,13 @@ export interface IUser extends Document {
   totalTransactions: number;
   availableBalance: number;
   escrowBalance: number;
+  lapidaryProfile?: {
+    description?: string;
+    location?: string;
+    avgTurnaroundDays?: number;
+    specialties?: string[];
+    portfolio?: string[];
+  };
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -141,6 +148,13 @@ const UserSchema = new Schema<IUser>(
     totalTransactions: { type: Number, default: 0 },
     availableBalance: { type: Number, default: 0 },
     escrowBalance: { type: Number, default: 0 },
+    lapidaryProfile: {
+      description: { type: String },
+      location: { type: String },
+      avgTurnaroundDays: { type: Number },
+      specialties: { type: [String], default: [] },
+      portfolio: { type: [String], default: [] }, // URLs to images
+    },
   },
   { timestamps: true }
 );

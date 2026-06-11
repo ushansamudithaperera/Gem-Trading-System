@@ -30,6 +30,7 @@ import {
   ToggleRight,
   UserCheck
 } from 'lucide-react';
+import { CutterProfileSettings } from './CutterProfileSettings';
 
 export const Settings: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -551,6 +552,10 @@ export const Settings: React.FC = () => {
                   </form>
                 </CardContent>
               </Card>
+            )}
+
+            {activeTab === 'profile' && user?.roles?.includes('CUTTER') && (
+              <CutterProfileSettings />
             )}
 
             {/* TAB 2: KYC VERIFICATION PANEL */}
