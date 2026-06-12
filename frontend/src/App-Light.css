@@ -1,4 +1,4 @@
-/* Global Light Theme Styles — Ceylon Sapphire Enterprise Theme */
+/* Global Light Theme Styles — Ceylon Sapphire Enterprise Theme (Premium) */
 
 body {
   background-color: #f8fafc;
@@ -14,7 +14,7 @@ input, textarea, select {
 
 input:focus, textarea:focus, select:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
   outline: none;
 }
 
@@ -36,15 +36,15 @@ h1, h2, h3, h4, h5, h6 {
   color: #0f172a;
 }
 
-/* Cards and containers — solid white, no glassmorphism */
+/* Cards and containers — Premium Glassmorphism-aware */
 .card, [class*="Card"] {
-  background-color: #ffffff;
-  border-color: #e2e8f0;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.6);
   color: #1e293b;
 }
 
 .bg-card {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 /* Text colors */
@@ -65,21 +65,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Background colors */
-.bg-gray-50, .bg-slate-50, .bg-accent {
+.bg-gray-50, .bg-accent {
   background-color: #f8fafc;
 }
 
-.bg-gray-100, .bg-slate-100 {
+.bg-gray-100 {
   background-color: #f1f5f9;
 }
 
 /* Borders */
-.border-gray-200, .border-slate-200, .border-input {
+.border-gray-200, .border-input {
   border-color: #e2e8f0;
 }
 
 /* Hover states */
-.hover\:bg-gray-100:hover, .hover\:bg-slate-100:hover {
+.hover\:bg-gray-100:hover {
   background-color: #f1f5f9;
 }
 
@@ -117,14 +117,17 @@ h1, h2, h3, h4, h5, h6 {
   color: #dc2626;
 }
 
-/* Market gem elements */
+/* Market gem elements — Premium */
 .gem-card {
-  background-color: #ffffff;
-  border-color: #e2e8f0;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease-out;
 }
 
 .gem-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
 /* Toast notifications animation */
@@ -152,27 +155,22 @@ h1, h2, h3, h4, h5, h6 {
   animation: toastProgress 4.7s linear forwards;
 }
 
-/* Buttons */
-button, .button {
-  transition: all 0.2s ease;
-}
-
-button:hover, .button:hover {
-  transform: translateY(-1px);
-}
-
 /* Tables */
 table {
   border-collapse: collapse;
 }
 
 thead {
-  background-color: #f8fafc;
+  background-color: rgba(248, 250, 252, 0.8);
   border-color: #e2e8f0;
 }
 
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
 tbody tr:hover {
-  background-color: #f1f5f9;
+  background-color: rgba(241, 245, 249, 0.6);
 }
 
 td, th {
@@ -183,28 +181,11 @@ td, th {
 /* Modal/Overlay */
 .modal-overlay {
   background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.95);
   color: #1e293b;
-}
-
-/* Scrollbar — Ceylon Sapphire */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #1e3a5f, #2563eb);
-  border-radius: 100px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #1e40af;
+  backdrop-filter: blur(20px);
 }

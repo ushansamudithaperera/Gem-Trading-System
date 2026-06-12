@@ -24,6 +24,12 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+
+    /* ── Premium Design Tokens ── */
+    --shadow-card: 0 8px 30px rgb(0 0 0 / 0.04);
+    --shadow-card-hover: 0 20px 40px rgb(0 0 0 / 0.06);
+    --shadow-glass: 0 1px 3px rgb(0 0 0 / 0.04);
+    --shadow-elevated: 0 25px 50px -12px rgb(0 0 0 / 0.08);
   }
 
   .dark {
@@ -56,28 +62,114 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Custom scrollbar */
+/* ─── Premium Background ─── */
+.premium-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(219, 234, 254, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(204, 251, 241, 0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(241, 245, 249, 0.5) 0%, transparent 70%),
+    linear-gradient(to bottom right, #f8fafc, #ffffff, #f1f5f9);
+}
+
+/* ─── Glassmorphism Utilities ─── */
+@layer components {
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-xl border border-white/60;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-sidebar {
+    @apply bg-white/70 backdrop-blur-2xl border-r border-slate-200/50;
+    box-shadow: var(--shadow-glass);
+  }
+
+  .glass-header {
+    @apply bg-white/70 backdrop-blur-2xl border-b border-slate-200/50;
+    box-shadow: var(--shadow-glass);
+  }
+
+  .glass-card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .glass-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Premium section card used for tables/charts */
+  .premium-section-card {
+    @apply bg-white/60 backdrop-blur-xl border border-white/60 rounded-2xl overflow-hidden;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease-out;
+  }
+
+  .premium-section-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .premium-section-header {
+    @apply bg-gradient-to-r from-slate-50/80 to-white/40 backdrop-blur-sm border-b border-slate-100/80 p-5;
+  }
+
+  /* Premium badge */
+  .premium-badge {
+    @apply bg-slate-50/80 text-slate-700 ring-1 ring-inset ring-slate-300/50 shadow-sm;
+  }
+}
+
+/* ─── Content Reveal Animation ─── */
+@keyframes contentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-contentReveal {
+  animation: contentReveal 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Stagger children for dashboard cards */
+.stagger-children > * {
+  animation: contentReveal 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+
+/* ─── Custom Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-800;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-600 rounded;
+  background: linear-gradient(to bottom, #94a3b8, #64748b);
+  border-radius: 100px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-500;
+  background: linear-gradient(to bottom, #64748b, #475569);
 }
 
-/* Line clamp utility */
+/* ─── Line Clamp ─── */
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -99,7 +191,7 @@
   overflow: hidden;
 }
 
-/* Animations */
+/* ─── Animations ─── */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
+import { StatCard } from '../../components/ui/StatCard';
 import { Scissors, DollarSign, CheckCircle, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCutterJobs } from '../../services/cutting.service';
@@ -47,84 +47,44 @@ export const CutterDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Cutter Dashboard</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Cutter Dashboard</h1>
         <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-amber-600">Cutter</span>. Manage cutting jobs and track earnings</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Total Earned</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalEarned.toLocaleString()}</p>
-            </div>
-            <div className="bg-emerald-50 p-3 rounded-xl flex items-center justify-center border border-emerald-100">
-              <DollarSign className="h-6 w-6 text-emerald-700" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Pending Jobs</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.pending}</p>
-            </div>
-            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
-              <Clock className="h-6 w-6 text-amber-700" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">In Progress</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.inProgress}</p>
-            </div>
-            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
-              <Scissors className="h-6 w-6 text-amber-600" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Completed</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completed}</p>
-            </div>
-            <div className="bg-sky-50 p-3 rounded-xl flex items-center justify-center border border-sky-100">
-              <CheckCircle className="h-6 w-6 text-sky-700" />
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
+        <StatCard label="Total Earned" value={`$${stats.totalEarned.toLocaleString()}`} icon={DollarSign} accentColor="emerald" />
+        <StatCard label="Pending Jobs" value={stats.pending} icon={Clock} accentColor="amber" />
+        <StatCard label="In Progress" value={stats.inProgress} icon={Scissors} accentColor="amber" />
+        <StatCard label="Completed" value={stats.completed} icon={CheckCircle} accentColor="sky" />
       </div>
 
-      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
-        <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+      <div className="premium-section-card">
+        <div className="premium-section-header flex flex-row items-center justify-between">
+          <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-purple-500 animate-pulse"></span>
             Recent Faceting Contracts
-          </CardTitle>
+          </h3>
           <Link to="/service-hub/jobs">
-            <button className="inline-flex items-center text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-lg px-3 py-1.5 transition-colors">
+            <button className="inline-flex items-center text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50/80 hover:bg-amber-100 rounded-lg px-3 py-1.5 ring-1 ring-inset ring-amber-200/50 shadow-sm transition-all duration-200">
               Manage Service Hub
             </button>
           </Link>
-        </CardHeader>
-        <CardContent className="p-6">
+        </div>
+        <div className="p-6">
           {loading ? (
             <p className="text-slate-500">Loading...</p>
           ) : jobs.length === 0 ? (
             <p className="text-slate-500">No cutting jobs assigned yet.</p>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-100/80">
               {jobs.map((job) => (
-                <div key={job._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div key={job._id} className="flex items-center justify-between py-3 first:pt-0 last:pb-0 hover:bg-slate-50/50 -mx-2 px-2 rounded-lg transition-colors">
                   <div>
-                    <p className="font-medium text-slate-900">Job #{job._id.slice(-8)}</p>
+                    <p className="font-semibold text-slate-900">Job #{job._id.slice(-8)}</p>
                     <p className="text-sm text-slate-500">Fee: ${job.cutterFee}</p>
                   </div>
-                  <div className="text-right">
-                    <p className={`text-sm font-medium capitalize ${
+                  <div className="text-right flex items-center gap-4">
+                    <p className={`text-sm font-semibold capitalize ${
                       job.status === 'PENDING' ? 'text-amber-600' :
                       job.status === 'IN_PROGRESS' ? 'text-amber-500' :
                       job.status === 'COMPLETED' ? 'text-emerald-600' : 'text-slate-500'
@@ -139,8 +99,8 @@ export const CutterDashboard: React.FC = () => {
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

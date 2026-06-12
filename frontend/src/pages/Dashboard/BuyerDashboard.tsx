@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
+import { StatCard } from '../../components/ui/StatCard';
 import { Package, Clock, DollarSign, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getUserOrders } from '../../services/order.service';
@@ -59,67 +60,27 @@ export const BuyerDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user?.firstName}!</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Welcome back, {user?.firstName}!</h1>
         <p className="text-slate-500 mt-1">You are currently logged in as a <span className="font-semibold text-blue-700">Buyer</span>. Track your purchases and orders</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Total Spent</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">${stats.totalSpent.toLocaleString()}</p>
-            </div>
-            <div className="bg-emerald-50 p-3 rounded-xl flex items-center justify-center border border-emerald-100">
-              <DollarSign className="h-6 w-6 text-emerald-700" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Active Orders</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.activeOrders}</p>
-            </div>
-            <div className="bg-blue-50 p-3 rounded-xl flex items-center justify-center border border-blue-100">
-              <Clock className="h-6 w-6 text-blue-700" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Completed</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.completedOrders}</p>
-            </div>
-            <div className="bg-sky-50 p-3 rounded-xl flex items-center justify-center border border-sky-100">
-              <Package className="h-6 w-6 text-sky-700" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 font-medium">Disputes</p>
-              <p className="text-3xl font-bold text-slate-900 mt-2">{stats.disputes}</p>
-            </div>
-            <div className="bg-amber-50 p-3 rounded-xl flex items-center justify-center border border-amber-100">
-              <AlertTriangle className="h-6 w-6 text-amber-700" />
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
+        <StatCard label="Total Spent" value={`$${stats.totalSpent.toLocaleString()}`} icon={DollarSign} accentColor="emerald" />
+        <StatCard label="Active Orders" value={stats.activeOrders} icon={Clock} accentColor="blue" />
+        <StatCard label="Completed" value={stats.completedOrders} icon={Package} accentColor="sky" />
+        <StatCard label="Disputes" value={stats.disputes} icon={AlertTriangle} accentColor="amber" />
       </div>
 
       {recentOrders.length > 0 && (
-        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
-          <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5">
-            <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+        <div className="premium-section-card">
+          <div className="premium-section-header">
+            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
               Gem Acquisition Trend
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
+            </h3>
+          </div>
+          <div className="p-6">
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -127,57 +88,58 @@ export const BuyerDashboard: React.FC = () => {
                 <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={{ stroke: '#e2e8f0' }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    border: '1px solid rgba(226, 232, 240, 0.6)',
+                    borderRadius: '12px',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
+                    backdropFilter: 'blur(12px)',
                     color: '#0f172a',
                   }}
                 />
                 <Line type="monotone" dataKey="amount" stroke="#1d4ed8" strokeWidth={2.5} dot={{ fill: '#1d4ed8', r: 4 }} activeDot={{ r: 6, fill: '#2563eb' }} />
               </LineChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Recent Gem Transactions */}
-      <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-slate-300/60 transition-all duration-300">
-        <CardHeader className="bg-slate-50/30 border-b border-slate-100 p-5 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg font-bold text-slate-800 flex items-center gap-2">
+      <div className="premium-section-card">
+        <div className="premium-section-header flex flex-row items-center justify-between">
+          <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
             Recent Gem Orders
-          </CardTitle>
+          </h3>
           <Link to="/orders">
             <Button variant="ghost" size="sm" className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">View All</Button>
           </Link>
-        </CardHeader>
-        <CardContent className="p-6">
+        </div>
+        <div className="p-6">
           {loading ? (
             <p className="text-slate-500">Loading...</p>
           ) : recentOrders.length === 0 ? (
             <p className="text-slate-500">No orders yet. Start browsing the marketplace!</p>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-100/80">
               {recentOrders.map((order) => (
-                <div key={order._id} className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div key={order._id} className="flex items-center justify-between py-3 first:pt-0 last:pb-0 hover:bg-slate-50/50 -mx-2 px-2 rounded-lg transition-colors">
                   <div className="flex items-center gap-3">
-                    <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-12 h-12 object-cover rounded-lg border border-slate-200" />
+                    <img src={order.gemId.images?.[0] || '/gem-placeholder.png'} alt="" className="w-12 h-12 object-cover rounded-xl border border-white/60 shadow-sm" />
                     <div>
-                      <p className="font-medium text-slate-900">{order.gemId.title}</p>
+                      <p className="font-semibold text-slate-900">{order.gemId.title}</p>
                       <p className="text-sm text-slate-500">Order #{order.orderNumber.slice(-8)}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-slate-900">${order.amount.toLocaleString()}</p>
+                    <p className="font-bold text-slate-900">${order.amount.toLocaleString()}</p>
                     <p className="text-xs text-slate-500 capitalize">{order.status.replace(/_/g, ' ').toLowerCase()}</p>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

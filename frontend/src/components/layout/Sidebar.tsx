@@ -215,7 +215,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside 
-      className={`hidden md:flex md:flex-col md:fixed md:inset-y-16 md:left-0 bg-white border-r border-slate-200 text-slate-800 shadow-sm transition-all duration-300 z-40 ${
+      className={`hidden md:flex md:flex-col md:fixed md:inset-y-16 md:left-0 bg-white/70 backdrop-blur-2xl border-r border-slate-200/50 text-slate-800 shadow-[0_1px_3px_rgb(0,0,0,0.04)] transition-all duration-300 z-40 ${
         sidebarOpen ? 'md:w-64' : 'md:w-20'
       }`}
     >

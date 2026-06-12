@@ -21,7 +21,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-slate-200 text-slate-800 shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-2xl border-b border-slate-200/50 text-slate-800 shadow-[0_1px_3px_rgb(0,0,0,0.04)]">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
         <Link to={isAuthenticated ? '/marketplace' : '/'} className="flex items-center gap-2.5">
@@ -124,7 +124,7 @@ export const Header: React.FC = () => {
                     {user?.firstName} {user?.lastName?.[0]}.
                   </span>
                   {user?.roles && user.roles.length > 0 && (
-                    <span className="ml-2 inline-flex items-center px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                    <span className="ml-2 inline-flex items-center px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-slate-50/80 text-slate-700 ring-1 ring-inset ring-slate-300/50 shadow-sm backdrop-blur-sm">
                       {user.roles[0].charAt(0) + user.roles[0].slice(1).toLowerCase()}
                     </span>
                   )}
