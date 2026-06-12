@@ -57,7 +57,7 @@ export interface CutterProfile {
 export const ServiceHub: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { role } = useRoleTheme();
-  const isCutter = role === 'CUTTER';
+  const isCutter = user?.roles?.includes('CUTTER');
 
   const [activeTab, setActiveTab] = useState<'find-cutter' | 'my-jobs'>('find-cutter');
   
