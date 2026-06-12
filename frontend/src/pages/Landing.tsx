@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Button } from '../components/ui/Button';
+import { PremiumBadge } from '../components/ui/PremiumBadge';
 import { GemLoader } from '../components/common/GemLoader';
 import { FeaturesCarousel } from '../components/landing/FeaturesCarousel';
 import { ArrowRight, Check, ShieldCheck, Globe, Award, ShoppingBag, Briefcase, Scissors } from 'lucide-react';
@@ -81,10 +82,10 @@ export const Landing: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left: Typography & CTA */}
             <div className="max-w-xl animate-fadeInUp">
-              <div className="heritage-badge mb-8">
-                <span className="heritage-dot" />
-                This is your trusted digital Gem trade marketplace
-              </div>
+              <PremiumBadge
+                text="Your Trusted Digital Gem Trade Marketplace"
+                className="mb-8"
+              />
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight mb-6">
                 <span className="ceylon-text-shimmer">Trade Precious</span>
@@ -212,10 +213,7 @@ export const Landing: React.FC = () => {
         <div className="container mx-auto relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full mb-6">
-              <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-              <span className="text-xs font-semibold text-blue-700 tracking-wide uppercase">For Every Role</span>
-            </div>
+            <PremiumBadge text="For Every Role" className="mb-6" />
             <h2 className="text-4xl md:text-5xl font-bold mb-5 text-slate-900 tracking-tight">
               Built For Every Role
             </h2>

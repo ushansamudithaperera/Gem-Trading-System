@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { PremiumBadge } from '../ui/PremiumBadge';
 import {
   Shield,
   Zap,
@@ -129,10 +130,7 @@ export const FeaturesCarousel: React.FC = () => {
       <div className="container mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full mb-6">
-            <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-            <span className="text-xs font-semibold text-blue-700 tracking-wide uppercase">Platform Features</span>
-          </div>
+          <PremiumBadge text="Platform Features" className="mb-6" />
           <h2 className="text-4xl md:text-5xl font-bold mb-5 text-slate-900 tracking-tight">
             Why Traders Choose GemTrade
           </h2>
