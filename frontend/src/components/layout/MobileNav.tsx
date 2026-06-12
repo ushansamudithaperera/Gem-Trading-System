@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { logout } from '../../store/slices/authSlice';
 import { Button } from '../ui/Button';
+import { UserRole } from '../../types/user.types';
 
 interface MobileNavProps {
   open: boolean;
@@ -15,7 +16,7 @@ interface MobileNavProps {
 interface NavItem {
   name: string;
   href: string;
-  roles?: string[];
+  roles?: UserRole[];
 }
 
 // Nav items for authenticated users

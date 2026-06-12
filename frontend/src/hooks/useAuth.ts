@@ -3,6 +3,7 @@ import { RootState } from '../store';
 import { logout } from '../store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '../components/ui/Toast';
+import { UserRole } from '../types/user.types';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ export const useAuth = () => {
     navigate('/login');
   };
 
-  const checkRole = (roles: string | string[]): boolean => {
+  const checkRole = (roles: UserRole | UserRole[]): boolean => {
     if (!user) return false;
     const required = Array.isArray(roles) ? roles : [roles];
     return required.some(role => user.roles.includes(role));

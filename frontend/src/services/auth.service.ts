@@ -1,4 +1,5 @@
 import api from './api';
+import { User } from '../types/user.types';
 
 interface RegisterData {
   email: string;
@@ -17,14 +18,7 @@ interface LoginData {
 interface AuthResponse {
   success: boolean;
   data: {
-    user: {
-      _id: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-      roles: string[];
-      avatar?: string;
-    };
+    user: User;
     token: string;
   };
   message: string;
