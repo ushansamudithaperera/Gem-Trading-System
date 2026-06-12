@@ -67,3 +67,10 @@ export const getSellerStats = async () => {
   const response = await api.get('/gems/seller/stats');
   return response.data.data;
 };
+
+export const scanGemstone = async (formData: FormData) => {
+  const response = await api.post('/ai/scan-gem', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return response.data.data;
+};

@@ -20,6 +20,7 @@ import webhookRoutes from './routes/v1/webhook.routes';
 import adminRoutes from './routes/adminRoutes';
 import paymentRoutes from './routes/paymentRoutes';
 import walletRoutes from './routes/walletRoutes';
+import aiRoutes from './routes/v1/aiRoutes';
 
 // Middleware
 import { loggingMiddleware, devLoggingMiddleware } from './middleware/logging.middleware';
@@ -90,6 +91,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/wallet', walletRoutes);
+app.use('/api/v1/ai', aiRoutes);
 
 
 // 404 handler

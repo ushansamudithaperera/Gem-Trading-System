@@ -7,7 +7,7 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { toast } from '../../components/ui/Toast';
-import { getMarketplace, getSellerGems, getSellerStats, createGem } from '../../services/gem.service';
+import { getMarketplace, getSellerGems, getSellerStats, createGem, scanGemstone } from '../../services/gem.service';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import {
@@ -67,6 +67,7 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
   const isCutter = activeRole === 'CUTTER';
   
   const [submitting, setSubmitting] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   
@@ -88,6 +89,45 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
 
   const handleChange = (key: string, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleAutoFillWithAI = async () => {
+    if (selectedFiles.length === 0) {
+      toast.error('No Image Uploaded', 'Please select at least one gemstone image to scan.');
+      return;
+    }
+
+    setScanning(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedFiles[0]);
+
+      toast.info('Scanning Gemstone', 'AI is analyzing your gemstone image...');
+      const result = await scanGemstone(formData);
+
+      let typeVal: 'ROUGH' | 'POLISHED' = 'ROUGH';
+      if (result.gemType && result.gemType.toLowerCase().includes('face')) {
+        typeVal = 'POLISHED';
+      } else if (result.gemType && result.gemType.toLowerCase().includes('rough')) {
+        typeVal = 'ROUGH';
+      }
+
+      setForm(prev => ({
+        ...prev,
+        title: result.title || prev.title,
+        type: typeVal,
+        color: result.color || prev.color,
+        shapeCut: result.shape || prev.shapeCut,
+        clarity: result.clarity || prev.clarity,
+      }));
+
+      toast.success('Form Auto-filled', 'AI successfully filled the gem metadata.');
+    } catch (err: any) {
+      console.error('AI autofill failed:', err);
+      toast.error('Scan Failed', err.response?.data?.message || 'Failed to scan the gemstone image.');
+    } finally {
+      setScanning(false);
+    }
   };
 
   // Clean up object URLs
@@ -247,6 +287,30 @@ export const AddGemModal: React.FC<AddGemModalProps> = ({ isOpen, onClose, onSuc
                 </div>
               </div>
             )}
+
+            {/* AI Auto-fill Trigger */}
+            <div className="flex justify-between items-center mt-3 pt-2 border-t border-slate-100">
+              <span className="text-xs text-slate-500">
+                {selectedFiles.length > 0 ? `${selectedFiles.length} file(s) selected` : 'Select an image to enable AI analysis'}
+              </span>
+              <button
+                type="button"
+                onClick={handleAutoFillWithAI}
+                disabled={scanning || selectedFiles.length === 0}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 px-4 py-2 text-xs font-semibold text-blue-700 shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {scanning ? (
+                  <>
+                    <LoadingSpinner size="sm" />
+                    <span>AI Scanning...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Auto-fill with AI ✨</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
